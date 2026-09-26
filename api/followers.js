@@ -7,81 +7,117 @@ export default async function handler(req, res) {
   let source = '';
   let debug = [];
 
-  // 1 - TikWM - Intento con POST y GET (el GET a veces falla por CORS pero en server funciona)
-  try{
-    // Intento POST (recomendado por TikWM)
-    const r = await fetch('https://www.tikwm.com/api/user/info', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0' },
-      body: JSON.stringify({ unique_id: USERNAME })
+  // ===== 1. TOKCOUNTER - Tu fuente principal que me mandaste =====
+  // Intenta sacar el numero directo de tokcounter.com/es?user=elbellocubano7
+  try {
+    const r = await fetch(`https://tokcounter.com/es?user=${USERNAME}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
+      }
     });
-    if(r.ok){
-      const j = await r.json();
-      const c = j?.data?.user?.followerCount || j?.data?.followerCount;
-      if(c){ followers = c; source = 'tikwm-post'; debug.push('tikwm-post ok:'+c); }
-    }
-  }catch(e){ debug.push('tikwm-post fail:'+e.message); }
-
-  if(!followers){
-    try{
-      const r = await fetch(`https://www.tikwm.com/api/user/info?unique_id=${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0 Chrome/120.0.0.0' }
-      });
-      if(r.ok){
-        const j = await r.json();
-        if(j?.data?.user?.followerCount){ followers = j.data.user.followerCount; source='tikwm-get'; debug.push('tikwm-get ok:'+followers); }
-      }
-    }catch(e){ debug.push('tikwm-get fail'); }
-  }
-
-  // 2 - Countik
-  if(!followers){
-    try{
-      const r = await fetch(`https://countik.com/api/userinfo?username=${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
-      if(r.ok){
-        const j = await r.json();
-        const c = j.followerCount || j.fans || j.followers;
-        if(c){ followers = c; source='countik'; debug.push('countik ok:'+c); }
-      }
-    }catch(e){ debug.push('countik fail'); }
-  }
-
-  // 3 - TokCounter / TokCount (nuevo respaldo)
-  if(!followers){
-    try{
-      const r = await fetch(`https://tokcount.com/api/user/${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
-      if(r.ok){
-        const j = await r.json();
-        const c = j.followers || j.followerCount || j.data?.followers;
-        if(c){ followers = c; source='tokcount'; debug.push('tokcount ok:'+c); }
-      }
-    }catch(e){ debug.push('tokcount fail'); }
-  }
-
-  // 4 - Livecounts.io / TikTok Web API indirecto
-  if(!followers){
-    try{
-      const r = await fetch(`https://www.tiktok.com/@${USERNAME}`, {
-        headers: { 
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
-          'Accept': 'text/html'
+    if (r.ok) {
+      const html = await r.text();
+      debug.push('tokcounter html length:'+html.length);
+      
+      // Intento A: Buscar en __NEXT_DATA__ o JSON embebido
+      // TokCounter usa Next.js, el dato esta en un JSON gigante
+      const patterns = [
+        /"followerCount":(\d+)/g,
+        /"followers":(\d+)/g,
+        /"follower_count":(\d+)/g,
+        /followerCount\":(\d+)/g,
+        /followersCount\":(\d+)/g
+      ];
+      
+      for (const pat of patterns) {
+        const matches = [...html.matchAll(pat)];
+        for (const m of matches) {
+          const val = parseInt(m[1], 10);
+          if (val > 1000 && val < 10000000) { // rango valido para ti
+            if (!followers || val > followers) {
+              followers = val;
+              source = 'tokcounter-page';
+            }
+          }
         }
+      }
+      
+      // Intento B: Buscar numero en elemento especifico (ej: <span id="follower-count">43,123</span>)
+      // TokCounter muestra el numero en un div grande
+      const countMatch = html.match(/class="[^"]*follower[^"]*"[^>]*>([\d,\.]+)</i);
+      if (countMatch && !followers) {
+        const val = parseInt(countMatch[1].replace(/[^\d]/g, ''), 10);
+        if (val > 1000) { followers = val; source = 'tokcounter-dom'; }
+      }
+      
+      if (followers) debug.push('tokcounter-page ok:'+followers);
+      else debug.push('tokcounter-page no encontro numero');
+    }
+  } catch (e) {
+    debug.push('tokcounter-page fail:'+e.message);
+  }
+
+  // ===== 2. TOKCOUNTER API directa (si existe) =====
+  if (!followers) {
+    const endpoints = [
+      `https://tokcounter.com/api/user/${USERNAME}`,
+      `https://tokcounter.com/api/tiktok/user/${USERNAME}`,
+      `https://api.tokcounter.com/user/${USERNAME}`,
+      `https://tokcount.com/api/user/${USERNAME}`
+    ];
+    for (const url of endpoints) {
+      try {
+        const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        if (r.ok) {
+          const j = await r.json();
+          const c = j.followerCount || j.followers || j.follower_count || j.data?.followerCount || j.data?.followers;
+          if (c && c > 1000) {
+            followers = c;
+            source = 'tokcounter-api:'+url;
+            debug.push('tokcounter-api ok:'+c+' from '+url);
+            break;
+          }
+        }
+      } catch (e) {
+        debug.push('tokcounter-api fail '+url);
+      }
+    }
+  }
+
+  // ===== 3. TIKWM POST (respaldo) =====
+  if (!followers) {
+    try {
+      const r = await fetch('https://www.tikwm.com/api/user/info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0' },
+        body: JSON.stringify({ unique_id: USERNAME })
       });
-      if(r.ok){
+      if (r.ok) {
+        const j = await r.json();
+        const c = j?.data?.user?.followerCount || j?.data?.followerCount;
+        if (c) { followers = c; source = 'tikwm-post'; debug.push('tikwm-post ok:'+c); }
+      }
+    } catch (e) { debug.push('tikwm-post fail'); }
+  }
+
+  // ===== 4. TIKTOK DIRECT SCRAPE (ultimo respaldo) =====
+  if (!followers) {
+    try {
+      const r = await fetch(`https://www.tiktok.com/@${USERNAME}`, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0', 'Accept': 'text/html' }
+      });
+      if (r.ok) {
         const html = await r.text();
-        // Buscar followerCount en el JSON embebido
-        const m = html.match(/"followerCount":(\d+)/) || html.match(/followerCount":(\d+)/);
-        if(m && m[1]){
-          followers = parseInt(m[1],10);
-          source='tiktok-scrape';
+        const m = html.match(/"followerCount":(\d+)/);
+        if (m && m[1]) {
+          followers = parseInt(m[1], 10);
+          source = 'tiktok-scrape';
           debug.push('scrape ok:'+followers);
         }
       }
-    }catch(e){ debug.push('scrape fail'); }
+    } catch (e) { debug.push('scrape fail'); }
   }
 
   const FALLBACK = 43789;
