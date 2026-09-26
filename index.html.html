@@ -86,11 +86,23 @@
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
 <script>
-let fb=17000,ig=4000,tt=40000;
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
-function bump(){let r=Math.random();if(r<0.34){fb++;document.getElementById('fb-count').textContent=fmt(fb)}else if(r<0.66){ig++;document.getElementById('ig-count').textContent=fmt(ig)}else{tt++;document.getElementById('tt-count').textContent=fmt(tt)}setTimeout(bump,2000+Math.random()*2000)}
-setTimeout(bump,2000);
-fetch('/api/followers').then(r=>r.json()).then(d=>{if(typeof d.facebook==='number'){fb=d.facebook;document.getElementById('fb-count').textContent=fmt(fb)}if(typeof d.instagram==='number'){ig=d.instagram;document.getElementById('ig-count').textContent=fmt(ig)}if(typeof d.tiktok==='number'){tt=d.tiktok;document.getElementById('tt-count').textContent=fmt(tt)}}).catch(()=>{});
+async function loadLive(){
+  try{
+    const res = await fetch('/api/followers');
+    const data = await res.json();
+    if(typeof data.facebook === 'number') document.getElementById('fb-count').textContent = fmt(data.facebook);
+    if(typeof data.instagram === 'number') document.getElementById('ig-count').textContent = fmt(data.instagram);
+    if(typeof data.tiktok === 'number'){
+      document.getElementById('tt-count').textContent = fmt(data.tiktok);
+    }
+  }catch(e){
+    console.log('API aun no creada');
+  }
+}
+loadLive();
+setInterval(loadLive, 15000);
 </script>
+
 </body>
 </html>
