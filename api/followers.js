@@ -1,15 +1,14 @@
 export default async function handler(req, res) {
-  // HIBRIDO 10 MINUTOS - Segunda opción (Vercel con 1 IP)
-  // Solo pregunta a TikTok cada 10 minutos, nunca se bloquea
-  
+  // HIBRIDO 10 MINUTOS - Vercel con 1 IP, nunca se bloquea
+  // Cache 10 min para no saturar TikWM
   res.setHeader('Access-Control-Allow-Origin', '*');
-  // 600 segundos = 10 minutos
   res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1200');
 
   const USERNAME = 'elbellocubano7';
   let followers = null;
   let source = '';
 
+  // 1er intento: TikWM
   try{
     const r = await fetch(`https://www.tikwm.com/api/user/info?unique_id=${USERNAME}`, {
       headers: { 'User-Agent': 'Mozilla/5.0 Chrome/120.0.0.0' }
@@ -23,6 +22,7 @@ export default async function handler(req, res) {
     }
   }catch(e){}
 
+  // 2do intento: Countik backup
   if(!followers){
     try{
       const r = await fetch(`https://countik.com/api/userinfo?username=${USERNAME}`);
@@ -35,12 +35,12 @@ export default async function handler(req, res) {
     }catch(e){}
   }
 
-  const FALLBACK = 43789;
+  const FALLBACK = 43789; // fallback real tuyo
 
   return res.status(200).json({
     tiktok: followers || FALLBACK,
     facebook: 17000,
-    instagram: 4000,
+    instagram: 4500, // CORREGIDO: antes 4000, ahora 4500 como tu index
     username: USERNAME,
     source: source || 'fallback-10min',
     interval: '600s = 10 minutos',
