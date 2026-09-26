@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>El Bello Cubano | Cubanos en Perú - elbellocubano7</title>
+<title>el Bello Cubano | Cubanos en Perú - elbellocubano7</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -86,56 +86,60 @@
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
 <script>
-// TikWM con rotación - Como TokCounter, nunca bloquea
+// SISTEMA HIBRIDO - Tu idea es perfecta y así lo hace TokCounter
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
 
-async function loadTikWM(){
-  const el = document.getElementById('tt-count');
-  
-  // TRUCO DE TOKCOUNTER: Pregunta directo desde el navegador del visitante
-  // Cada visitante tiene IP diferente, TikTok no bloquea
-  // Vercel tiene 1 IP sola, por eso lo bloquea
-  
+let lastTikWM = 0;
+let lastVercel = 0;
+
+// OPCIÓN 1 - PRIMERA OPCIÓN: TikWM directo desde el navegador (constante, como TokCounter)
+// Pregunta cada 8 segundos, IP rotativa de cada visitante, nunca bloquea
+async function loadTikWM_Constante(){
   try{
-    // Directo desde tu celular/PC - IP rotativa natural
     const r = await fetch('https://www.tikwm.com/api/user/info?unique_id=elbellocubano7', {cache: 'no-store'});
     const j = await r.json();
-    if(j?.data?.user?.followerCount){
-      el.textContent = fmt(j.data.user.followerCount);
-      console.log('TikWM directo (IP rotativa):', j.data.user.followerCount);
-      return j.data.user.followerCount;
+    if(j?.data?.user?.followerCount && j.data.user.followerCount >= 40000){
+      document.getElementById('tt-count').textContent = fmt(j.data.user.followerCount);
+      lastTikWM = j.data.user.followerCount;
+      console.log('OPCION 1 - TikWM constante:', j.data.user.followerCount, 'cada 8s');
+      return true;
     }
-  }catch(e){ console.log('Directo fallo, usando API...', e); }
-
-  // Fallback a tu API que también rota
-  try{
-    const r2 = await fetch('/api/followers?t=' + Date.now() + '&r=' + Math.random(), {cache: 'no-store'});
-    const d = await r2.json();
-    if(d.tiktok && d.tiktok >= 40000){
-      el.textContent = fmt(d.tiktok);
-      console.log('Via API rotativa:', d.tiktok, d.source);
-    }
-  }catch(e){}
+  }catch(e){
+    console.log('TikWM directo falló, esperando Vercel 10min...', e);
+  }
+  return false;
 }
 
-async function loadOthers(){
+// OPCIÓN 2 - SEGUNDA OPCIÓN: Vercel con 1 IP, pero cada 10 minutos
+// Respaldo seguro, nunca satura TikTok
+async function loadVercel_10min(){
   try{
     const r = await fetch('/api/followers?t=' + Date.now(), {cache: 'no-store'});
     const d = await r.json();
+    if(d.tiktok && d.tiktok >= 40000){
+      // Solo actualiza si TikWM no ha dado uno más reciente
+      if(d.tiktok > lastTikWM || lastTikWM === 0){
+        document.getElementById('tt-count').textContent = fmt(d.tiktok);
+        lastVercel = d.tiktok;
+      }
+      console.log('OPCION 2 - Vercel 10min:', d.tiktok, 'fuente:', d.source);
+    }
     if(d.facebook) document.getElementById('fb-count').textContent = fmt(d.facebook);
     if(d.instagram) document.getElementById('ig-count').textContent = fmt(d.instagram);
-  }catch(e){}
+  }catch(e){
+    console.log('Vercel 10min esperando...');
+  }
 }
 
-// Carga inmediata
-loadTikWM();
-loadOthers();
+// INICIO
+loadTikWM_Constante(); // Primera opción inmediata
+loadVercel_10min();     // Segunda opción inmediata como respaldo
 
-// Cada 50 segundos como pediste - no satura
-setInterval(loadTikWM, 50000);
-setInterval(loadOthers, 50000);
+// HIBRIDO: TikWM cada 8 segundos (tiempo real) + Vercel cada 10 minutos (respaldo)
+setInterval(loadTikWM_Constante, 8000);   // 8 segundos = constante como TokCounter
+setInterval(loadVercel_10min, 600000);     // 600,000 ms = 10 minutos = Vercel
 
-console.log('TikWM rotación activa cada 50s - nunca bloquea como TokCounter');
+console.log('Sistema HIBRIDO activo: TikWM cada 8s + Vercel cada 10min');
 </script>
 
 </body>
