@@ -86,39 +86,26 @@
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
 <script>
-// CONTADOR CADA 10 SEGUNDOS - No satura TikTok, no vuelve a 40,000
+// CONTADOR CADA 50 SEGUNDOS - como pediste, menos de 1 minuto
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
-
-let lastRealCount = 0;
 
 async function loadLive(){
   try{
-    // Con t=Date.now() evitamos cache viejo de 40,000
     const res = await fetch('/api/followers?t=' + Date.now(), {cache: 'no-store'});
     const data = await res.json();
-    
+    if(data.tiktok && data.tiktok >= 40000){
+      document.getElementById('tt-count').textContent = fmt(data.tiktok);
+      console.log('TikTok cada 50s:', data.tiktok, 'fuente:', data.source);
+    }
     if(data.facebook) document.getElementById('fb-count').textContent = fmt(data.facebook);
     if(data.instagram) document.getElementById('ig-count').textContent = fmt(data.instagram);
-    
-    if(data.tiktok){
-      // Solo actualiza si es mayor que 40,000 - evita que vuelva a 40,000
-      if(data.tiktok >= 40000){
-        if(data.tiktok > lastRealCount || lastRealCount === 0){
-          document.getElementById('tt-count').textContent = fmt(data.tiktok);
-          lastRealCount = data.tiktok;
-        }
-        console.log('TikTok:', data.tiktok, 'fuente:', data.source, 'real:', data.isReal);
-      }
-    }
-  }catch(e){
-    console.log('API esperando...', e);
-  }
+  }catch(e){}
 }
 
-// Primera carga inmediata
+// Carga inmediata y luego cada 50 segundos
 loadLive();
-// Cada 10 segundos como pediste
-setInterval(loadLive, 10000);
+setInterval(loadLive, 50000);
+console.log('Contador configurado cada 50 segundos');
 </script>
 
 </body>
