@@ -86,34 +86,36 @@
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
 <script>
-// Vinculado al API Ultimate Fix cada 5 segundos - @elbellocubano7
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
 
-async function loadLive(){
+async function loadLiveDirect(){
+  const el = document.getElementById('tt-count');
+  
+  // METODO 1: Directo desde tu navegador como hace TokCounter (no pasa por Vercel)
   try{
-    // t=Date.now() rompe cache para que no se quede en 43,700
-    const res = await fetch('/api/followers?t=' + Date.now(), {cache: 'no-store'});
-    const data = await res.json();
-    
-    if(typeof data.facebook === 'number'){
-      document.getElementById('fb-count').textContent = fmt(data.facebook);
+    const r = await fetch('https://www.tikwm.com/api/user/info?unique_id=elbellocubano7', {cache:'no-store'});
+    const j = await r.json();
+    if(j?.data?.user?.followerCount){
+      el.textContent = fmt(j.data.user.followerCount);
+      console.log('Directo TikWM:', j.data.user.followerCount);
+      return;
     }
-    if(typeof data.instagram === 'number'){
-      document.getElementById('ig-count').textContent = fmt(data.instagram);
+  }catch(e){ console.log('Directo TikWM fallo', e); }
+
+  // METODO 2: Fallback a tu API con anti-cache
+  try{
+    const r2 = await fetch('/api/followers?t=' + Date.now() + '&r=' + Math.random(), {cache:'no-store'});
+    const d = await r2.json();
+    if(d.tiktok){
+      el.textContent = fmt(d.tiktok);
+      console.log('Via API:', d.tiktok, 'source:', d.source);
     }
-    if(typeof data.tiktok === 'number'){
-      document.getElementById('tt-count').textContent = fmt(data.tiktok);
-      // Debug para ver que sí está contando 43,786
-      console.log('TikTok:', data.tiktok, 'source:', data.source, 'real:', data.real);
-    }
-  }catch(e){
-    console.log('API aún desplegando...', e);
-  }
+  }catch(e){ console.log('API fallo', e); }
 }
 
-// Carga inmediata y cada 5 segundos
-loadLive();
-setInterval(loadLive, 5000);
+// Cada 3 segundos como TokCounter
+loadLiveDirect();
+setInterval(loadLiveDirect, 3000);
 </script>
 
 </body>
