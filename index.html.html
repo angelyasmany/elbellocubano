@@ -86,36 +86,39 @@
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
 <script>
+// CONTADOR CADA 10 SEGUNDOS - No satura TikTok, no vuelve a 40,000
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
 
-async function loadLiveDirect(){
-  const el = document.getElementById('tt-count');
-  
-  // METODO 1: Directo desde tu navegador como hace TokCounter (no pasa por Vercel)
-  try{
-    const r = await fetch('https://www.tikwm.com/api/user/info?unique_id=elbellocubano7', {cache:'no-store'});
-    const j = await r.json();
-    if(j?.data?.user?.followerCount){
-      el.textContent = fmt(j.data.user.followerCount);
-      console.log('Directo TikWM:', j.data.user.followerCount);
-      return;
-    }
-  }catch(e){ console.log('Directo TikWM fallo', e); }
+let lastRealCount = 0;
 
-  // METODO 2: Fallback a tu API con anti-cache
+async function loadLive(){
   try{
-    const r2 = await fetch('/api/followers?t=' + Date.now() + '&r=' + Math.random(), {cache:'no-store'});
-    const d = await r2.json();
-    if(d.tiktok){
-      el.textContent = fmt(d.tiktok);
-      console.log('Via API:', d.tiktok, 'source:', d.source);
+    // Con t=Date.now() evitamos cache viejo de 40,000
+    const res = await fetch('/api/followers?t=' + Date.now(), {cache: 'no-store'});
+    const data = await res.json();
+    
+    if(data.facebook) document.getElementById('fb-count').textContent = fmt(data.facebook);
+    if(data.instagram) document.getElementById('ig-count').textContent = fmt(data.instagram);
+    
+    if(data.tiktok){
+      // Solo actualiza si es mayor que 40,000 - evita que vuelva a 40,000
+      if(data.tiktok >= 40000){
+        if(data.tiktok > lastRealCount || lastRealCount === 0){
+          document.getElementById('tt-count').textContent = fmt(data.tiktok);
+          lastRealCount = data.tiktok;
+        }
+        console.log('TikTok:', data.tiktok, 'fuente:', data.source, 'real:', data.isReal);
+      }
     }
-  }catch(e){ console.log('API fallo', e); }
+  }catch(e){
+    console.log('API esperando...', e);
+  }
 }
 
-// Cada 3 segundos como TokCounter
-loadLiveDirect();
-setInterval(loadLiveDirect, 3000);
+// Primera carga inmediata
+loadLive();
+// Cada 10 segundos como pediste
+setInterval(loadLive, 10000);
 </script>
 
 </body>
