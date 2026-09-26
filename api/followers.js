@@ -1,91 +1,93 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1200');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   const USERNAME = 'elbellocubano7';
   let followers = null;
   let source = '';
   let debug = [];
 
-  // FUENTE 1: TOKCOUNTER - la que me mandaste
+  // Cabeceras avanzadas para evitar bloqueos por bots en las peticiones HTTP
+  const browserHeaders = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+    'Sec-Ch-Ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    'Sec-Ch-Ua-Mobile': '?0',
+    'Sec-Ch-Ua-Platform': '"Windows"'
+  };
+
+  // FUENTE 1: TIKWM POST (Respaldo robusto de API externa pública)
   try {
-    const r = await fetch(`https://tokcounter.com/es?user=${USERNAME}`, {
-      headers: { 'User-Agent': 'Mozilla/5.0 Chrome/120.0.0.0', 'Accept': 'text/html' }
+    const r = await fetch('https://www.tikwm.com/api/user/info', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'User-Agent': browserHeaders['User-Agent']
+      },
+      body: JSON.stringify({ unique_id: USERNAME })
     });
     if (r.ok) {
-      const html = await r.text();
-      const patterns = [/"followerCount":(\d+)/g, /"followers":(\d+)/g, /followerCount":(\d+)/g];
-      for (const pat of patterns) {
-        for (const m of [...html.matchAll(pat)]) {
-          const v = parseInt(m[1],10);
-          if (v > 1000 && v < 10000000) { followers = v; source='tokcounter-page'; }
-        }
-        if (followers) break;
+      const j = await r.json();
+      const c = j?.data?.user?.followerCount;
+      if (c && typeof c === 'number') { 
+        followers = c; 
+        source = 'tikwm-post'; 
+        debug.push('tikwm ok:' + c); 
       }
-      if (followers) debug.push('tokcounter-page ok:'+followers);
     }
-  } catch(e){ debug.push('tokcounter-page fail'); }
+  } catch (e) { 
+    debug.push('tikwm fail'); 
+  }
 
-  // FUENTE 2: TIKTOK DIRECTO - endpoint publico que si permite scrape
+  // FUENTE 2: TOKCOUNTER (Scraping directo adaptado)
   if (!followers) {
     try {
-      // Este endpoint de TikTok web si devuelve el conteo real
+      const r = await fetch(`https://tokcounter.com/es?user=${USERNAME}`, {
+        headers: browserHeaders
+      });
+      if (r.ok) {
+        const html = await r.text();
+        const patterns = [/"followerCount":(\d+)/g, /"followers":(\d+)/g, /followerCount["']\s*:\s*(\d+)/g];
+        for (const pat of patterns) {
+          for (const m of [...html.matchAll(pat)]) {
+            const v = parseInt(m[1], 10);
+            if (v > 1000 && v < 10000000) { 
+              followers = v; 
+              source = 'tokcounter-page'; 
+            }
+          }
+          if (followers) break;
+        }
+        if (followers) debug.push('tokcounter-page ok:' + followers);
+      }
+    } catch (e) { 
+      debug.push('tokcounter-page fail'); 
+    }
+  }
+
+  // FUENTE 3: TIKTOK DIRECTO (Node Share de respaldo)
+  if (!followers) {
+    try {
       const r = await fetch(`https://www.tiktok.com/node/share/user/@${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0 Chrome/120.0.0.0' }
+        headers: browserHeaders
       });
       if (r.ok) {
         const j = await r.json();
         const c = j?.userData?.user?.followerCount || j?.body?.userData?.user?.followerCount || j?.user?.followerCount;
-        if (c) { followers=c; source='tiktok-node-share'; debug.push('tiktok-node ok:'+c); }
+        if (c && typeof c === 'number') { 
+          followers = c; 
+          source = 'tiktok-node-share'; 
+          debug.push('tiktok-node ok:' + c); 
+        }
       }
-    } catch(e){ debug.push('tiktok-node fail'); }
+    } catch (e) { 
+      debug.push('tiktok-node fail'); 
+    }
   }
 
-  // FUENTE 3: TIKWM POST - respaldo clasico
-  if (!followers) {
-    try {
-      const r = await fetch('https://www.tikwm.com/api/user/info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ unique_id: USERNAME })
-      });
-      if (r.ok) {
-        const j = await r.json();
-        const c = j?.data?.user?.followerCount;
-        if (c) { followers=c; source='tikwm-post'; debug.push('tikwm ok:'+c); }
-      }
-    } catch(e){ debug.push('tikwm fail'); }
-  }
-
-  // FUENTE 4: SOCIALCOUNTS / LIVECOUNTS - otras paginas que si dejan
-  if (!followers) {
-    try {
-      const r = await fetch(`https://socialcounts.org/api/tiktok/user/${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
-      if (r.ok) {
-        const j = await r.json();
-        if (j.followerCount) { followers=j.followerCount; source='socialcounts'; debug.push('socialcounts ok:'+followers); }
-      }
-    } catch(e){ debug.push('socialcounts fail'); }
-  }
-
-  // FUENTE 5: COUNTIK
-  if (!followers) {
-    try {
-      const r = await fetch(`https://countik.com/api/userinfo?username=${USERNAME}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
-      if (r.ok) {
-        const j = await r.json();
-        const c = j.followerCount || j.followers;
-        if (c) { followers=c; source='countik'; debug.push('countik ok:'+c); }
-      }
-    } catch(e){ debug.push('countik fail'); }
-  }
-
-  // Si ninguna funciona, NO usar 43700 viejo, usar null para que el frontend lo note y reintente
-  const FALLBACK = 43700; // solo para no mostrar 0, pero marcamos isReal=false
+  // Respaldo estricto por seguridad en caso de bloqueo masivo temporal
+  const FALLBACK = 43700; 
 
   return res.status(200).json({
     tiktok: followers || FALLBACK,
