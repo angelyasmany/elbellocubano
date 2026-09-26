@@ -139,31 +139,38 @@
 <footer style="margin-top:64px;border-top:1px solid rgba(228,228,231,.6);padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:11px;color:#a1a1aa;letter-spacing:.02em;text-align:center">© 2026 · Contenido orgánico y real · elbellocubano.vercel.app</div><a href="https://elbellocubano.vercel.app" style="font-size:10px;letter-spacing:.12em;color:#d4d4d8;text-decoration:none">elbellocubano.vercel.app</a></footer>
 <div style="background:#FFFEF9;padding-bottom:32px;display:flex;justify-content:center"><p style="font-size:10px;line-height:1.4;letter-spacing:.06em;color:rgba(212,212,216,.8);text-align:center;max-width:1180px">elbellocubano.vercel.app | Publicidad en Ica Lima | El Bello Cubano Oficial | el bello cubano Ica Lima Perú | cubanos en peru | @elbellocubano7 en TikTok</p></div>
 </div>
+
 <script>
 function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
-let lastTikWM=0;
-async function loadTikWM_Constante(){
-  try{
-    const r=await fetch('https://www.tikwm.com/api/user/info?unique_id=elbellocubano7',{cache:'no-store'});
-    const j=await r.json();
-    if(j?.data?.user?.followerCount){
-      document.getElementById('tt-count').textContent=fmt(j.data.user.followerCount);
-      lastTikWM=j.data.user.followerCount;
-    }
-  }catch(e){}
-}
-async function loadVercel_10min(){
+async function loadCounters(){
   try{
     const r=await fetch('/api/followers?t='+Date.now(),{cache:'no-store'});
     const d=await r.json();
-    if(d.tiktok && (d.tiktok>lastTikWM || lastTikWM===0)) document.getElementById('tt-count').textContent=fmt(d.tiktok);
+    console.log('API debug:', d.debug, 'source:', d.source);
+    if(d.tiktok){
+      const el=document.getElementById('tt-count');
+      if(el){
+        el.textContent=fmt(d.tiktok);
+        el.style.color = d.isReal ? '#18181b' : '#a1a1aa';
+        el.title = 'Fuente: '+d.source+' | '+d.updated_at;
+      }
+    }
     if(d.facebook) document.getElementById('fb-count').textContent=fmt(d.facebook);
     if(d.instagram) document.getElementById('ig-count').textContent=fmt(d.instagram);
-  }catch(e){}
+    
+    // Si es fallback, intentar de nuevo en 30 seg
+    if(!d.isReal){
+      setTimeout(loadCounters, 30000);
+    }
+  }catch(e){
+    console.error('Error API', e);
+    // Reintento en 15 seg si falla
+    setTimeout(loadCounters, 15000);
+  }
 }
-loadTikWM_Constante();loadVercel_10min();
-setInterval(loadTikWM_Constante,8000);
-setInterval(loadVercel_10min,600000);
+loadCounters();
+setInterval(loadCounters, 600000); // cada 10 min
 </script>
+
 </body>
 </html>
