@@ -87,15 +87,51 @@ export default async function handler(req, res) {
   }
 
   // Respaldo estricto por seguridad en caso de bloqueo masivo temporal
-  const FALLBACK = 43700; 
+  const FALLBACK = 43700;
+
+  // FACEBOOK + INSTAGRAM: Meta Graph API (requiere Página de FB vinculada a una
+  // cuenta de Instagram profesional, administrada por el dueño de la página).
+  // Configura estas variables de entorno en Vercel (Project Settings > Environment Variables):
+  //   META_PAGE_ID            -> id numérico de la página de Facebook
+  //   META_PAGE_ACCESS_TOKEN  -> token de acceso de página de larga duración
+  let facebook = 17000;
+  let instagram = 4500;
+  let metaSource = 'fallback';
+  const { META_PAGE_ID, META_PAGE_ACCESS_TOKEN } = process.env;
+
+  if (META_PAGE_ID && META_PAGE_ACCESS_TOKEN) {
+    try {
+      const fields = 'fan_count,followers_count,instagram_business_account{followers_count}';
+      const url = `https://graph.facebook.com/v19.0/${META_PAGE_ID}?fields=${fields}&access_token=${META_PAGE_ACCESS_TOKEN}`;
+      const r = await fetch(url);
+      const j = await r.json();
+      if (r.ok && !j.error) {
+        if (typeof j.followers_count === 'number') facebook = j.followers_count;
+        else if (typeof j.fan_count === 'number') facebook = j.fan_count;
+        if (typeof j.instagram_business_account?.followers_count === 'number') {
+          instagram = j.instagram_business_account.followers_count;
+        }
+        metaSource = 'graph-api';
+        debug.push('meta ok: fb=' + facebook + ' ig=' + instagram);
+      } else {
+        debug.push('meta fail: ' + (j.error?.message || r.status));
+      }
+    } catch (e) {
+      debug.push('meta fail: ' + e.message);
+    }
+  } else {
+    debug.push('meta skipped: missing env vars');
+  }
 
   return res.status(200).json({
     tiktok: followers || FALLBACK,
-    facebook: 17000,
-    instagram: 4500,
+    facebook,
+    instagram,
     username: USERNAME,
     source: source || 'fallback',
+    metaSource,
     isReal: followers !== null,
+    isRealMeta: metaSource === 'graph-api',
     debug,
     updated_at: new Date().toISOString()
   });
