@@ -166,30 +166,47 @@ PAGA UNA VEZ Y APARECE EN LAS TRES REDES SOCIALES
 
 <script>
 /* Actualiza únicamente el texto del contador de TikTok.
-   Consulta al abrir y cada tres minutos mientras la pestaña esté visible.
-   Requiere la nueva API /api/followers que consulta TokCounter. */
+   Consulta al abrir y cada 5 segundos mientras la pestaña esté visible.
+   Si una consulta sigue pendiente, no inicia otra simultáneamente. */
 (function () {
   var el = document.getElementById('tt-followers');
   if (!el) return;
+
   var busy = false;
   var lastAttempt = 0;
-  var interval = 180000;
+  var interval = 5000;
 
   async function updateFollowers() {
     if (busy || document.hidden) return;
+
     busy = true;
     lastAttempt = Date.now();
+
     var controller = new AbortController();
-    var timeout = setTimeout(function () { controller.abort(); }, 20000);
+    var timeout = setTimeout(function () {
+      controller.abort();
+    }, 20000);
+
     try {
-      var response = await fetch('/api/followers', { signal: controller.signal });
-      if (!response.ok) throw new Error('No se pudo consultar el contador');
+      var response = await fetch('/api/followers', {
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo consultar el contador');
+      }
+
       var data = await response.json();
-      if (data.consulta_ok === true && Number.isSafeInteger(data.tiktok) && data.tiktok >= 0) {
+
+      if (
+        data.consulta_ok === true &&
+        Number.isSafeInteger(data.tiktok) &&
+        data.tiktok >= 0
+      ) {
         el.textContent = data.tiktok.toLocaleString('es-PE');
       }
     } catch (error) {
-      // Conserva el número visible. No agrega elementos ni modifica el diseño.
+      // Conserva el número visible si falla la consulta.
       console.warn('No se pudo actualizar TikTok; se conserva el número visible.');
     } finally {
       clearTimeout(timeout);
@@ -199,8 +216,11 @@ PAGA UNA VEZ Y APARECE EN LAS TRES REDES SOCIALES
 
   updateFollowers();
   setInterval(updateFollowers, interval);
+
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden && Date.now() - lastAttempt >= interval) updateFollowers();
+    if (!document.hidden && Date.now() - lastAttempt >= interval) {
+      updateFollowers();
+    }
   });
 })();
 </script>
