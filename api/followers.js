@@ -1,10 +1,34 @@
 const USERNAME = 'elbellocubano7';
 const BASE = 'https://tiktok-api.tokcounter.com';
 
+// Misma transformación del JavaScript público de TokCounter.
+// Se aplica una vez al dato recibido; no se acumula.
+function tokCounterDisplay(count) {
+  if (count >= 10050 && count <= 1049000) {
+    return count + 50;
+  }
+
+  if (count >= 1050000 && count <= 0x5fd821f) {
+    return count + 50000;
+  }
+
+  if (count >= 100500000 && count <= 0x3e95ba7f) {
+    return count + 50000;
+  }
+
+  if (count >= 1050000000) {
+    return count + 50000000;
+  }
+
+  return count;
+}
+
 async function getJSON(path, signal) {
   const response = await fetch(BASE + path, {
     signal,
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+    },
   });
 
   if (!response.ok) {
@@ -31,7 +55,8 @@ export default async function handler(req, res) {
     );
 
     if (
-      profile.id?.toLowerCase() !== USERNAME ||
+      typeof profile.id !== 'string' ||
+      profile.id.toLowerCase() !== USERNAME ||
       !/^\d+$/.test(String(profile.userId))
     ) {
       throw new Error('La fuente no confirmó la cuenta solicitada');
@@ -54,21 +79,20 @@ export default async function handler(req, res) {
       throw new Error('Contador inválido');
     }
 
-    // Reutiliza la respuesta durante 60 segundos entre visitantes.
     res.setHeader(
       'Cache-Control',
       'public, max-age=0, s-maxage=60'
     );
 
     return res.status(200).json({
-      tiktok: count,
+      tiktok: tokCounterDisplay(count),
       fuente: 'TokCounter',
       cuenta: USERNAME,
       consulta_ok: true,
       fuente_cache: stats.cache === true,
       updated_at: new Date().toISOString(),
       nota:
-        'Hora de consulta; la fuente no indica la hora de medición en TikTok.',
+        'Dato con la transformación de TokCounter. Hora de consulta, no de medición en TikTok.',
     });
   } catch (error) {
     res.setHeader('Cache-Control', 'no-store');
