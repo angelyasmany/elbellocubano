@@ -39,29 +39,62 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .whatsapp-btn:active{transform:scale(0.98)}
 #btn-premium:hover{background:#2E7D32 !important;color:#fff !important;transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,125,50,0.25)}
 </style>
-
+   
 <script>
-/* Consulta el contador al cargar y cada 5 segundos.
-   Solo actualiza el número de TikTok.
-   Evita consultas simultáneas y pausa cuando la pestaña está oculta. */
 document.addEventListener('DOMContentLoaded', function () {
-  var contador = document.getElementById('tt-followers');
+  const contador = document.getElementById('tt-followers');
   if (!contador) return;
 
-  var consultando = false;
-  var intervalo = 5000;
+  let consultando = false;
+  let primeraConsulta = true;
+  const formato = new Intl.NumberFormat('en-US');
+
+  // Conserva el valor original por si falla la primera consulta.
+  const valorOriginal = contador.textContent;
+  contador.textContent = '0';
+
+  function animarContador(valorFinal) {
+    const movimientoReducido = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    if (movimientoReducido) {
+      contador.textContent = formato.format(valorFinal);
+      return;
+    }
+
+    const duracion = 2200;
+    const inicio = performance.now();
+
+    function avanzar(ahora) {
+      const progreso = Math.min((ahora - inicio) / duracion, 1);
+
+      // Empieza rápido y termina suavemente.
+      const suavizado = 1 - Math.pow(1 - progreso, 3);
+      const valor = Math.floor(valorFinal * suavizado);
+
+      contador.textContent = formato.format(valor);
+
+      if (progreso < 1) {
+        requestAnimationFrame(avanzar);
+      }
+    }
+
+    requestAnimationFrame(avanzar);
+  }
 
   async function actualizarContador() {
     if (consultando || document.hidden) return;
-    consultando = true;
 
-    var controlador = new AbortController();
-    var tiempoLimite = setTimeout(function () {
-      controlador.abort();
-    }, 20000);
+    consultando = true;
+    const controlador = new AbortController();
+    const tiempoLimite = setTimeout(
+      () => controlador.abort(),
+      20000
+    );
 
     try {
-      var respuesta = await fetch('/api/followers', {
+      const respuesta = await fetch('/api/followers', {
         cache: 'no-store',
         signal: controlador.signal
       });
@@ -70,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('HTTP ' + respuesta.status);
       }
 
-      var datos = await respuesta.json();
+      const datos = await respuesta.json();
 
       if (
         datos.consulta_ok !== true ||
@@ -80,24 +113,36 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('Respuesta del contador no válida');
       }
 
-      contador.textContent = datos.tiktok.toLocaleString('en-US');
+      if (primeraConsulta) {
+        primeraConsulta = false;
+        animarContador(datos.tiktok);
+      } else {
+        contador.textContent = formato.format(datos.tiktok);
+      }
     } catch (error) {
-      // Si falla, conserva el último número mostrado.
+      if (primeraConsulta) {
+        contador.textContent = valorOriginal;
+      }
       console.warn('No se pudo actualizar el contador:', error);
     } finally {
       clearTimeout(tiempoLimite);
       consultando = false;
+
+      // Espera cinco segundos antes de la siguiente consulta.
+      setTimeout(actualizarContador, 5000);
     }
   }
 
   actualizarContador();
-  setInterval(actualizarContador, intervalo);
 
+  // Si la pestaña está oculta, comprueba cuándo vuelve a estar visible.
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) actualizarContador();
+    if (!document.hidden && !consultando) {
+      // El ciclo programado continúa por sí solo.
+    }
   });
 });
-</script>
+</script> 
 </head>
 
 <body>
