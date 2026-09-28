@@ -165,19 +165,43 @@ PAGA UNA VEZ Y APARECE EN LAS TRES REDES SOCIALES
 </div>
 
 <script>
-/* Solo TikTok se actualiza solo. Facebook e Instagram son fijos: se editan
-   a mano aquí arriba cuando haga falta. Si la petición falla, se queda el
-   número que ya está en el HTML. */
+/* Actualiza únicamente el texto del contador de TikTok.
+   Consulta al abrir y cada tres minutos mientras la pestaña esté visible.
+   Requiere la nueva API /api/followers que consulta TokCounter. */
 (function () {
-  fetch('/api/followers')
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var el = document.getElementById('tt-followers');
-      if (el && typeof data.tiktok === 'number') {
+  var el = document.getElementById('tt-followers');
+  if (!el) return;
+  var busy = false;
+  var lastAttempt = 0;
+  var interval = 180000;
+
+  async function updateFollowers() {
+    if (busy || document.hidden) return;
+    busy = true;
+    lastAttempt = Date.now();
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 20000);
+    try {
+      var response = await fetch('/api/followers', { signal: controller.signal });
+      if (!response.ok) throw new Error('No se pudo consultar el contador');
+      var data = await response.json();
+      if (data.consulta_ok === true && Number.isSafeInteger(data.tiktok) && data.tiktok >= 0) {
         el.textContent = data.tiktok.toLocaleString('es-PE');
       }
-    })
-    .catch(function () {});
+    } catch (error) {
+      // Conserva el número visible. No agrega elementos ni modifica el diseño.
+      console.warn('No se pudo actualizar TikTok; se conserva el número visible.');
+    } finally {
+      clearTimeout(timeout);
+      busy = false;
+    }
+  }
+
+  updateFollowers();
+  setInterval(updateFollowers, interval);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && Date.now() - lastAttempt >= interval) updateFollowers();
+  });
 })();
 </script>
 
