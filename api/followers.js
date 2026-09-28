@@ -1,7 +1,7 @@
 const USERNAME = 'elbellocubano7';
 const BASE = 'https://tiktok-api.tokcounter.com';
 
-// Misma transformación del JavaScript público de TokCounter.
+// Conserva la transformación de la versión que ya te funciona.
 // Se aplica una vez al dato recibido; no se acumula.
 function tokCounterDisplay(count) {
   if (count >= 10050 && count <= 1049000) {
@@ -79,9 +79,11 @@ export default async function handler(req, res) {
       throw new Error('Contador inválido');
     }
 
+    // El navegador no conserva una respuesta como fresca.
+    // La caché compartida puede reutilizarla durante 5 segundos.
     res.setHeader(
       'Cache-Control',
-      'public, max-age=0, s-maxage=60'
+      'public, max-age=0, s-maxage=5'
     );
 
     return res.status(200).json({
