@@ -1,38 +1,10 @@
 const USERNAME = 'elbellocubano7';
 const BASE = 'https://tiktok-api.tokcounter.com';
 
-function embedURL(platform) {
-  const url = new URL(
-    `https://livecounts.nl/${platform}-realtime/embed/`
-  );
-
-  url.searchParams.set('u', 'elbellocubano');
-  url.searchParams.set('look', 'clear');
-  url.searchParams.set('hide', 'avatar,name,check,label,goal,logo');
-  url.searchParams.set('tc', '18181b');
-  url.searchParams.set('cc', '18181b');
-  url.searchParams.set('cw', '800');
-  url.searchParams.set('sp', '0.1');
-  url.searchParams.set('ts', 'comma');
-
-  if (platform === 'instagram') {
-    url.searchParams.set('theme', 'transparent');
-    url.searchParams.set('size', 'm');
-    url.searchParams.set('loc', 'es-ES');
-  }
-
-  return url.toString();
-}
-
-// Son enlaces de los visores autorizados.
-// Esta API no consulta la API privada de Livecounts.
-const embeds = {
-  facebook: embedURL('facebook'),
-  instagram: embedURL('instagram')
-};
-
-// Conserva la transformación de tu versión anterior.
-// No representa un aumento acumulativo de seguidores.
+/*
+  Conservamos la misma transformación que ya estabas usando,
+  porque me indicaste que TikTok te está contando bien con esta versión.
+*/
 function tokCounterDisplay(count) {
   if (count >= 10050 && count <= 1049000) {
     return count + 50;
@@ -75,16 +47,6 @@ async function getJSON(path, signal) {
 }
 
 export default async function handler(req, res) {
-  // Permite obtener los visores sin esperar la consulta de TikTok.
-  if (req.query?.view === 'embeds') {
-    res.setHeader(
-      'Cache-Control',
-      'public, max-age=300, s-maxage=3600'
-    );
-
-    return res.status(200).json({ embeds });
-  }
-
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
 
@@ -121,7 +83,7 @@ export default async function handler(req, res) {
 
     res.setHeader(
       'Cache-Control',
-      'public, max-age=0, s-maxage=5'
+      'public, max-age=0, s-maxage=5, stale-while-revalidate=10'
     );
 
     return res.status(200).json({
@@ -130,10 +92,9 @@ export default async function handler(req, res) {
       cuenta: USERNAME,
       consulta_ok: true,
       fuente_cache: stats.cache === true,
-      embeds,
       updated_at: new Date().toISOString(),
       nota:
-        'Dato con la transformación de TokCounter. Hora de consulta, no de medición en TikTok.'
+        'Dato con la misma transformación de TokCounter que ya utilizabas.'
     });
   } catch (error) {
     res.setHeader('Cache-Control', 'no-store');
@@ -141,7 +102,6 @@ export default async function handler(req, res) {
     return res.status(502).json({
       tiktok: null,
       consulta_ok: false,
-      embeds,
       updated_at: null,
       nota:
         error.name === 'AbortError'
