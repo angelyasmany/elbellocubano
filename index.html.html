@@ -21,6 +21,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://livecounts.nl">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -39,49 +40,86 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .whatsapp-btn:active{transform:scale(0.98)}
 #btn-premium:hover{background:#2E7D32 !important;color:#fff !important;transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,125,50,0.25)}
 
-.facebook-widget{
+.social-card{
+  min-width:0;
+  border-radius:16px;
+  padding:12px 6px;
+  background:#f5f5f5;
+  border:1px solid rgba(228,228,231,.7);
+}
+.social-card-embed{cursor:default}
+.social-title{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  align-items:center;
+}
+.social-title span{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+.social-number-space{
+  height:38px;
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.counter-widget{
   position:relative;
   width:100%;
-  aspect-ratio:300 / 80;
-  margin-top:10px;
+  max-width:150px;
+  height:40px;
   overflow:hidden;
 }
-.facebook-widget iframe{
+.counter-widget iframe{
   position:absolute;
   top:0;
-  left:0;
+  left:50%;
   width:300px;
   height:80px;
   border:0;
-  transform:scale(var(--facebook-scale,.3));
-  transform-origin:top left;
+  transform:translateX(-50%) scale(.5);
+  transform-origin:top center;
+}
+.profile-link{
+  margin-top:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  border-radius:9999px;
+  background:#fff;
+  border:1px solid #e4e4e7;
+  padding:2px 6px;
+  color:inherit;
+  text-decoration:none;
+}
+.profile-dot{
+  position:relative;
+  width:5px;
+  height:5px;
+  border-radius:9999px;
+  background:#10b981;
+  display:inline-block;
+}
+.profile-dot span{
+  position:absolute;
+  inset:0;
+  border-radius:9999px;
+  background:#10b981;
+  animation:pulseLive 1.6s infinite;
+}
+.profile-label{
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:.05em;
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // Ajusta el widget completo de Facebook al ancho de su tarjeta.
-  // No lee ni modifica el contenido interno de Livecounts.
-  const widgetFacebook = document.getElementById('facebook-widget');
-
-  if (widgetFacebook) {
-    function ajustarFacebook() {
-      widgetFacebook.style.setProperty(
-        '--facebook-scale',
-        String(widgetFacebook.clientWidth / 300)
-      );
-    }
-
-    ajustarFacebook();
-
-    if ('ResizeObserver' in window) {
-      const observador = new ResizeObserver(ajustarFacebook);
-      observador.observe(widgetFacebook);
-    } else {
-      window.addEventListener('resize', ajustarFacebook);
-    }
-  }
-
   const contador = document.getElementById('tt-followers');
   if (!contador) return;
 
@@ -115,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function avanzar(ahora) {
       const progreso = Math.min((ahora - inicio) / duracion, 1);
       const suavizado = 1 - Math.pow(1 - progreso, 3);
+
       contador.textContent = formato.format(
         Math.floor(valorFinal * suavizado)
       );
@@ -134,11 +173,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (consultando || document.hidden) return;
 
     consultando = true;
+
     const controlador = new AbortController();
-    const tiempoLimite = setTimeout(
-      () => controlador.abort(),
-      20000
-    );
+    const tiempoLimite = setTimeout(function () {
+      controlador.abort();
+    }, 20000);
 
     try {
       const respuesta = await fetch('/api/followers', {
@@ -173,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (primeraConsulta) {
         contador.textContent = valorOriginal;
       }
-      console.warn('No se pudo actualizar el contador:', error);
+      console.warn('No se pudo actualizar TikTok:', error);
     } finally {
       clearTimeout(tiempoLimite);
       consultando = false;
@@ -181,13 +220,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   actualizarContador();
-
-  // Intenta consultar cada 5 segundos sin superponer solicitudes.
   setInterval(actualizarContador, 5000);
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       detenerAnimacion();
+
       if (ultimoValor !== null) {
         contador.textContent = formato.format(ultimoValor);
       }
@@ -231,69 +269,80 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 
-  <div style="margin-top:28px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:500px">
+  <div style="margin-top:28px;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:500px">
 
-    <div class="card" style="min-width:0;border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7);cursor:default">
-      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+    <div class="card social-card social-card-embed">
+      <div class="social-title">
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;color:#1877F2;flex-shrink:0">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
         </svg>
-        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">FACEBOOK</span>
+        <span>FACEBOOK</span>
       </div>
 
-      <div id="facebook-widget" class="facebook-widget">
-        <iframe
-          src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano"
-          width="300"
-          height="80"
-          scrolling="no"
-          title="Contador de seguidores de Facebook de El Bello Cubano"
-          loading="eager">
-        </iframe>
+      <div class="social-number-space">
+        <div class="counter-widget">
+          <iframe
+            src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tc=18181b&amp;cc=18181b&amp;cw=800&amp;sp=0.1&amp;ts=comma"
+            width="300"
+            height="80"
+            title="Contador de seguidores de Facebook"
+            scrolling="no"
+            loading="eager">
+          </iframe>
+        </div>
       </div>
 
-      <div style="font-size:11px;color:#71717a;font-weight:500;margin-top:2px">seguidores</div>
-      <a href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px;color:inherit;text-decoration:none">
-        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
-          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
-        </span>
-        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
+      <a class="profile-link" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer">
+        <span class="profile-dot"><span></span></span>
+        <span class="profile-label">VER PERFIL</span>
       </a>
     </div>
 
-    <a class="card" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">
-      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+    <div class="card social-card social-card-embed">
+      <div class="social-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:14px;height:14px;color:#d62976;flex-shrink:0">
           <rect x="2" y="2" width="20" height="20" rx="5"/>
           <circle cx="12" cy="12" r="4"/>
           <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
         </svg>
-        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">INSTAGRAM</span>
+        <span>INSTAGRAM</span>
       </div>
-      <div style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">4,500</div>
-      <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
-      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">
-        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
-          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
-        </span>
-        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
-      </div>
-    </a>
 
-    <a class="card" href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">
-      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+      <div class="social-number-space">
+        <div class="counter-widget">
+          <iframe
+            src="https://livecounts.nl/instagram-realtime/embed/?u=elbellocubano&amp;theme=transparent&amp;size=m&amp;loc=es-ES&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tc=18181b&amp;cc=18181b&amp;cw=800&amp;sp=0.1&amp;ts=comma"
+            width="300"
+            height="80"
+            title="Contador de seguidores de Instagram"
+            scrolling="no"
+            loading="eager">
+          </iframe>
+        </div>
+      </div>
+
+      <a class="profile-link" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer">
+        <span class="profile-dot"><span></span></span>
+        <span class="profile-label">VER PERFIL</span>
+      </a>
+    </div>
+
+    <a class="card social-card" href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer">
+      <div class="social-title">
         <svg viewBox="0 0 24 24" fill="currentColor" class="tiktok-icon" style="width:14px;height:14px;flex-shrink:0">
           <path d="M19.59 6.69a4.83 4.83 0 01-3.77-1.77 5.23 5.23 0 01-.93-2.92h-3.6v12.16a2.66 2.66 0 01-2.66 2.66 2.66 2.66 0 01-2.66-2.66 2.66 2.66 0 012.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 00-.7-.04 6.26 6.26 0 00-6.26 6.26 6.26 6.26 0 006.26 6.26 6.26 6.26 0 006.26-6.26V8.8a8.4 8.4 0 004.7 1.44V6.69z"/>
         </svg>
-        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">TIKTOK</span>
+        <span>TIKTOK</span>
       </div>
-      <div id="tt-followers" style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">43,800</div>
-      <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
-      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">
-        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
-          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
-        </span>
-        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
+
+      <div class="social-number-space">
+        <div id="tt-followers" style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">43,800</div>
+        <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
+      </div>
+
+      <div class="profile-link">
+        <span class="profile-dot"><span></span></span>
+        <span class="profile-label">VER PERFIL</span>
       </div>
     </a>
 
@@ -501,3 +550,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </body>
 </html>
+```
