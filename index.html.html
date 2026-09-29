@@ -1,394 +1,503 @@
-<!DOCTYPE html>  <html lang="es">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<title>El Bello Cubano | Cubanos en Perú - elbellocubano7</title>  
-<meta name="description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">  
-<link rel="icon" href="/bello.jpg">  <meta property="og:type" content="website">  
-<meta property="og:locale" content="es_PE">  
-<meta property="og:site_name" content="El Bello Cubano">  
-<meta property="og:url" content="https://elbellocubano.vercel.app/">  
-<meta property="og:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">  
-<meta property="og:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">  
-<meta property="og:image" content="https://elbellocubano.vercel.app/bello.jpg">  
-<meta name="twitter:card" content="summary">  
-<meta name="twitter:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">  
-<meta name="twitter:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">  
-<meta name="twitter:image" content="https://elbellocubano.vercel.app/bello.jpg">  <link rel="preconnect" href="https://fonts.googleapis.com">  
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">  <style>  
-*{box-sizing:border-box}  
-body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}  
-.font-display{font-family:"Plus Jakarta Sans",system-ui,sans-serif}  
-@keyframes pulseLive{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.55}}  
-.bello-flow{background:linear-gradient(90deg,#f59e0b 0%,#facc15 50%,#eab308 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 22px rgba(250,204,21,.38);display:inline-block}  
-.card{border-radius:26px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7);padding:24px;text-align:center;display:block;text-decoration:none;color:inherit;transition:all .2s;cursor:pointer}  
-.card:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#d4d4d8}  
-.tiktok-icon{filter:drop-shadow(1px 0 0 #25F4EE) drop-shadow(-1px 0 0 #FE2C55)}  
-.promo{border-radius:26px;background:#fff;border:2.5px solid #18181b;padding:24px;display:flex;flex-direction:column;position:relative;box-shadow:0 8px 24px rgba(0,0,0,.06)}  
-.promo-featured{border-radius:28px;background:#FFFEF9;border:2px solid #18181b;padding:24px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.06)}  
-.whatsapp-btn{transition:all .2s ease;background:#fff;border:1px solid #e4e4e7;color:#18181b}  
-.whatsapp-btn:hover{background:#f0fdf4;border-color:#bbf7d0;box-shadow:0 6px 18px rgba(34,197,94,0.15);transform:translateY(-1px)}  
-.whatsapp-btn:active{transform:scale(0.98)}  
-#btn-premium:hover{background:#2E7D32 !important;color:#fff !important;transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,125,50,0.25)}  
-</style>  <script>  
-document.addEventListener('DOMContentLoaded', function () {  
-  const contador = document.getElementById('tt-followers');  
-  if (!contador) return;  
-  
-  let consultando = false;  
-  let primeraConsulta = true;  
-  const formato = new Intl.NumberFormat('en-US');  
-  
-  // Conserva el valor original por si falla la primera consulta.  
-  const valorOriginal = contador.textContent;  
-  contador.textContent = '0';  
-  
-  function animarContador(valorFinal) {  
-    const movimientoReducido = window.matchMedia(  
-      '(prefers-reduced-motion: reduce)'  
-    ).matches;  
-  
-    if (movimientoReducido) {  
-      contador.textContent = formato.format(valorFinal);  
-      return;  
-    }  
-  
-    const duracion = 2200;  
-    const inicio = performance.now();  
-  
-    function avanzar(ahora) {  
-      const progreso = Math.min((ahora - inicio) / duracion, 1);  
-  
-      // Empieza rápido y termina suavemente.  
-      const suavizado = 1 - Math.pow(1 - progreso, 3);  
-      const valor = Math.floor(valorFinal * suavizado);  
-  
-      contador.textContent = formato.format(valor);  
-  
-      if (progreso < 1) {  
-        requestAnimationFrame(avanzar);  
-      }  
-    }  
-  
-    requestAnimationFrame(avanzar);  
-  }  
-  
-  async function actualizarContador() {  
-    if (consultando || document.hidden) return;  
-  
-    consultando = true;  
-    const controlador = new AbortController();  
-    const tiempoLimite = setTimeout(  
-      () => controlador.abort(),  
-      20000  
-    );  
-  
-    try {  
-      const respuesta = await fetch('/api/followers', {  
-        cache: 'no-store',  
-        signal: controlador.signal  
-      });  
-  
-      if (!respuesta.ok) {  
-        throw new Error('HTTP ' + respuesta.status);  
-      }  
-  
-      const datos = await respuesta.json();  
-  
-      if (  
-        datos.consulta_ok !== true ||  
-        !Number.isSafeInteger(datos.tiktok) ||  
-        datos.tiktok < 0  
-      ) {  
-        throw new Error('Respuesta del contador no válida');  
-      }  
-  
-      if (primeraConsulta) {  
-        primeraConsulta = false;  
-        animarContador(datos.tiktok);  
-      } else {  
-        contador.textContent = formato.format(datos.tiktok);  
-      }  
-    } catch (error) {  
-      if (primeraConsulta) {  
-        contador.textContent = valorOriginal;  
-      }  
-      console.warn('No se pudo actualizar el contador:', error);  
-    } finally {  
-      clearTimeout(tiempoLimite);  
-      consultando = false;  
-  
-      // Espera cinco segundos antes de la siguiente consulta.  
-      setTimeout(actualizarContador, 5000);  
-    }  
-  }  
-  
-  actualizarContador();  
-  
-  // Si la pestaña está oculta, comprueba cuándo vuelve a estar visible.  
-  document.addEventListener('visibilitychange', function () {  
-    if (!document.hidden && !consultando) {  
-      // El ciclo programado continúa por sí solo.  
-    }  
-  });  
-});  
-</script>   </head>  <body>  
-<div style="max-width:1180px;margin:0 auto;padding:0 24px;">  <header style="padding-top:20px;display:flex;justify-content:space-between;align-items:center">  
-  <div style="display:flex;gap:12px;align-items:center">  
-    <img src="/bello.jpg" style="width:36px;height:36px;border-radius:9999px;object-fit:cover;border:1px solid #e4e4e7" alt="El Bello Cubano">  
-    <div style="line-height:1.05">  
-      <div style="font-family:'Plus Jakarta Sans';font-weight:800">El Bello Cubano</div>  
-      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#71717a;font-weight:700">Ica · Perú</div>  
-    </div>  
-  </div>  
-  <a href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20promocionar%20mi%20negocio" target="_blank" style="background:#18181b;color:#fff;padding:10px 20px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;gap:8px;align-items:center">  
-    <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block"></span>  
-    Escríbeme  
-  </a>  
-</header>  <section style="margin-top:56px;display:flex;flex-direction:column;align-items:center;text-align:center">  
-  <h1 style="font-family:'Plus Jakarta Sans';font-weight:800;letter-spacing:-.04em;line-height:.92;font-size:clamp(32px,5vw,44px);margin:0">  
-    <span style="display:block;color:#18181b">Promociona tu negocio</span>  
-    <span style="display:block;margin-top:4px">  
-      <span class="bello-flow">con el Bello Cubano</span>  
-    </span>  
-  </h1>    <div style="margin-top:20px;display:flex;justify-content:center">  
-    <div style="background:#18181b;color:#fff;border-radius:9999px;padding:12px 24px;display:inline-flex;align-items:center;gap:8px;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-align:center;line-height:1.3;box-shadow:0 4px 14px rgba(0,0,0,.15)">  
-      <span style="width:8px;height:8px;border-radius:9999px;background:#facc15;display:inline-block;flex-shrink:0"></span>  
-      PAGA UNA VEZ Y APARECE EN LAS TRES REDES SOCIALES  
-    </div>  
-  </div>    <div style="margin-top:28px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:500px">  <a class="card" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">  
-  <div style="display:flex;justify-content:center;gap:6px;align-items:center">  
-    <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;color:#1877F2;flex-shrink:0">  
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>  
-    </svg>  
-    <span style="font-size:10px;font-weight:700;letter-spacing:.12em">FACEBOOK</span>  
-  </div>  
-  <div style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">17,000</div>  
-  <div style="font-size:11px;color:#71717a;font-weight:500;margin-top:2px">seguidores</div>  
-  <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">  
-    <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">  
-      <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>  
-    </span>  
-    <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>  
-  </div>  
-</a>  
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Bello Cubano | Cubanos en Perú - elbellocubano7</title>
+<meta name="description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<link rel="icon" href="/bello.jpg">
 
-<a class="card" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">  
-  <div style="display:flex;justify-content:center;gap:6px;align-items:center">  
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:14px;height:14px;color:#d62976;flex-shrink:0">  
-      <rect x="2" y="2" width="20" height="20" rx="5"/>  
-      <circle cx="12" cy="12" r="4"/>  
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>  
-    </svg>  
-    <span style="font-size:10px;font-weight:700;letter-spacing:.12em">INSTAGRAM</span>  
-  </div>  
-  <div style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">4,500</div>  
-  <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>  
-  <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">  
-    <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">  
-      <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>  
-    </span>  
-    <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>  
-  </div>  
-</a>  
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_PE">
+<meta property="og:site_name" content="El Bello Cubano">
+<meta property="og:url" content="https://elbellocubano.vercel.app/">
+<meta property="og:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">
+<meta property="og:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<meta property="og:image" content="https://elbellocubano.vercel.app/bello.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">
+<meta name="twitter:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<meta name="twitter:image" content="https://elbellocubano.vercel.app/bello.jpg">
 
-<a class="card" href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">  
-  <div style="display:flex;justify-content:center;gap:6px;align-items:center">  
-    <svg viewBox="0 0 24 24" fill="currentColor" class="tiktok-icon" style="width:14px;height:14px;flex-shrink:0">  
-      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-1.77 5.23 5.23 0 01-.93-2.92h-3.6v12.16a2.66 2.66 0 01-2.66 2.66 2.66 2.66 0 01-2.66-2.66 2.66 2.66 0 012.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 00-.7-.04 6.26 6.26 0 00-6.26 6.26 6.26 6.26 0 006.26 6.26 6.26 6.26 0 006.26-6.26V8.8a8.4 8.4 0 004.7 1.44V6.69z"/>  
-    </svg>  
-    <span style="font-size:10px;font-weight:700;letter-spacing:.12em">TIKTOK</span>  
-  </div>  
-  <div id="tt-followers" style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">43,800</div>  
-  <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>  
-  <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">  
-    <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">  
-      <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>  
-    </span>  
-    <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>  
-  </div>  
-</a>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  </div>  
-</section>  <section style="margin-top:64px;max-width:1020px;margin-left:auto;margin-right:auto">  
-  <div style="text-align:center">  
-    <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:30px;margin:0">Elija su promoción</h2>  
-    <p style="font-size:13px;color:#71717a;margin:8px 0 0;letter-spacing:.02em">Contenido real 100% orgánico</p>  
-  </div>    <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">  <div class="promo">  
-  <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Estándar</h3>  
-  <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">🎥</span>  
-      <span>  
-        <b style="font-weight:900">1 video de 30 a 50 seg</b>  
-        <span style="display:inline-block;background:#f4f4f5;border:1px solid #d4d4d8;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:800;color:#71717a;text-decoration:line-through;text-decoration-thickness:1.5px">FIJADO POR 3 DÍAS</span>  
-      </span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">📸</span>  
-      <span><b>1 foto</b> en su local o con su producto</span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">✨</span>  
-      <span><b>Mención en historias por 1 día</b></span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:0">  
-      <span style="font-size:16px">💬</span>  
-      <span><b>Link directo a su WhatsApp</b></span>  
-    </li>  
-  </ul>  
-  <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">  
-    <div style="text-align:center">  
-      <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>  
-      <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 150</div>  
-    </div>  
-    <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Estandar%20S/150" target="_blank" class="whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>  
-  </div>  
-</div>  
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.font-display{font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+@keyframes pulseLive{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.55}}
+.bello-flow{background:linear-gradient(90deg,#f59e0b 0%,#facc15 50%,#eab308 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 22px rgba(250,204,21,.38);display:inline-block}
+.card{border-radius:26px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7);padding:24px;text-align:center;display:block;text-decoration:none;color:inherit;transition:all .2s;cursor:pointer}
+.card:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#d4d4d8}
+.tiktok-icon{filter:drop-shadow(1px 0 0 #25F4EE) drop-shadow(-1px 0 0 #FE2C55)}
+.promo{border-radius:26px;background:#fff;border:2.5px solid #18181b;padding:24px;display:flex;flex-direction:column;position:relative;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.promo-featured{border-radius:28px;background:#FFFEF9;border:2px solid #18181b;padding:24px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.whatsapp-btn{transition:all .2s ease;background:#fff;border:1px solid #e4e4e7;color:#18181b}
+.whatsapp-btn:hover{background:#f0fdf4;border-color:#bbf7d0;box-shadow:0 6px 18px rgba(34,197,94,0.15);transform:translateY(-1px)}
+.whatsapp-btn:active{transform:scale(0.98)}
+#btn-premium:hover{background:#2E7D32 !important;color:#fff !important;transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,125,50,0.25)}
 
-<div class="promo" style="border:1.5px solid #18181b;box-shadow:0 8px 24px rgba(0,0,0,.06)">  
-  <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#18181b;color:#fff;border-radius:9999px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:.1em">MÁS PEDIDA</div>  
-  <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:12px 0 16px">Promo Premium</h3>  
-  <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">🎥</span>  
-      <span>  
-        <b style="font-weight:900">2 videos de 30 a 50 seg</b>  
-        <span style="display:inline-block;background:#FEF9C3;border:1px solid #fde68a;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:800">FIJADO POR 3 DÍAS</span>  
-      </span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">📸</span>  
-      <span><b>1 foto</b> en su local o con su producto</span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">✨</span>  
-      <span><b>Mención en historias por 2 días</b></span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:0">  
-      <span style="font-size:16px">💬</span>  
-      <span><b>Link directo a su WhatsApp</b></span>  
-    </li>  
-  </ul>  
-  <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">  
-    <div style="text-align:center">  
-      <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>  
-      <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 220</div>  
-    </div>  
-    <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Premium%20S/220" target="_blank" id="btn-premium" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px;background:#18181b;color:#fff;transition:all .22s ease">Pedir por WhatsApp</a>  
-  </div>  
-</div>  
+.facebook-widget{
+  position:relative;
+  width:100%;
+  aspect-ratio:300 / 80;
+  margin-top:10px;
+  overflow:hidden;
+}
+.facebook-widget iframe{
+  position:absolute;
+  top:0;
+  left:0;
+  width:300px;
+  height:80px;
+  border:0;
+  transform:scale(var(--facebook-scale,.3));
+  transform-origin:top left;
+}
+</style>
 
-<div class="promo-featured">  
-  <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Full</h3>  
-  <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="position:relative;display:inline-flex;width:14px;height:14px;margin-top:2px">  
-        <span style="position:absolute;inset:0;border-radius:9999px;background:#ef4444;animation:pulseLive 1.6s infinite"></span>  
-        <span style="position:relative;width:14px;height:14px;border-radius:9999px;background:#ef4444;display:inline-block"></span>  
-      </span>  
-      <span><b>Live en TikTok 30-40 min</b> desde su local</span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">🎥</span>  
-      <span>  
-        <b style="font-weight:900">2 videos de 30 a 50 seg</b>  
-        <span style="display:inline-block;background:#FEF9C3;border:1px solid #fde68a;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:800">FIJADO POR 7 DÍAS</span>  
-      </span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">📸</span>  
-      <span><b>1 foto</b> en su local o con su producto</span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:12px">  
-      <span style="font-size:16px">✨</span>  
-      <span><b>Mención en historias por 3 días</b></span>  
-    </li>  
-    <li style="display:flex;gap:10px;margin-bottom:0">  
-      <span style="font-size:16px">💬</span>  
-      <span><b>Link directo a su WhatsApp</b></span>  
-    </li>  
-  </ul>  
-  <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">  
-    <div style="text-align:center">  
-      <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>  
-      <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 350</div>  
-    </div>  
-    <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Full%20S/350" target="_blank" class="whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>  
-  </div>  
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Ajusta el widget completo de Facebook al ancho de su tarjeta.
+  // No lee ni modifica el contenido interno de Livecounts.
+  const widgetFacebook = document.getElementById('facebook-widget');
+
+  if (widgetFacebook) {
+    function ajustarFacebook() {
+      widgetFacebook.style.setProperty(
+        '--facebook-scale',
+        String(widgetFacebook.clientWidth / 300)
+      );
+    }
+
+    ajustarFacebook();
+
+    if ('ResizeObserver' in window) {
+      const observador = new ResizeObserver(ajustarFacebook);
+      observador.observe(widgetFacebook);
+    } else {
+      window.addEventListener('resize', ajustarFacebook);
+    }
+  }
+
+  const contador = document.getElementById('tt-followers');
+  if (!contador) return;
+
+  let consultando = false;
+  let primeraConsulta = true;
+  let animacion = null;
+  let ultimoValor = null;
+
+  const formato = new Intl.NumberFormat('en-US');
+  const valorOriginal = contador.textContent;
+  contador.textContent = '0';
+
+  function detenerAnimacion() {
+    if (animacion !== null) {
+      cancelAnimationFrame(animacion);
+      animacion = null;
+    }
+  }
+
+  function animarContador(valorFinal) {
+    detenerAnimacion();
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      contador.textContent = formato.format(valorFinal);
+      return;
+    }
+
+    const duracion = 2200;
+    const inicio = performance.now();
+
+    function avanzar(ahora) {
+      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      const suavizado = 1 - Math.pow(1 - progreso, 3);
+      contador.textContent = formato.format(
+        Math.floor(valorFinal * suavizado)
+      );
+
+      if (progreso < 1) {
+        animacion = requestAnimationFrame(avanzar);
+      } else {
+        animacion = null;
+        contador.textContent = formato.format(valorFinal);
+      }
+    }
+
+    animacion = requestAnimationFrame(avanzar);
+  }
+
+  async function actualizarContador() {
+    if (consultando || document.hidden) return;
+
+    consultando = true;
+    const controlador = new AbortController();
+    const tiempoLimite = setTimeout(
+      () => controlador.abort(),
+      20000
+    );
+
+    try {
+      const respuesta = await fetch('/api/followers', {
+        cache: 'no-store',
+        signal: controlador.signal
+      });
+
+      if (!respuesta.ok) {
+        throw new Error('HTTP ' + respuesta.status);
+      }
+
+      const datos = await respuesta.json();
+
+      if (
+        datos.consulta_ok !== true ||
+        !Number.isSafeInteger(datos.tiktok) ||
+        datos.tiktok < 0
+      ) {
+        throw new Error('Respuesta del contador no válida');
+      }
+
+      ultimoValor = datos.tiktok;
+
+      if (primeraConsulta) {
+        primeraConsulta = false;
+        animarContador(ultimoValor);
+      } else {
+        detenerAnimacion();
+        contador.textContent = formato.format(ultimoValor);
+      }
+    } catch (error) {
+      if (primeraConsulta) {
+        contador.textContent = valorOriginal;
+      }
+      console.warn('No se pudo actualizar el contador:', error);
+    } finally {
+      clearTimeout(tiempoLimite);
+      consultando = false;
+    }
+  }
+
+  actualizarContador();
+
+  // Intenta consultar cada 5 segundos sin superponer solicitudes.
+  setInterval(actualizarContador, 5000);
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      detenerAnimacion();
+      if (ultimoValor !== null) {
+        contador.textContent = formato.format(ultimoValor);
+      }
+    } else {
+      actualizarContador();
+    }
+  });
+});
+</script>
+</head>
+
+<body>
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+
+<header style="padding-top:20px;display:flex;justify-content:space-between;align-items:center">
+  <div style="display:flex;gap:12px;align-items:center">
+    <img src="/bello.jpg" style="width:36px;height:36px;border-radius:9999px;object-fit:cover;border:1px solid #e4e4e7" alt="El Bello Cubano">
+    <div style="line-height:1.05">
+      <div style="font-family:'Plus Jakarta Sans';font-weight:800">El Bello Cubano</div>
+      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#71717a;font-weight:700">Ica · Perú</div>
+    </div>
+  </div>
+  <a href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20promocionar%20mi%20negocio" target="_blank" style="background:#18181b;color:#fff;padding:10px 20px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;gap:8px;align-items:center">
+    <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block"></span>
+    Escríbeme
+  </a>
+</header>
+
+<section style="margin-top:56px;display:flex;flex-direction:column;align-items:center;text-align:center">
+  <h1 style="font-family:'Plus Jakarta Sans';font-weight:800;letter-spacing:-.04em;line-height:.92;font-size:clamp(32px,5vw,44px);margin:0">
+    <span style="display:block;color:#18181b">Promociona tu negocio</span>
+    <span style="display:block;margin-top:4px">
+      <span class="bello-flow">con el Bello Cubano</span>
+    </span>
+  </h1>
+
+  <div style="margin-top:20px;display:flex;justify-content:center">
+    <div style="background:#18181b;color:#fff;border-radius:9999px;padding:12px 24px;display:inline-flex;align-items:center;gap:8px;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-align:center;line-height:1.3;box-shadow:0 4px 14px rgba(0,0,0,.15)">
+      <span style="width:8px;height:8px;border-radius:9999px;background:#facc15;display:inline-block;flex-shrink:0"></span>
+      PAGA UNA VEZ Y APARECE EN LAS TRES REDES SOCIALES
+    </div>
+  </div>
+
+  <div style="margin-top:28px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:500px">
+
+    <div class="card" style="min-width:0;border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7);cursor:default">
+      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;color:#1877F2;flex-shrink:0">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">FACEBOOK</span>
+      </div>
+
+      <div id="facebook-widget" class="facebook-widget">
+        <iframe
+          src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano"
+          width="300"
+          height="80"
+          scrolling="no"
+          title="Contador de seguidores de Facebook de El Bello Cubano"
+          loading="eager">
+        </iframe>
+      </div>
+
+      <div style="font-size:11px;color:#71717a;font-weight:500;margin-top:2px">seguidores</div>
+      <a href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px;color:inherit;text-decoration:none">
+        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
+          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
+        </span>
+        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
+      </a>
+    </div>
+
+    <a class="card" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">
+      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:14px;height:14px;color:#d62976;flex-shrink:0">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">INSTAGRAM</span>
+      </div>
+      <div style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">4,500</div>
+      <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">
+        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
+          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
+        </span>
+        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
+      </div>
+    </a>
+
+    <a class="card" href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" style="border-radius:16px;padding:12px 6px;background:#f5f5f5;border:1px solid rgba(228,228,231,.7)">
+      <div style="display:flex;justify-content:center;gap:6px;align-items:center">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="tiktok-icon" style="width:14px;height:14px;flex-shrink:0">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-1.77 5.23 5.23 0 01-.93-2.92h-3.6v12.16a2.66 2.66 0 01-2.66 2.66 2.66 2.66 0 01-2.66-2.66 2.66 2.66 0 012.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 00-.7-.04 6.26 6.26 0 00-6.26 6.26 6.26 6.26 0 006.26 6.26 6.26 6.26 0 006.26-6.26V8.8a8.4 8.4 0 004.7 1.44V6.69z"/>
+        </svg>
+        <span style="font-size:10px;font-weight:700;letter-spacing:.12em">TIKTOK</span>
+      </div>
+      <div id="tt-followers" style="margin-top:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">43,800</div>
+      <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:2px 6px">
+        <span style="position:relative;width:5px;height:5px;border-radius:9999px;background:#10b981;display:inline-block">
+          <span style="position:absolute;inset:0;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></span>
+        </span>
+        <span style="font-size:7px;font-weight:700;letter-spacing:.05em">VER PERFIL</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section style="margin-top:64px;max-width:1020px;margin-left:auto;margin-right:auto">
+  <div style="text-align:center">
+    <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:30px;margin:0">Elija su promoción</h2>
+    <p style="font-size:13px;color:#71717a;margin:8px 0 0;letter-spacing:.02em">Contenido real 100% orgánico</p>
+  </div>
+
+  <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+
+    <div class="promo">
+      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Estándar</h3>
+      <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">🎥</span>
+          <span>
+            <b style="font-weight:900">1 video de 30 a 50 seg</b>
+            <span style="display:inline-block;background:#f4f4f5;border:1px solid #d4d4d8;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:800;color:#71717a;text-decoration:line-through;text-decoration-thickness:1.5px">FIJADO POR 3 DÍAS</span>
+          </span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">📸</span>
+          <span><b>1 foto</b> en su local o con su producto</span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">✨</span>
+          <span><b>Mención en historias por 1 día</b></span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:0">
+          <span style="font-size:16px">💬</span>
+          <span><b>Link directo a su WhatsApp</b></span>
+        </li>
+      </ul>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
+        <div style="text-align:center">
+          <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
+          <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 150</div>
+        </div>
+        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Estandar%20S/150" target="_blank" class="whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="promo" style="border:1.5px solid #18181b;box-shadow:0 8px 24px rgba(0,0,0,.06)">
+      <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#18181b;color:#fff;border-radius:9999px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:.1em">MÁS PEDIDA</div>
+      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:12px 0 16px">Promo Premium</h3>
+      <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">🎥</span>
+          <span>
+            <b style="font-weight:900">2 videos de 30 a 50 seg</b>
+            <span style="display:inline-block;background:#FEF9C3;border:1px solid #fde68a;border-radius:4px;padding:1px 6px;font-size:9px;font-weight:800">FIJADO POR 3 DÍAS</span>
+          </span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">📸</span>
+          <span><b>1 foto</b> en su local o con su producto</span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">✨</span>
+          <span><b>Mención en historias por 2 días</b></span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:0">
+          <span style="font-size:16px">💬</span>
+          <span><b>Link directo a su WhatsApp</b></span>
+        </li>
+      </ul>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
+        <div style="text-align:center">
+          <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
+          <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 220</div>
+        </div>
+        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Premium%20S/220" target="_blank" id="btn-premium" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px;background:#18181b;color:#fff;transition:all .22s ease">Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="promo-featured">
+      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Full</h3>
+      <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="position:relative;display:inline-flex;width:14px;height:14px;margin-top:2px">
+            <span style="position:absolute;inset:0;border-radius:9999px;background:#ef4444;animation:pulseLive 1.6s infinite"></span>
+            <span style="position:relative;width:14px;height:14px;border-radius:9999px;background:#ef4444;display:inline-block"></span>
+          </span>
+          <span><b>Live en TikTok 30-40 min</b> desde su local</span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">🎥</span>
+          <span>
+            <b style="font-weight:900">2 videos de 30 a 50 seg</b>
+            <span style="display:inline-block;background:#FEF9C3;border:1px solid #fde68a;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:800">FIJADO POR 7 DÍAS</span>
+          </span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">📸</span>
+          <span><b>1 foto</b> en su local o con su producto</span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:12px">
+          <span style="font-size:16px">✨</span>
+          <span><b>Mención en historias por 3 días</b></span>
+        </li>
+        <li style="display:flex;gap:10px;margin-bottom:0">
+          <span style="font-size:16px">💬</span>
+          <span><b>Link directo a su WhatsApp</b></span>
+        </li>
+      </ul>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
+        <div style="text-align:center">
+          <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
+          <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 350</div>
+        </div>
+        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Full%20S/350" target="_blank" class="whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:32px;display:flex;justify-content:center">
+    <span style="display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:8px 16px;font-size:12px;font-weight:700">
+      <span style="color:#742384">Yape</span>
+      <span style="color:#a1a1aa;font-weight:400;margin:0 4px">/</span>
+      <span style="color:#00A1DF">Plin</span>
+      <span style="color:#a1a1aa;font-weight:400;margin:0 4px">o</span>
+      <span style="color:#2E7D32">transferencia</span>
+    </span>
+  </div>
+
+  <div style="margin-top:16px;display:flex;justify-content:center">
+    <div style="display:inline-flex;max-width:620px;align-items:start;gap:8px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;padding:12px 16px;text-align:center">
+      <span style="font-size:12px;line-height:1.5;color:#52525b">
+        <b style="color:#18181b">📌 ¿Qué es fijado?</b>
+        Su video queda arriba de todo en mi página, lo primero que ve la gente.
+      </span>
+    </div>
+  </div>
+</section>
+
+<section style="margin-top:80px;max-width:760px;margin-left:auto;margin-right:auto">
+  <div style="border-radius:20px;background:#fff;border:1px solid #e4e4e7;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,.04)">
+    <div style="display:flex;justify-content:space-between;gap:16px">
+      <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(20px,5vw,26px);line-height:1.1;margin:0">Mi audiencia principal</h2>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#a1a1aa;margin-top:4px;flex-shrink:0">ORGÁNICO 100%</span>
+    </div>
+
+    <div style="margin-top:32px;display:flex;flex-direction:column;gap:32px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Perú</span>
+          <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px">76%</span>
+        </div>
+        <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">
+          <div style="height:100%;border-radius:9999px;background:#facc15;width:76%"></div>
+        </div>
+        <p style="margin:12px 0 0;font-size:12px;color:#71717a">Donde más me ven es en</p>
+        <p style="margin:4px 0 0;font-weight:900;font-size:clamp(14px,4vw,18px);letter-spacing:-.02em">Lima - Ica</p>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Internacional</span>
+          <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px">24%</span>
+        </div>
+        <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">
+          <div style="height:100%;border-radius:9999px;background:#2E7D32;width:24%"></div>
+        </div>
+        <p style="margin:12px 0 0;font-size:clamp(11px,3.5vw,13px);font-weight:900">Estados Unidos - España - Chile - Argentina - México</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="margin-top:80px;border-radius:28px;background:#18181b;color:#fff;padding:32px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:32px;text-align:center">
+  <div style="text-align:center;margin:0 auto;max-width:420px">
+    <h3 style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;margin:0;line-height:1.05;text-align:center;font-weight:800">
+      <span style="display:block;font-size:clamp(24px,5.5vw,36px);font-weight:800;color:#fff;letter-spacing:-.03em">¿Listo para que el mundo</span>
+      <span style="display:block;margin-top:6px;font-size:clamp(24px,5.5vw,36px);font-weight:800;color:#fff;letter-spacing:-.03em">vea su negocio?</span>
+    </h3>
+  </div>
+
+  <div style="background:#fff;border-radius:20px;padding:20px;color:#18181b;width:100%;max-width:340px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="/bello.jpg" style="width:36px;height:36px;border-radius:9999px;object-fit:cover;border:1px solid #e4e4e7;flex-shrink:0" alt="El Bello Cubano">
+      <div style="line-height:1.2">
+        <div style="font-weight:700;font-size:14px">El Bello Cubano</div>
+        <div style="font-size:12px;color:#71717a">@elbellocubano</div>
+      </div>
+      <div style="margin-left:auto;width:8px;height:8px;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></div>
+    </div>
+
+    <div style="margin-top:16px;border-radius:12px;background:#f0fdf4;border:1px solid #f4f4f5;padding:12px;font-size:12px;line-height:1.5;color:#3f3f46">
+      <b style="color:#18181b">Hola!</b> Soy el Bello. ¿Qué vendes y dónde estás? Te respondo con ideas en 5 min.
+    </div>
+
+    <a href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20que%20mi%20negocio%20llegue%20a%20Peru%20y%20al%20extranjero" target="_blank" style="margin-top:16px;display:flex;width:100%;justify-content:center;background:#18181b;color:#fff;padding:12px;border-radius:9999px;font-size:14px;font-weight:700;text-decoration:none">Hablar por WhatsApp ahora</a>
+  </div>
+</section>
+
+<footer style="margin-top:64px;border-top:1px solid rgba(228,228,231,.6);padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:6px">
+  <div style="font-size:11px;color:#a1a1aa;letter-spacing:.04em;text-align:center">© 2026 elBelloCubano</div>
+</footer>
+
 </div>
-
-  </div>    <div style="margin-top:32px;display:flex;justify-content:center">  
-    <span style="display:inline-flex;align-items:center;gap:4px;border-radius:9999px;background:#fff;border:1px solid #e4e4e7;padding:8px 16px;font-size:12px;font-weight:700">  
-      <span style="color:#742384">Yape</span>  
-      <span style="color:#a1a1aa;font-weight:400;margin:0 4px">/</span>  
-      <span style="color:#00A1DF">Plin</span>  
-      <span style="color:#a1a1aa;font-weight:400;margin:0 4px">o</span>  
-      <span style="color:#2E7D32">transferencia</span>  
-    </span>  
-  </div>    <div style="margin-top:16px;display:flex;justify-content:center">  
-    <div style="display:inline-flex;max-width:620px;align-items:start;gap:8px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;padding:12px 16px;text-align:center">  
-      <span style="font-size:12px;line-height:1.5;color:#52525b">  
-        <b style="color:#18181b">📌 ¿Qué es fijado?</b>  
-        Su video queda arriba de todo en mi página, lo primero que ve la gente.  
-      </span>  
-    </div>  
-  </div>  
-</section>  <section style="margin-top:80px;max-width:760px;margin-left:auto;margin-right:auto">  
-  <div style="border-radius:20px;background:#fff;border:1px solid #e4e4e7;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,.04)">  
-    <div style="display:flex;justify-content:space-between;gap:16px">  
-      <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(20px,5vw,26px);line-height:1.1;margin:0">Mi audiencia principal</h2>  
-      <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#a1a1aa;margin-top:4px;flex-shrink:0">ORGÁNICO 100%</span>  
-    </div>  <div style="margin-top:32px;display:flex;flex-direction:column;gap:32px">  
-  <div>  
-    <div style="display:flex;justify-content:space-between;margin-bottom:8px">  
-      <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Perú</span>  
-      <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px">76%</span>  
-    </div>  
-    <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">  
-      <div style="height:100%;border-radius:9999px;background:#facc15;width:76%"></div>  
-    </div>  
-    <p style="margin:12px 0 0;font-size:12px;color:#71717a">Donde más me ven es en</p>  
-    <p style="margin:4px 0 0;font-weight:900;font-size:clamp(14px,4vw,18px);letter-spacing:-.02em">Lima - Ica</p>  
-  </div>  
-
-  <div>  
-    <div style="display:flex;justify-content:space-between;margin-bottom:8px">  
-      <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Internacional</span>  
-      <span style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px">24%</span>  
-    </div>  
-    <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">  
-      <div style="height:100%;border-radius:9999px;background:#2E7D32;width:24%"></div>  
-    </div>  
-    <p style="margin:12px 0 0;font-size:clamp(11px,3.5vw,13px);font-weight:900">Estados Unidos - España - Chile - Argentina - México</p>  
-  </div>  
-</div>
-
-  </div>  
-</section>  <section style="margin-top:80px;border-radius:28px;background:#18181b;color:#fff;padding:32px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:32px;text-align:center">  
-  <div style="text-align:center;margin:0 auto;max-width:420px">  
-    <h3 style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;margin:0;line-height:1.05;text-align:center;font-weight:800">  
-      <span style="display:block;font-size:clamp(24px,5.5vw,36px);font-weight:800;color:#fff;letter-spacing:-.03em">¿Listo para que el mundo</span>  
-      <span style="display:block;margin-top:6px;font-size:clamp(24px,5.5vw,36px);font-weight:800;color:#fff;letter-spacing:-.03em">vea su negocio?</span>  
-    </h3>  
-  </div>    <div style="background:#fff;border-radius:20px;padding:20px;color:#18181b;width:100%;max-width:340px;margin:0 auto">  
-    <div style="display:flex;align-items:center;gap:12px">  
-      <img src="/bello.jpg" style="width:36px;height:36px;border-radius:9999px;object-fit:cover;border:1px solid #e4e4e7;flex-shrink:0" alt="El Bello Cubano">  
-      <div style="line-height:1.2">  
-        <div style="font-weight:700;font-size:14px">El Bello Cubano</div>  
-        <div style="font-size:12px;color:#71717a">@elbellocubano</div>  
-      </div>  
-      <div style="margin-left:auto;width:8px;height:8px;border-radius:9999px;background:#10b981;animation:pulseLive 1.6s infinite"></div>  
-    </div>  <div style="margin-top:16px;border-radius:12px;background:#f0fdf4;border:1px solid #f4f4f5;padding:12px;font-size:12px;line-height:1.5;color:#3f3f46">  
-  <b style="color:#18181b">Hola!</b> Soy el Bello. ¿Qué vendes y dónde estás? Te respondo con ideas en 5 min.  
-</div>  
-
-<a href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20que%20mi%20negocio%20llegue%20a%20Peru%20y%20al%20extranjero" target="_blank" style="margin-top:16px;display:flex;width:100%;justify-content:center;background:#18181b;color:#fff;padding:12px;border-radius:9999px;font-size:14px;font-weight:700;text-decoration:none">Hablar por WhatsApp ahora</a>
-
-  </div>  
-</section>  <footer style="margin-top:64px;border-top:1px solid rgba(228,228,231,.6);padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:6px">  
-  <div style="font-size:11px;color:#a1a1aa;letter-spacing:.04em;text-align:center">© 2026 elBelloCubano</div>  
-</footer>  </div>  
-</body>  
-</html>  
+</body>
+</html>
