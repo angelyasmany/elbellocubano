@@ -40,6 +40,20 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .whatsapp-btn:active{transform:scale(0.98)}
 #btn-premium:hover{background:#2E7D32 !important;color:#fff !important;transform:translateY(-1px);box-shadow:0 6px 18px rgba(46,125,50,0.25)}
 
+.promo-badge{
+  position:absolute;
+  top:-12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#18181b;
+  color:#fff;
+  border-radius:9999px;
+  padding:4px 14px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+  white-space:nowrap;
+}
 .social-card{
   min-width:0;
   border-radius:16px;
@@ -60,12 +74,17 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   letter-spacing:.12em;
 }
 .social-number-space{
-  height:38px;
+  height:40px;
   margin-top:8px;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
+}
+.social-followers{
+  font-size:11px;
+  color:#71717a;
+  font-weight:500;
+  margin-top:2px;
 }
 .counter-widget{
   position:relative;
@@ -173,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (consultando || document.hidden) return;
 
     consultando = true;
-
     const controlador = new AbortController();
     const tiempoLimite = setTimeout(function () {
       controlador.abort();
@@ -292,6 +310,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
       </div>
 
+      <div class="social-followers">seguidores</div>
+
       <a class="profile-link" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer">
         <span class="profile-dot"><span></span></span>
         <span class="profile-label">VER PERFIL</span>
@@ -321,6 +341,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
       </div>
 
+      <div class="social-followers">seguidores</div>
+
       <a class="profile-link" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer">
         <span class="profile-dot"><span></span></span>
         <span class="profile-label">VER PERFIL</span>
@@ -337,8 +359,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       <div class="social-number-space">
         <div id="tt-followers" style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;line-height:1;color:#18181b">43,800</div>
-        <div style="font-size:11px;color:#71717a;margin-top:2px">seguidores</div>
       </div>
+
+      <div class="social-followers">seguidores</div>
 
       <div class="profile-link">
         <span class="profile-dot"><span></span></span>
@@ -358,7 +381,9 @@ document.addEventListener('DOMContentLoaded', function () {
   <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
 
     <div class="promo">
-      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Estándar</h3>
+      <div class="promo-badge">DARTE A CONOCER</div>
+      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:12px 0 16px">Promo Estándar</h3>
+
       <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
         <li style="display:flex;gap:10px;margin-bottom:12px">
           <span style="font-size:16px">🎥</span>
@@ -380,6 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <span><b>Link directo a su WhatsApp</b></span>
         </li>
       </ul>
+
       <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
         <div style="text-align:center">
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
@@ -390,8 +416,9 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
     <div class="promo" style="border:1.5px solid #18181b;box-shadow:0 8px 24px rgba(0,0,0,.06)">
-      <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#18181b;color:#fff;border-radius:9999px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:.1em">MÁS PEDIDA</div>
+      <div class="promo-badge">MÁS PEDIDA</div>
       <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:12px 0 16px">Promo Premium</h3>
+
       <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
         <li style="display:flex;gap:10px;margin-bottom:12px">
           <span style="font-size:16px">🎥</span>
@@ -413,6 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <span><b>Link directo a su WhatsApp</b></span>
         </li>
       </ul>
+
       <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
         <div style="text-align:center">
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
@@ -423,7 +451,9 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
     <div class="promo-featured">
-      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:0 0 16px">Promo Full</h3>
+      <div class="promo-badge">MÁXIMO ALCANCE</div>
+      <h3 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:20px;margin:12px 0 16px">Promo Full</h3>
+
       <ul style="list-style:none;padding:0;margin:0;text-align:left;font-size:13px;line-height:1.6">
         <li style="display:flex;gap:10px;margin-bottom:12px">
           <span style="position:relative;display:inline-flex;width:14px;height:14px;margin-top:2px">
@@ -452,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <span><b>Link directo a su WhatsApp</b></span>
         </li>
       </ul>
+
       <div style="margin-top:20px;padding-top:16px;border-top:1px dashed #e4e4e7">
         <div style="text-align:center">
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
