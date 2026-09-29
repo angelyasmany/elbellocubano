@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>El Bello Cubano | Cubanos en Perú - elbellocubano7</title>
-<meta name="description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<title>El Bello Cubano | Cubanos en Per煤 - elbellocubano7</title>
+<meta name="description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% org谩nico. Un solo pago, desde S/ 150.">
 <link rel="icon" href="/bello.jpg">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_PE">
 <meta property="og:site_name" content="El Bello Cubano">
 <meta property="og:url" content="https://elbellocubano.vercel.app/">
-<meta property="og:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">
-<meta property="og:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<meta property="og:title" content="El Bello Cubano | Cubanos en Per煤 - elbellocubano7">
+<meta property="og:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% org谩nico. Un solo pago, desde S/ 150.">
 <meta property="og:image" content="https://elbellocubano.vercel.app/bello.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="El Bello Cubano | Cubanos en Perú - elbellocubano7">
-<meta name="twitter:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% orgánico. Un solo pago, desde S/ 150.">
+<meta name="twitter:title" content="El Bello Cubano | Cubanos en Per煤 - elbellocubano7">
+<meta name="twitter:description" content="Promociono su negocio en TikTok, Facebook e Instagram con contenido real y 100% org谩nico. Un solo pago, desde S/ 150.">
 <meta name="twitter:image" content="https://elbellocubano.vercel.app/bello.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://livecounts.nl">
+<link rel="preconnect" href="https://livecounts.nl" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
@@ -29,15 +29,18 @@
 body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .page{max-width:1180px;margin:0 auto;padding:0 24px}
 .font-display,h1,h2,h3{font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+
 @keyframes pulseLive{
   0%,100%{transform:scale(1);opacity:1}
   50%{transform:scale(1.6);opacity:.55}
 }
+
 .bello-flow{
   background:linear-gradient(90deg,#f59e0b 0%,#facc15 50%,#eab308 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   text-shadow:0 0 22px rgba(250,204,21,.38);display:inline-block
 }
+
 .card{
   border-radius:16px;background:#f5f5f5;
   border:1px solid rgba(228,228,231,.7);
@@ -46,6 +49,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   transition:transform .2s,box-shadow .2s;min-width:0
 }
 .card:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+
 .social-grid{
   margin-top:28px;width:100%;display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -55,10 +59,18 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .social-title span{font-size:10px;font-weight:700;letter-spacing:.12em}
 .social-title svg{width:14px;height:14px;flex-shrink:0}
 .tiktok-icon{filter:drop-shadow(1px 0 0 #25F4EE) drop-shadow(-1px 0 0 #FE2C55)}
+
 .social-number-space{
   height:40px;margin-top:8px;
   display:flex;align-items:center;justify-content:center
 }
+
+/*
+  Facebook e Instagram:
+  - El iframe empieza a cargar inmediatamente, sin esperar a la API.
+  - Mientras carga, se ve nuestro n煤mero animado desde 0.
+  - Al terminar la carga, el visor real de Livecounts aparece con un fundido corto.
+*/
 .counter-widget{
   position:relative;width:100%;max-width:150px;
   height:40px;overflow:hidden
@@ -67,13 +79,36 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   position:absolute;top:0;left:50%;
   width:300px;height:80px;border:0;
   transform:translateX(-50%) scale(.5);
-  transform-origin:top center
+  transform-origin:top center;
+  opacity:0;
+  transition:opacity .18s ease;
+  background:transparent
 }
+.counter-widget.is-ready iframe{opacity:1}
+
+.counter-placeholder,
 #tt-followers{
-  font-family:"Plus Jakarta Sans",system-ui,sans-serif;
-  font-weight:800;font-size:20px;line-height:1.2;
-  font-variant-numeric:tabular-nums
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Inter,Arial,sans-serif;
+  font-weight:800;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:0;
+  color:#18181b;
+  text-shadow:none;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+  transition:opacity .18s ease
 }
+.counter-widget.is-ready .counter-placeholder{opacity:0}
+
+/* TikTok usa exactamente el mismo estilo visual que el cargador de FB/IG. */
+#tt-followers{position:static;width:100%;height:40px}
+
 .social-followers{font-size:11px;color:#71717a;font-weight:500;margin-top:2px}
 .profile-link{
   margin-top:8px;display:inline-flex;align-items:center;gap:4px;
@@ -86,6 +121,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   background:#10b981;display:inline-block;
   animation:pulseLive 1.6s infinite
 }
+
 .promo-grid{
   margin-top:32px;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));
@@ -142,6 +178,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   box-shadow:0 6px 18px rgba(46,125,50,.25)
 }
 .avatar{width:36px;height:36px;border-radius:9999px;object-fit:cover;border:1px solid #e4e4e7;flex-shrink:0}
+
 @media(max-width:380px){
   .page{padding:0 16px}
   .social-title{gap:3px}
@@ -162,12 +199,12 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
     <img src="/bello.jpg" class="avatar" alt="El Bello Cubano">
     <div style="line-height:1.05">
       <div class="font-display" style="font-weight:800">El Bello Cubano</div>
-      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#71717a;font-weight:700">Ica · Perú</div>
+      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#71717a;font-weight:700">Ica 路 Per煤</div>
     </div>
   </div>
   <a class="header-button" href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20promocionar%20mi%20negocio" target="_blank" rel="noopener noreferrer" style="background:#18181b;color:#fff;padding:10px 20px;border-radius:9999px;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;gap:8px;align-items:center">
     <span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block;flex-shrink:0"></span>
-    Escríbeme
+    Escr铆beme
   </a>
 </header>
 
@@ -195,11 +232,22 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
         </svg>
         <span>FACEBOOK</span>
       </div>
+
       <div class="social-number-space">
-        <div class="counter-widget">
-          <iframe id="fb-counter" width="300" height="80" scrolling="no" loading="eager" title="Contador de Facebook de El Bello Cubano"></iframe>
+        <div class="counter-widget" id="fb-widget">
+          <div class="counter-placeholder" id="fb-placeholder">0</div>
+          <iframe
+            id="fb-counter"
+            width="300"
+            height="80"
+            scrolling="no"
+            loading="eager"
+            title="Contador de Facebook de El Bello Cubano"
+            src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tf=inter&amp;cf=inter&amp;tc=18181b&amp;cc=18181b&amp;up=18181b&amp;dn=18181b&amp;cw=800&amp;lh=1&amp;tn=0&amp;sp=0.1&amp;ts=comma&amp;pb=none&amp;cb=none&amp;bc=none">
+          </iframe>
         </div>
       </div>
+
       <div class="social-followers">seguidores</div>
       <a class="profile-link" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer">
         <span class="live-dot"></span><span>VER PERFIL</span>
@@ -215,11 +263,22 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
         </svg>
         <span>INSTAGRAM</span>
       </div>
+
       <div class="social-number-space">
-        <div class="counter-widget">
-          <iframe id="ig-counter" width="300" height="80" scrolling="no" loading="eager" title="Contador de Instagram de El Bello Cubano"></iframe>
+        <div class="counter-widget" id="ig-widget">
+          <div class="counter-placeholder" id="ig-placeholder">0</div>
+          <iframe
+            id="ig-counter"
+            width="300"
+            height="80"
+            scrolling="no"
+            loading="eager"
+            title="Contador de Instagram de El Bello Cubano"
+            src="https://livecounts.nl/instagram-realtime/embed/?u=elbellocubano&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tf=inter&amp;cf=inter&amp;tc=18181b&amp;cc=18181b&amp;up=18181b&amp;dn=18181b&amp;cw=800&amp;lh=1&amp;tn=0&amp;sp=0.1&amp;ts=comma&amp;pb=none&amp;cb=none&amp;bc=none&amp;theme=transparent&amp;size=m&amp;loc=es-ES">
+          </iframe>
         </div>
       </div>
+
       <div class="social-followers">seguidores</div>
       <a class="profile-link" href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer">
         <span class="live-dot"></span><span>VER PERFIL</span>
@@ -233,9 +292,11 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
         </svg>
         <span>TIKTOK</span>
       </div>
+
       <div class="social-number-space">
-        <div id="tt-followers">43,800</div>
+        <div id="tt-followers">0</div>
       </div>
+
       <div class="social-followers">seguidores</div>
       <div class="profile-link">
         <span class="live-dot"></span><span>VER PERFIL</span>
@@ -247,56 +308,56 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 
 <section style="margin-top:64px;max-width:1020px;margin-left:auto;margin-right:auto">
   <div style="text-align:center">
-    <h2 style="font-weight:800;font-size:30px;margin:0">Elija su promoción</h2>
-    <p style="font-size:13px;color:#71717a;margin:8px 0 0;letter-spacing:.02em">Contenido real 100% orgánico</p>
+    <h2 style="font-weight:800;font-size:30px;margin:0">Elija su promoci贸n</h2>
+    <p style="font-size:13px;color:#71717a;margin:8px 0 0;letter-spacing:.02em">Contenido real 100% org谩nico</p>
   </div>
 
   <div class="promo-grid">
 
     <div class="promo">
       <div class="promo-badge">DARTE A CONOCER</div>
-      <h3>Promo Estándar</h3>
+      <h3>Promo Est谩ndar</h3>
       <ul class="features">
         <li>
-          <span class="feature-icon">🎥</span>
+          <span class="feature-icon">馃帴</span>
           <span><b style="font-weight:900">1 video de 30 a 50 seg</b>
-            <span class="fixed fixed-disabled">FIJADO POR 3 DÍAS</span>
+            <span class="fixed fixed-disabled">FIJADO POR 3 D脥AS</span>
           </span>
         </li>
-        <li><span class="feature-icon">📸</span><span><b>1 foto</b> en su local o con su producto</span></li>
-        <li><span class="feature-icon">✨</span><span><b>Mención en historias por 1 día</b></span></li>
-        <li><span class="feature-icon">💬</span><span><b>Link directo a su WhatsApp</b></span></li>
+        <li><span class="feature-icon">馃摳</span><span><b>1 foto</b> en su local o con su producto</span></li>
+        <li><span class="feature-icon">鉁�</span><span><b>Menci贸n en historias por 1 d铆a</b></span></li>
+        <li><span class="feature-icon">馃挰</span><span><b>Link directo a su WhatsApp</b></span></li>
       </ul>
       <div class="investment">
-        <div class="price-label">INVERSIÓN</div>
+        <div class="price-label">INVERSI脫N</div>
         <div class="price">S/ 150</div>
         <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Estandar%20S/150" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">Pedir por WhatsApp</a>
       </div>
     </div>
 
     <div class="promo" style="border-width:1.5px">
-      <div class="promo-badge">MÁS PEDIDA</div>
+      <div class="promo-badge">M脕S PEDIDA</div>
       <h3>Promo Premium</h3>
       <ul class="features">
         <li>
-          <span class="feature-icon">🎥</span>
+          <span class="feature-icon">馃帴</span>
           <span><b style="font-weight:900">2 videos de 30 a 50 seg</b>
-            <span class="fixed">FIJADO POR 3 DÍAS</span>
+            <span class="fixed">FIJADO POR 3 D脥AS</span>
           </span>
         </li>
-        <li><span class="feature-icon">📸</span><span><b>1 foto</b> en su local o con su producto</span></li>
-        <li><span class="feature-icon">✨</span><span><b>Mención en historias por 2 días</b></span></li>
-        <li><span class="feature-icon">💬</span><span><b>Link directo a su WhatsApp</b></span></li>
+        <li><span class="feature-icon">馃摳</span><span><b>1 foto</b> en su local o con su producto</span></li>
+        <li><span class="feature-icon">鉁�</span><span><b>Menci贸n en historias por 2 d铆as</b></span></li>
+        <li><span class="feature-icon">馃挰</span><span><b>Link directo a su WhatsApp</b></span></li>
       </ul>
       <div class="investment">
-        <div class="price-label">INVERSIÓN</div>
+        <div class="price-label">INVERSI脫N</div>
         <div class="price">S/ 220</div>
         <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Premium%20S/220" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" id="btn-premium">Pedir por WhatsApp</a>
       </div>
     </div>
 
     <div class="promo-featured">
-      <div class="promo-badge">MÁXIMO ALCANCE</div>
+      <div class="promo-badge">M脕XIMO ALCANCE</div>
       <h3>Promo Full</h3>
       <ul class="features">
         <li>
@@ -304,17 +365,17 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
           <span><b>Live en TikTok 30-40 min</b> desde su local</span>
         </li>
         <li>
-          <span class="feature-icon">🎥</span>
+          <span class="feature-icon">馃帴</span>
           <span><b style="font-weight:900">2 videos de 30 a 50 seg</b>
-            <span class="fixed">FIJADO POR 7 DÍAS</span>
+            <span class="fixed">FIJADO POR 7 D脥AS</span>
           </span>
         </li>
-        <li><span class="feature-icon">📸</span><span><b>1 foto</b> en su local o con su producto</span></li>
-        <li><span class="feature-icon">✨</span><span><b>Mención en historias por 3 días</b></span></li>
-        <li><span class="feature-icon">💬</span><span><b>Link directo a su WhatsApp</b></span></li>
+        <li><span class="feature-icon">馃摳</span><span><b>1 foto</b> en su local o con su producto</span></li>
+        <li><span class="feature-icon">鉁�</span><span><b>Menci贸n en historias por 3 d铆as</b></span></li>
+        <li><span class="feature-icon">馃挰</span><span><b>Link directo a su WhatsApp</b></span></li>
       </ul>
       <div class="investment">
-        <div class="price-label">INVERSIÓN</div>
+        <div class="price-label">INVERSI脫N</div>
         <div class="price">S/ 350</div>
         <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Full%20S/350" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">Pedir por WhatsApp</a>
       </div>
@@ -335,8 +396,8 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   <div style="margin-top:16px;display:flex;justify-content:center">
     <div style="display:inline-flex;max-width:620px;align-items:start;gap:8px;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;padding:12px 16px;text-align:center">
       <span style="font-size:12px;line-height:1.5;color:#52525b">
-        <b style="color:#18181b">📌 ¿Qué es fijado?</b>
-        Su video queda arriba de todo en mi página, lo primero que ve la gente.
+        <b style="color:#18181b">馃搶 驴Qu茅 es fijado?</b>
+        Su video queda arriba de todo en mi p谩gina, lo primero que ve la gente.
       </span>
     </div>
   </div>
@@ -346,18 +407,18 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   <div style="border-radius:20px;background:#fff;border:1px solid #e4e4e7;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,.04)">
     <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
       <h2 style="font-weight:800;font-size:clamp(20px,5vw,26px);line-height:1.1;margin:0">Mi audiencia principal</h2>
-      <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#a1a1aa;margin-top:4px">ORGÁNICO 100%</span>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#a1a1aa;margin-top:4px">ORG脕NICO 100%</span>
     </div>
     <div style="margin-top:32px;display:flex;flex-direction:column;gap:32px">
       <div>
         <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Perú</span>
+          <span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Per煤</span>
           <span class="font-display" style="font-weight:800;font-size:13px">76%</span>
         </div>
         <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">
           <div style="height:100%;border-radius:9999px;background:#facc15;width:76%"></div>
         </div>
-        <p style="margin:12px 0 0;font-size:12px;color:#71717a">Donde más me ven es en</p>
+        <p style="margin:12px 0 0;font-size:12px;color:#71717a">Donde m谩s me ven es en</p>
         <p style="margin:4px 0 0;font-weight:900;font-size:clamp(14px,4vw,18px);letter-spacing:-.02em">Lima - Ica</p>
       </div>
       <div>
@@ -368,7 +429,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
         <div style="height:8px;border-radius:9999px;background:#e4e4e7;overflow:hidden">
           <div style="height:100%;border-radius:9999px;background:#2E7D32;width:24%"></div>
         </div>
-        <p style="margin:12px 0 0;font-size:clamp(11px,3.5vw,13px);font-weight:900">Estados Unidos - España - Chile - Argentina - México</p>
+        <p style="margin:12px 0 0;font-size:clamp(11px,3.5vw,13px);font-weight:900">Estados Unidos - Espa帽a - Chile - Argentina - M茅xico</p>
       </div>
     </div>
   </div>
@@ -377,7 +438,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 <section style="margin-top:80px;border-radius:28px;background:#18181b;color:#fff;padding:32px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:32px;text-align:center">
   <div style="text-align:center;margin:0 auto;max-width:420px">
     <h3 style="margin:0;line-height:1.05;text-align:center;font-weight:800">
-      <span style="display:block;font-size:clamp(24px,5.5vw,36px);letter-spacing:-.03em">¿Listo para que el mundo</span>
+      <span style="display:block;font-size:clamp(24px,5.5vw,36px);letter-spacing:-.03em">驴Listo para que el mundo</span>
       <span style="display:block;margin-top:6px;font-size:clamp(24px,5.5vw,36px);letter-spacing:-.03em">vea su negocio?</span>
     </h3>
   </div>
@@ -391,148 +452,162 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
       <div class="live-dot" style="margin-left:auto;width:8px;height:8px"></div>
     </div>
     <div style="margin-top:16px;border-radius:12px;background:#f0fdf4;border:1px solid #f4f4f5;padding:12px;font-size:12px;line-height:1.5;color:#3f3f46">
-      <b style="color:#18181b">Hola!</b> Soy el Bello. ¿Qué vendes y dónde estás? Te respondo con ideas en 5 min.
+      <b style="color:#18181b">Hola!</b> Soy el Bello. 驴Qu茅 vendes y d贸nde est谩s? Te respondo con ideas en 5 min.
     </div>
     <a href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20que%20mi%20negocio%20llegue%20a%20Peru%20y%20al%20extranjero" target="_blank" rel="noopener noreferrer" style="margin-top:16px;display:flex;width:100%;justify-content:center;background:#18181b;color:#fff;padding:12px;border-radius:9999px;font-size:14px;font-weight:700;text-decoration:none">Hablar por WhatsApp ahora</a>
   </div>
 </section>
 
 <footer style="margin-top:64px;border-top:1px solid rgba(228,228,231,.6);padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:6px">
-  <div style="font-size:11px;color:#a1a1aa;letter-spacing:.04em;text-align:center">© 2026 elBelloCubano</div>
+  <div style="font-size:11px;color:#a1a1aa;letter-spacing:.04em;text-align:center">漏 2026 elBelloCubano</div>
 </footer>
 </div>
 
 <script>
 (function () {
-  // Carga los visores mediante los enlaces que devuelve nuestra API.
-  // Si la API falla, utiliza los mismos enlaces directamente.
-  function enlaceRespaldo(plataforma) {
-    const url = new URL(
-      'https://livecounts.nl/' + plataforma + '-realtime/embed/'
-    );
-
-    const parametros = {
-      u: 'elbellocubano',
-      look: 'clear',
-      hide: 'avatar,name,check,label,goal,logo',
-      tc: '18181b',
-      cc: '18181b',
-      cw: '800',
-      sp: '0.1',
-      ts: 'comma'
-    };
-
-    if (plataforma === 'instagram') {
-      parametros.theme = 'transparent';
-      parametros.size = 'm';
-      parametros.loc = 'es-ES';
-    }
-
-    Object.entries(parametros).forEach(function (entrada) {
-      url.searchParams.set(entrada[0], entrada[1]);
-    });
-
-    return url.href;
-  }
-
-  function colocarVisor(id, enlace, plataforma) {
-    const iframe = document.getElementById(id);
-    if (!iframe || iframe.hasAttribute('src')) return;
-
-    let destino = enlaceRespaldo(plataforma);
-
-    try {
-      const url = new URL(enlace);
-      if (
-        url.origin === 'https://livecounts.nl' &&
-        url.pathname === '/' + plataforma + '-realtime/embed/' &&
-        url.searchParams.get('u') === 'elbellocubano'
-      ) {
-        destino = url.href;
-      }
-    } catch (_) {}
-
-    iframe.src = destino;
-  }
-
-  async function cargarVisores() {
-    const controller = new AbortController();
-    const timeout = setTimeout(function () {
-      controller.abort();
-    }, 2500);
-
-    let embeds = {};
-
-    try {
-      const respuesta = await fetch('/api/followers?view=embeds', {
-        signal: controller.signal
-      });
-      if (!respuesta.ok) throw new Error('No se recibieron los visores');
-      const datos = await respuesta.json();
-      embeds = datos.embeds || {};
-    } catch (_) {
-      // El respaldo evita que un error de nuestra API bloquee los visores.
-    } finally {
-      clearTimeout(timeout);
-      colocarVisor('fb-counter', embeds.facebook, 'facebook');
-      colocarVisor('ig-counter', embeds.instagram, 'instagram');
-    }
-  }
-
-  cargarVisores();
-
-  // TikTok: animación inicial desde cero y consultas posteriores.
-  const contador = document.getElementById('tt-followers');
-  if (!contador) return;
-
   const formato = new Intl.NumberFormat('en-US');
-  const valorOriginal = contador.textContent;
-  let consultando = false;
-  let primeraConsulta = true;
-  let ultimoValor = null;
-  let animacion = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  contador.textContent = '0';
-
-  function detenerAnimacion() {
-    if (animacion !== null) {
-      cancelAnimationFrame(animacion);
-      animacion = null;
+  /*
+    Estos dos valores son 煤nicamente el n煤mero de arranque visual visto en tu
+    grabaci贸n. NO sustituyen al dato real: cuando Livecounts termina de cargar,
+    el iframe real toma su lugar.
+  */
+  const cargasVisuales = [
+    {
+      placeholder: document.getElementById('fb-placeholder'),
+      widget: document.getElementById('fb-widget'),
+      iframe: document.getElementById('fb-counter'),
+      target: 17371
+    },
+    {
+      placeholder: document.getElementById('ig-placeholder'),
+      widget: document.getElementById('ig-widget'),
+      iframe: document.getElementById('ig-counter'),
+      target: 4540
     }
-  }
+  ];
 
-  function animarContador(valorFinal) {
-    detenerAnimacion();
+  function animarNumero(elemento, desde, hasta, duracion, alTerminar) {
+    if (!elemento) return;
 
-    if (
-      document.hidden ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      contador.textContent = formato.format(valorFinal);
+    if (reduceMotion || document.hidden) {
+      elemento.textContent = formato.format(hasta);
+      if (typeof alTerminar === 'function') alTerminar();
       return;
     }
 
-    const duracion = 2200;
     const inicio = performance.now();
+
+    function cuadro(ahora) {
+      const progreso = Math.min((ahora - inicio) / duracion, 1);
+      const suavizado = 1 - Math.pow(1 - progreso, 3);
+      const valor = Math.round(desde + (hasta - desde) * suavizado);
+      elemento.textContent = formato.format(valor);
+
+      if (progreso < 1) {
+        requestAnimationFrame(cuadro);
+      } else if (typeof alTerminar === 'function') {
+        alTerminar();
+      }
+    }
+
+    requestAnimationFrame(cuadro);
+  }
+
+  /*
+    FB e IG empiezan a contar desde 0 en el mismo instante.
+    El iframe ya se est谩 descargando desde que el navegador ley贸 el HTML.
+  */
+  cargasVisuales.forEach(function (item) {
+    if (!item.placeholder || !item.widget || !item.iframe) return;
+
+    let iframeListo = false;
+    let animacionMinimaTerminada = false;
+
+    function mostrarReal() {
+      if (!iframeListo || !animacionMinimaTerminada) return;
+
+      /*
+        Peque帽o margen para que Livecounts haya pintado el n煤mero.
+        Luego hacemos el fundido y queda el contador real.
+      */
+      setTimeout(function () {
+        item.widget.classList.add('is-ready');
+      }, 80);
+    }
+
+    item.iframe.addEventListener('load', function () {
+      iframeListo = true;
+      mostrarReal();
+    }, { once: true });
+
+    animarNumero(
+      item.placeholder,
+      0,
+      item.target,
+      1150,
+      function () {
+        animacionMinimaTerminada = true;
+        mostrarReal();
+      }
+    );
+
+    /*
+      Si por alguna raz贸n Livecounts falla, el n煤mero de arranque permanece
+      visible y nunca queda un hueco blanco.
+    */
+  });
+
+  /*
+    TikTok:
+    consulta nuestra API y anima desde 0 hasta el valor real devuelto.
+  */
+  const contadorTikTok = document.getElementById('tt-followers');
+  if (!contadorTikTok) return;
+
+  let consultando = false;
+  let ultimoValor = null;
+  let primeraConsulta = true;
+  let animacionTikTok = null;
+
+  function detenerAnimacionTikTok() {
+    if (animacionTikTok !== null) {
+      cancelAnimationFrame(animacionTikTok);
+      animacionTikTok = null;
+    }
+  }
+
+  function animarTikTok(valorFinal) {
+    detenerAnimacionTikTok();
+
+    if (reduceMotion || document.hidden) {
+      contadorTikTok.textContent = formato.format(valorFinal);
+      return;
+    }
+
+    const inicio = performance.now();
+    const duracion = 1400;
 
     function avanzar(ahora) {
       const progreso = Math.min((ahora - inicio) / duracion, 1);
       const suavizado = 1 - Math.pow(1 - progreso, 3);
-      contador.textContent = formato.format(
+
+      contadorTikTok.textContent = formato.format(
         Math.floor(valorFinal * suavizado)
       );
 
       if (progreso < 1) {
-        animacion = requestAnimationFrame(avanzar);
+        animacionTikTok = requestAnimationFrame(avanzar);
       } else {
-        animacion = null;
+        animacionTikTok = null;
       }
     }
 
-    animacion = requestAnimationFrame(avanzar);
+    animacionTikTok = requestAnimationFrame(avanzar);
   }
 
-  async function actualizarContador() {
+  async function actualizarTikTok() {
     if (consultando || document.hidden) return;
 
     consultando = true;
@@ -558,21 +633,25 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
         !Number.isSafeInteger(datos.tiktok) ||
         datos.tiktok < 0
       ) {
-        throw new Error('Respuesta del contador no válida');
+        throw new Error('Respuesta del contador no v谩lida');
       }
 
       ultimoValor = datos.tiktok;
 
       if (primeraConsulta) {
         primeraConsulta = false;
-        animarContador(ultimoValor);
+        animarTikTok(ultimoValor);
       } else {
-        detenerAnimacion();
-        contador.textContent = formato.format(ultimoValor);
+        detenerAnimacionTikTok();
+        contadorTikTok.textContent = formato.format(ultimoValor);
       }
     } catch (error) {
       if (ultimoValor === null) {
-        contador.textContent = valorOriginal;
+        /*
+          No inventamos un n煤mero. Si falla la primera consulta,
+          dejamos 0 hasta el pr贸ximo intento.
+        */
+        contadorTikTok.textContent = '0';
       }
       console.warn('No se pudo actualizar TikTok; se conserva el valor visible.');
     } finally {
@@ -581,17 +660,22 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
     }
   }
 
-  actualizarContador();
-  setInterval(actualizarContador, 5000);
+  actualizarTikTok();
+
+  /*
+    TokCounter no necesita una consulta cada 5 segundos desde tu navegador.
+    Cada 10 segundos reduce llamadas y mantiene el contador suficientemente vivo.
+  */
+  setInterval(actualizarTikTok, 10000);
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
-      detenerAnimacion();
+      detenerAnimacionTikTok();
       if (ultimoValor !== null) {
-        contador.textContent = formato.format(ultimoValor);
+        contadorTikTok.textContent = formato.format(ultimoValor);
       }
     } else {
-      actualizarContador();
+      actualizarTikTok();
     }
   });
 })();
