@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff9f5">
+  <meta name="description" content="¡Asere, qué bola! Servicios de El Bello Cubano en Ica, Perú: promociones, clases de música, limpieza de tanques y más.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_PE">
+  <meta property="og:title" content="El Bello Cubano | Servicios en Ica, Perú">
+  <meta property="og:description" content="He ordenado estos servicios de calidad, espero que te sean de ayuda. Dios te bendiga.">
+  <meta property="og:image" content="https://elbellocubano.vercel.app/bello.jpg">
+  <title>El Bello Cubano | Servicios en Ica, Perú</title>
+  <link rel="icon" href="/bello.jpg">
+  <link rel="preconnect" href="https://livecounts.nl" crossorigin>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink:#101016; --pink:#ff0051; --blue:#008ff7; --orange:#fc8504;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+    body {
+      margin:0; color:var(--ink);
+      background:linear-gradient(180deg,#faf3ee,#fffaf6 80%,#fff);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    button,a { -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+    a:focus-visible,button:focus-visible,.carousel:focus-visible { outline:3px solid #673ab7;outline-offset:3px; }
+    .visually-hidden {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+    .container {width:min(100%,1200px);margin-inline:auto;overflow:clip;}
+
+    /* Imagen original sin textos pintados: la tipografía es HTML real. */
+    .hero {position:relative;background:#f5d8b7;}
+    .hero-visual {position:relative;}
+    .hero-photo {display:block;width:100%;height:auto;}
+    .hero-copy {position:absolute;top:20.5%;left:4.2%;width:53%;z-index:2;}
+    .hero-copy h1 {font-size:clamp(36px,5.55vw,73px);line-height:1.03;letter-spacing:-.058em;margin:0 0 12px;font-weight:850;}
+    .hero-copy h1 span {color:#fa0050;}
+    .hero-copy p {font-size:clamp(17px,2.5vw,30px);line-height:1.19;margin:0;max-width:560px;}
+    .hero-copy h1,.hero-copy p {text-shadow:0 1px 12px #fff9;}
+    /* El botón tapa y sustituye el carrito dibujado en la foto. */
+    .cart {
+      position:absolute;z-index:4;top:3.1%;right:2.8%;
+      width:9.45%;min-width:44px;max-width:112px;aspect-ratio:1;
+      border-radius:50%;background:white;color:#481378;
+      display:grid;place-items:center;box-shadow:0 4px 14px #0002;
+      text-decoration:none;transition:transform .2s ease,box-shadow .2s ease;
+    }
+    .cart svg {width:56%;height:56%;display:block;}
+    .cart:hover {transform:translateY(-2px);box-shadow:0 8px 20px #0002;}
+    .cart:active {transform:scale(.96);}
+
+    /* Tarjetas deslizables; los botones de las tarjetas son enlaces reales. */
+    .services {position:relative;padding:0 18px;margin-top:-1px;scroll-margin-top:12px;}
+    .carousel {
+      display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+      overscroll-behavior-inline:contain;scroll-padding-inline:2px;
+      scrollbar-width:none;-webkit-overflow-scrolling:touch;
+      padding:4px 2px 10px;scroll-behavior:smooth;touch-action:pan-x pan-y;
+    }
+    .carousel::-webkit-scrollbar {display:none;}
+    .service {
+      flex:0 0 calc((100% - 28px)/3);min-width:0;border-radius:24px;
+      overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start;
+      color:white;box-shadow:0 6px 12px #0001;
+    }
+    .service img,.service-art {height:210px;width:100%;object-fit:cover;display:block;}
+    .service-art {display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 25% 10%,#ffffff75,transparent 60%),linear-gradient(135deg,#239d76,#005e9c);font-size:75px;}
+    .service-info {min-height:254px;padding:18px 20px 14px;display:flex;flex-direction:column;}
+    .service h2 {font-size:clamp(19px,2.7vw,28px);line-height:1.12;margin:0;letter-spacing:-.035em;overflow-wrap:break-word;}
+    .service .subtitle {font-size:clamp(13px,1.9vw,20px);font-weight:700;margin:5px 0 0;}
+    .service p {font-size:clamp(14px,1.8vw,20px);line-height:1.3;margin:14px 0 13px;text-align:center;}
+    .service .detail {border-top:1px solid #fffd;margin-top:auto;padding-top:13px;}
+    .service .btn {
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      width:100%;min-height:48px;margin-top:auto;padding:10px 12px;
+      text-align:center;text-decoration:none;border-radius:40px;
+      background:#fffdfb;font-size:clamp(16px,2.2vw,22px);font-weight:800;
+      transition:filter .18s ease,transform .18s ease;
+    }
+    .service .btn:hover {filter:brightness(.95);}
+    .service .btn:active {transform:scale(.98);}
+    .service .btn span {font-size:1.1em;line-height:1;}
+    .pink {background:linear-gradient(135deg,#ff265d,#e9004b)}.pink .btn {color:#ed0051}
+    .orange {background:linear-gradient(140deg,#ff9e18,#ff8000)}.orange .btn {color:#f58000}
+    .blue {background:linear-gradient(140deg,#05bbff,#0096f4)}.blue .btn {color:#0477ed}
+    .green {background:linear-gradient(135deg,#18b795,#038c64)}.green .btn {color:#02815e}
+    .slider-ui {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14%;}
+    .arrow {
+      border:0;background:transparent;line-height:1;color:#060c39;cursor:pointer;
+      width:48px;height:48px;display:grid;place-items:center;font-size:32px;border-radius:12px;
+    }
+    .arrow:active {background:#ecebf3;}
+    .dots {display:flex;gap:9px;align-items:center;justify-content:center;}
+    .dot {border:0;width:13px;height:13px;background:#c9cbd0;border-radius:50%;padding:0;cursor:pointer;box-shadow:0 0 0 5px transparent;}
+    .dot.active {background:#ff0051;}
+    .dot:focus-visible {outline-offset:7px;}
+    .swipe-hint {display:flex;align-items:center;justify-content:center;gap:11px;color:#6676f9;font-size:clamp(13px,2.3vw,20px);padding:3px 12px 20px;text-align:center;}
+    .swipe-hint::before {content:'☝';font-size:30px;line-height:1;color:#0e0d14;}
+
+    /* Accesos a redes: SVG auténticos, no letras o símbolos de sustitución. */
+    .social {
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#fff;
+      border-radius:25px;box-shadow:0 4px 25px #0001;
+      margin:0 15px 25px;padding:22px 12px;
+    }
+    .social-item {
+      display:flex;align-items:center;justify-content:center;gap:11px;
+      min-width:0;min-height:74px;padding:8px;
+      border-right:1px solid #e5e7eb;color:inherit;text-decoration:none;border-radius:8px;
+      transition:background .16s ease,transform .16s ease;
+    }
+    .social-item:last-child {border-right:0;}
+    .social-item:hover {background:#f7f8fa;}
+    .social-item:active {background:#f0f2f6;transform:scale(.98);}
+    .social-icon {width:60px;height:60px;flex:0 0 60px;border-radius:17px;display:grid;place-items:center;color:#fff;}
+    .social-icon svg {height:72%;width:72%;display:block;}
+    .social-icon.tt svg {height:78%;width:78%;}
+    .tt {background:#080808;}
+    .ig {background:linear-gradient(35deg,#ffc837,#ff1269 53%,#8527ec);}
+    .fb {background:#1268fa;}
+    .yt {background:#e90028;}
+    .social-data {min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
+    .social-data strong,.number {display:block;font-size:clamp(17px,2.5vw,28px);line-height:1.12;font-weight:850;white-space:nowrap;letter-spacing:-.035em;font-variant-numeric:tabular-nums;}
+    .social-data small {display:block;font-size:clamp(10px,1.5vw,16px);color:#555;margin-top:2px;}
+    .iframe-window {position:relative;overflow:hidden;width:120px;max-width:100%;height:33px;isolation:isolate;}
+    .iframe-window iframe {
+      position:absolute;top:0;left:50%;margin-left:-150px;width:300px;height:80px;border:0;
+      transform:scale(.4);transform-origin:center top;pointer-events:none;
+      background:transparent;opacity:0;transition:opacity .2s ease;
+    }
+    .iframe-window.is-ready iframe {opacity:1;}
+    .counter-pending {position:absolute;inset:0;display:grid;place-items:center;font-size:15px;font-weight:800;color:#888;}
+    .iframe-window.is-ready .counter-pending {display:none;}
+    .footnote {font-size:12px;text-align:center;color:#767676;padding:0 18px 18px;line-height:1.4;}
+    footer {text-align:center;color:#777;padding:10px 0 30px;font-size:12px;}
+
+    @media (max-width:899px) {
+      .service {flex-basis:calc((100% - 14px)/2)}
+      .social {grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding:12px;}
+      .social-item:nth-child(2) {border-right:0;}
+      .social-item:nth-child(-n+2) {border-bottom:1px solid #e8e9ed;}
+      .social-icon {width:52px;height:52px;flex-basis:52px;border-radius:14px;}
+      .social-data strong,.number {font-size:clamp(17px,3vw,25px);}
+    }
+    @media (max-width:650px) {
+      /* Sin recorte de cara, tubular ni Huacachina en teléfono: imagen completa. */
+      .hero {display:flex;flex-direction:column;background:#fff3e9;}
+      .hero-copy {position:relative;inset:auto;width:auto;order:0;padding:25px 21px 20px;background:linear-gradient(130deg,#fff3e9,#ffe5c8 60%,#fff0e7);}
+      .hero-copy h1 {font-size:clamp(32px,8.5vw,50px);line-height:1.04;margin-bottom:10px;letter-spacing:-.05em;}
+      .hero-copy p {font-size:clamp(16px,4.1vw,21px);line-height:1.3;max-width:530px;}
+      .hero-visual {order:1;}
+      .cart {width:clamp(44px,10vw,65px);top:3%;right:2.8%;}
+      .services {padding:0 12px;}
+      .carousel {gap:12px;padding:5px 2px 9px;}
+      .service {flex:0 0 min(82vw,345px);border-radius:20px;}
+      .service img,.service-art {height:clamp(167px,48vw,204px);}
+      .service-info {min-height:250px;padding:16px 17px 15px;}
+      .service h2 {font-size:clamp(22px,6.2vw,26px);}
+      .service .subtitle {font-size:clamp(14px,4vw,17px);}
+      .service p {font-size:clamp(15px,4.4vw,18px);}
+      .service .btn {min-height:50px;font-size:clamp(17px,5vw,21px);}
+      .slider-ui {padding:7px 8px;gap:4px;}
+      .arrow {width:48px;height:48px;font-size:30px;}
+      .dots {gap:9px;}
+      .dot {width:13px;height:13px;}
+      .swipe-hint {padding:2px 8px 16px;font-size:clamp(12px,3.6vw,17px);}
+      .social {margin:0 10px 18px;padding:9px 5px;border-radius:18px;}
+      .social-item {gap:8px;padding:12px 4px;min-height:72px;}
+      .social-icon {width:clamp(37px,10.5vw,48px);height:clamp(37px,10.5vw,48px);flex-basis:clamp(37px,10.5vw,48px);border-radius:12px;}
+      .social-data strong,.number {font-size:clamp(14px,4.3vw,20px);}
+      .social-data small {font-size:clamp(10px,3vw,13px);}
+      .iframe-window {width:96px;height:31px;}
+      .iframe-window iframe {transform:scale(.39);}
+    }
+    @media (max-width:360px) {
+      .hero-copy {padding:20px 16px 16px;}
+      .hero-copy h1 {font-size:31px;}
+      .hero-copy p {font-size:15px;}
+      .social {margin-inline:6px;padding-inline:2px;}
+      .social-item {gap:5px;padding-inline:2px;}
+      .social-icon {width:40px;height:40px;flex-basis:40px;border-radius:10px;}
+      .social-data strong,.number {font-size:15px;}
+      .iframe-window {width:82px;height:27px;}
+      .iframe-window iframe {transform:scale(.34);}
+      .dots {gap:8px;}
+    }
+    @media (prefers-reduced-motion:reduce) {
+      html,.carousel {scroll-behavior:auto;}
+      *,*::before,*::after {transition:none!important;animation:none!important;}
+    }
+  </style>
+</head>
+<body>
+<main class="container">
+  <section class="hero" aria-label="Bienvenida a El Bello Cubano">
+    <div class="hero-visual">
+      <img class="hero-photo" src="/assets/portada-sin-texto.jpg" fetchpriority="high" alt="El Bello Cubano junto a la laguna de Huacachina y un tubular sobre las dunas de Ica.">
+      <a class="cart" href="#servicios" title="Ver servicios" aria-label="Ir a los servicios">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 12.5a2 2 0 0 0 2 1.5h10a2 2 0 0 0 2-1.5L23 6H6"/></svg>
+      </a>
+    </div>
+    <div class="hero-copy"><h1><span>¡Asere,</span> qué bola!</h1><p>He ordenado estos servicios de calidad, espero que te sean de ayuda.<br>Dios te bendiga.</p></div>
+  </section>
+
+  <section class="services" id="servicios" aria-label="Todos los servicios">
+    <div class="carousel" id="carousel" tabindex="0" aria-label="Carrusel de servicios; desliza horizontalmente para ver más">
+      <article class="service pink"><img src="/assets/servicio-promociones.jpg" alt="Promoción en TikTok, Instagram y Facebook"><div class="service-info"><h2>Promociona<br>tu negocio o marca</h2><p class="detail" style="text-align:left">Date a conocer de forma creativa y aumenta tu visibilidad.</p><a class="btn" href="/promociones/">Ver precios <span aria-hidden="true">➜</span></a></div></article>
+      <article class="service orange"><img src="/assets/servicio-musica.jpg" alt="Guitarra, batería, teclado y micrófono" loading="lazy"><div class="service-info"><h2>Clases de música</h2><div class="subtitle">con el Bello Cubano</div><p class="detail">Piano | Guitarra<br>Batería y Canto</p><a class="btn" href="mailto:?subject=Clases%20de%20m%C3%BAsica%20con%20El%20Bello%20Cubano" aria-label="Consultar por clases de música">Consultar <span aria-hidden="true">➜</span></a></div></article>
+      <article class="service blue"><img src="/assets/servicio-tanques.jpg" alt="Trabajador limpiando dentro de un tanque de agua azul" loading="lazy"><div class="service-info"><h2>Limpieza y desinfección de tanques de agua</h2><p class="detail">Servicio en ICA</p><a class="btn" href="mailto:?subject=Limpieza%20de%20tanques%20en%20Ica" aria-label="Consultar por limpieza de tanques">Consultar <span aria-hidden="true">➜</span></a></div></article>
+      <article class="service green"><div class="service-art" role="img" aria-label="Envío de dinero a Cuba">🇨🇺💸</div><div class="service-info"><h2>Envío de dinero a Cuba</h2><p class="detail">Consulta las condiciones y disponibilidad del servicio.</p><a class="btn" href="mailto:?subject=Consulta%20sobre%20env%C3%ADo%20de%20dinero%20a%20Cuba">Consultar <span aria-hidden="true">➜</span></a></div></article>
+    </div>
+    <nav class="slider-ui" aria-label="Navegar los servicios">
+      <button id="prev" class="arrow" type="button" aria-label="Servicio anterior">❮</button>
+      <div class="dots" id="dots">
+        <button class="dot active" type="button" aria-label="Ir al servicio 1" aria-current="true"></button>
+        <button class="dot" type="button" aria-label="Ir al servicio 2"></button>
+        <button class="dot" type="button" aria-label="Ir al servicio 3"></button>
+        <button class="dot" type="button" aria-label="Ir al servicio 4"></button>
+      </div>
+      <button id="next" class="arrow" type="button" aria-label="Servicio siguiente">❯</button>
+    </nav>
+    <div class="swipe-hint">Desliza para ver más servicios</div>
+  </section>
+
+  <section class="social" aria-label="Redes sociales y contadores">
+    <a href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="Abrir TikTok de El Bello Cubano">
+      <div class="social-icon tt" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-1.77 5.23 5.23 0 0 1-.93-2.92h-3.6v12.16a2.66 2.66 0 0 1-2.66 2.66 2.66 2.66 0 0 1-2.66-2.66 2.66 2.66 0 0 1 2.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 0 0-.7-.04 6.26 6.26 0 0 0-6.26 6.26 6.26 6.26 0 0 0 6.26 6.26 6.26 0 0 0 6.26-6.26V8.8a8.4 8.4 0 0 0 4.7 1.44V6.69z" fill="#25F4EE" transform="translate(-1.2,1.1)"/>
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-1.77 5.23 5.23 0 0 1-.93-2.92h-3.6v12.16a2.66 2.66 0 0 1-2.66 2.66 2.66 2.66 0 0 1-2.66-2.66 2.66 2.66 0 0 1 2.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 0 0-.7-.04 6.26 6.26 0 0 0-6.26 6.26 6.26 6.26 0 0 0 6.26 6.26 6.26 0 0 0 6.26-6.26V8.8a8.4 8.4 0 0 0 4.7 1.44V6.69z" fill="#FE2C55" transform="translate(1.1,-.7)"/>
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-1.77 5.23 5.23 0 0 1-.93-2.92h-3.6v12.16a2.66 2.66 0 0 1-2.66 2.66 2.66 2.66 0 0 1-2.66-2.66 2.66 2.66 0 0 1 2.66-2.66c.24 0 .47.03.7.08V8.95a6.26 6.26 0 0 0-.7-.04 6.26 6.26 0 0 0-6.26 6.26 6.26 6.26 0 0 0 6.26 6.26 6.26 6.26 0 0 0 6.26-6.26V8.8a8.4 8.4 0 0 0 4.7 1.44V6.69z" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="social-data"><strong id="tt-followers" aria-label="Seguidores de TikTok" aria-live="off">—</strong><small>Seguidores</small></div>
+    </a>
+    <a href="https://www.instagram.com/elbellocubano" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="Abrir Instagram de El Bello Cubano">
+      <div class="social-icon ig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="2.5" y="2.5" width="19" height="19" rx="5.7"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.7" cy="6.5" r="1.3" fill="#fff" stroke="none"/></svg></div>
+      <div class="social-data"><div class="iframe-window" id="ig-window"><span class="counter-pending" aria-hidden="true">—</span><iframe title="Contador de Instagram" scrolling="no" loading="lazy" tabindex="-1" src="https://livecounts.nl/instagram-realtime/embed/?u=elbellocubano&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tf=inter&amp;cf=inter&amp;tc=18181b&amp;cc=18181b&amp;up=18181b&amp;dn=18181b&amp;cw=800&amp;lh=1&amp;tn=0&amp;sp=0.1&amp;ts=comma&amp;pb=none&amp;cb=none&amp;bc=none&amp;theme=transparent&amp;size=m&amp;loc=es-ES"></iframe></div><small>Seguidores</small></div>
+    </a>
+    <a href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="Abrir Facebook de El Bello Cubano">
+      <div class="social-icon fb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="social-data"><div class="iframe-window" id="fb-window"><span class="counter-pending" aria-hidden="true">—</span><iframe title="Contador de Facebook" scrolling="no" loading="lazy" tabindex="-1" src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;look=clear&amp;hide=avatar,name,check,label,goal,logo&amp;tf=inter&amp;cf=inter&amp;tc=18181b&amp;cc=18181b&amp;up=18181b&amp;dn=18181b&amp;cw=800&amp;lh=1&amp;tn=0&amp;sp=0.1&amp;ts=comma&amp;pb=none&amp;cb=none&amp;bc=none"></iframe></div><small>Seguidores</small></div>
+    </a>
+    <a href="https://www.youtube.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" class="social-item" aria-label="Abrir YouTube de El Bello Cubano">
+      <div class="social-icon yt" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="1" y="4.1" width="22" height="15.8" rx="5" fill="#fff"/><path d="M10 8l6 4-6 4z" fill="#e90028"/></svg></div>
+      <div class="social-data"><strong title="Contador pendiente de conectar">—</strong><small>Suscriptores</small></div>
+    </a>
+  </section>
+  <p class="footnote">TikTok se actualiza mediante la API. Instagram y Facebook dependen de Livecounts; YouTube está pendiente de conectar.</p>
+</main>
+<footer>© 2026 El Bello Cubano · Ica, Perú</footer>
+<script>
+(() => {
+  'use strict';
+  const track = document.getElementById('carousel');
+  const slides = Array.from(track.querySelectorAll('.service'));
+  const dots = Array.from(document.querySelectorAll('.dot'));
+  const previous = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0, autoplay = null, resumeDelay = null, scrollDebounce = null;
+  let interacting = false;
+
+  function updateDots() {
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === active);
+      if (index === active) dot.setAttribute('aria-current', 'true');
+      else dot.removeAttribute('aria-current');
+    });
+  }
+  function go(index, smooth = true) {
+    active = (index + slides.length) % slides.length;
+    const left = slides[active].offsetLeft - slides[0].offsetLeft;
+    track.scrollTo({ left, behavior: smooth && !reduced ? 'smooth' : 'instant' });
+    updateDots();
+  }
+  function stopAuto() { clearInterval(autoplay); autoplay = null; }
+  function startAuto() {
+    stopAuto();
+    if (!reduced && !interacting && !document.hidden) {
+      autoplay = setInterval(() => go(active + 1), 5200);
+    }
+  }
+  function pauseTemporarily() {
+    stopAuto(); clearTimeout(resumeDelay);
+    resumeDelay = setTimeout(() => { interacting = false; startAuto(); }, 9000);
+  }
+  previous.addEventListener('click', () => {go(active - 1);pauseTemporarily();});
+  next.addEventListener('click', () => {go(active + 1);pauseTemporarily();});
+  dots.forEach((dot, index) => dot.addEventListener('click', () => {go(index);pauseTemporarily();}));
+  track.addEventListener('pointerdown', () => {interacting = true;pauseTemporarily();}, {passive:true});
+  track.addEventListener('pointerup', () => {interacting = false;pauseTemporarily();}, {passive:true});
+  track.addEventListener('focusin', () => {interacting = true;stopAuto();});
+  track.addEventListener('focusout', () => {interacting = false;pauseTemporarily();});
+  track.addEventListener('pointerenter', event => {if(event.pointerType === 'mouse'){interacting = true;stopAuto();}});
+  track.addEventListener('pointerleave', event => {if(event.pointerType === 'mouse'){interacting = false;pauseTemporarily();}});
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollDebounce);
+    scrollDebounce = setTimeout(() => {
+      let best = 0, distance = Infinity;
+      slides.forEach((slide, index) => {
+        const delta = Math.abs(slide.offsetLeft - slides[0].offsetLeft - track.scrollLeft);
+        if (delta < distance) {distance = delta;best = index;}
+      });
+      active = best;
+      updateDots();
+    }, 125);
+  }, {passive:true});
+  window.addEventListener('resize', () => go(active, false), {passive:true});
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAuto(); else startAuto();
+  });
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) stopAuto(); else if(!interacting) startAuto();
+    }, {threshold:0.18});
+    observer.observe(track);
+  } else startAuto();
+
+  // Livecounts se muestra dentro de su ventana; no intercepta toques en los enlaces.
+  for (const frame of document.querySelectorAll('.iframe-window iframe')) {
+    frame.addEventListener('load', () => {
+      setTimeout(() => frame.parentElement.classList.add('is-ready'), 200);
+    }, {once:true});
+  }
+
+  // TikTok: mismo endpoint /api/followers que la página de promociones.
+  const tt = document.getElementById('tt-followers');
+  const format = new Intl.NumberFormat('en-US');
+  let busy = false, last = null, first = true, pendingFrame = null;
+  async function updateTikTok() {
+    if (busy || document.hidden) return;
+    busy = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch('/api/followers', {cache:'no-store',signal:controller.signal});
+      if (!response.ok) throw new Error('API no disponible');
+      const stats = await response.json();
+      if (stats.consulta_ok !== true || !Number.isSafeInteger(stats.tiktok) || stats.tiktok < 0) throw new Error('Dato inválido');
+      last = stats.tiktok;
+      if (pendingFrame !== null) cancelAnimationFrame(pendingFrame);
+      if (first && !reduced) {
+        const initial = performance.now();
+        const target = last;
+        const draw = now => {
+          const p = Math.min(1, (now - initial) / 1400);
+          tt.textContent = format.format(Math.round(target * (1 - Math.pow(1 - p,3))));
+          pendingFrame = p < 1 ? requestAnimationFrame(draw) : null;
+        };
+        pendingFrame = requestAnimationFrame(draw);
+      } else tt.textContent = format.format(last);
+      first = false;
+    } catch (error) {
+      if (last === null) tt.textContent = '—';
+      console.warn('No se pudo actualizar el contador de TikTok.');
+    } finally {clearTimeout(timeout);busy = false;}
+  }
+  updateTikTok();
+  setInterval(updateTikTok, 10000);
+  document.addEventListener('visibilitychange', () => {if (!document.hidden) updateTikTok();});
+})();
+</script>
+</body>
+</html>
