@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fffaf6">
+  <meta name="description" content="El Bello Cubano: promoción de negocios, clases de música y limpieza de tanques de agua en Ica.">
+  <title>El Bello Cubano | Servicios</title>
+  <style>
+    :root { --navy:#07143c; --pink:#ff0751; --orange:#ff8700; --blue:#0489f5; --gap:6px; --round:17px; }
+    *, *::before, *::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-width:300px; background:#fff8f2; color:#171717; font-family:Lato,"Trebuchet MS",Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    button { font:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    button:focus-visible { outline:3px solid #203ad3; outline-offset:3px; }
+    .site { width:100%; max-width:1120px; min-height:100svh; margin:auto; overflow:hidden; isolation:isolate;
+       background:linear-gradient(180deg,#eac38d 0%,#f4deca 41%,#fff8f2 71%,#fffaf7 100%); }
+    .hero { position:relative; width:100%; height:63vw; max-height:600px; overflow:visible; }
+    .hero img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 18%;
+      -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 80%,rgba(0,0,0,.72) 90%,transparent 100%);
+      mask-image:linear-gradient(to bottom,#000 0%,#000 80%,rgba(0,0,0,.72) 90%,transparent 100%); }
+    .hero::after {content:""; position:absolute; left:0;right:0;top:99%;height:130px;z-index:-1;pointer-events:none;
+      background:linear-gradient(180deg,rgba(246,219,193,.12),rgba(255,247,239,0));}
+    .welcome-banner {
+      position:absolute;
+      left:50%;
+      top:39.5%;
+      transform:translateX(-50%);
+      width:min(76%, 650px);
+      padding:10px 18px 12px;
+      border-radius:18px;
+      background:rgba(255,248,242,.90);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 12px 28px rgba(48,31,18,.10);
+      text-align:center;
+      color:#2b2b2b;
+    }
+    .welcome-banner h1 {
+      margin:0;
+      font-size:clamp(18px,3vw,31px);
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-.5px;
+      color:#1f1f1f;
+    }
+    .welcome-banner .bang,
+    .welcome-banner .highlight {
+      color:#d61f1f;
+    }
+    .welcome-banner p {
+      margin:6px 0 0;
+      font-size:clamp(11px,1.5vw,17px);
+      line-height:1.3;
+      font-weight:500;
+      color:#404040;
+    }
+    .content {position:relative; z-index:2; padding:0 8px 12px; margin:0 auto;}
+    .cards {--w:100%; position:relative; width:100%; max-width:995px; height:clamp(156px,41vw,192px);margin:-2px auto 0;touch-action:pan-y;}
+    .service-card {position:absolute;top:0;left:0;width:calc((100% - 2 * var(--gap))/3);height:100%;
+      display:flex;flex-direction:column;overflow:hidden;border-radius:var(--round);color:#fff;
+      box-shadow:0 7px 13px rgba(111,63,29,.18);border:1px solid rgba(255,255,255,.14);
+      transform:translateX(0);will-change:transform,opacity;}
+    .service-card.pink {background:linear-gradient(145deg,#ff0a51,#fb0050)}
+    .service-card.orange {background:linear-gradient(145deg,#ff9908,#ff8200)}
+    .service-card.blue {background:linear-gradient(145deg,#069ffa,#0389ef)}
+    .artwork {position:relative; height:43%;flex:0 0 43%;overflow:hidden; border-top-left-radius:calc(var(--round) - 1px); border-top-right-radius:calc(var(--round) - 1px);}
+    .artwork img {width:100%;height:100%;display:block;object-fit:cover;object-position:center center; transform:scale(1.08); transform-origin:center center;}
+    .card-inner {padding:3px 4px 4px;min-height:0;flex:1;display:flex; flex-direction:column;text-align:center;align-items:center;}
+    .card-title {width:100%;font-size:clamp(10px,2.8vw,14px);font-weight:900;letter-spacing:-.2px;line-height:1.04;
+      margin:0;min-height:29px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+    .card-title .small {display:block;font-size:.69em;line-height:1.18;margin-top:2px;font-weight:700;letter-spacing:0;}
+    .line {width:96%;height:1px;border:0;flex-shrink:0;background:rgba(255,255,255,.82);margin:1px auto 3px;}
+    .description {margin:0 auto;max-width:100%;font-size:clamp(7.7px,2.2vw,11px);line-height:1.15;font-weight:400;display:flex;
+      flex:1; flex-direction:column;align-items:center;justify-content:center;white-space:normal;}
+    .description span {display:block;}
+    .blue .description {font-size:clamp(7.5px,2.1vw,10.5px);}
+    .blue .description span:first-child {white-space:nowrap;}
+    .city {font-size:1.04em;font-weight:700;display:flex!important;align-items:center;gap:3px;margin-top:1px;}
+    .city svg {width:10px;height:12px;fill:currentColor;}
+    .price-button {flex:0 0 auto;width:100%;height:clamp(22px,5.5vw,29px);border:0;border-radius:40px;
+      display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;font-size:clamp(9.2px,2.5vw,13px);
+      letter-spacing:-.18px;font-weight:900;background:linear-gradient(110deg,#fff9fb,#fff0f3);margin-top:2px;
+      box-shadow:inset 0 1px rgba(255,255,255,.8);transition:transform .2s ease,filter .2s ease;}
+    .price-button:hover {transform:translateY(-1px);filter:brightness(1.05);}
+    .price-button:active {transform:scale(.97);}
+    .price-button svg {width:13px;height:13px;stroke-width:3;}
+    .pink .price-button {color:#fa004c;}.orange .price-button {color:#ff8100;}.blue .price-button {color:#0064ed;}
+    .carousel-control {max-width:890px;margin:2px auto 0;height:28px;display:flex;align-items:center;justify-content:space-between;}
+    .arrow {width:46px;height:28px;border:0;display:grid;place-items:center;background:none;color:#061447;}
+    .arrow svg {width:16px;height:24px;stroke-width:3.5;transition:transform .2s ease;}
+    .arrow:hover svg {transform:scale(1.14);}
+    .dots {display:flex;align-items:center;gap:10px;justify-content:center;}
+    .dot {width:10px;height:10px;padding:0;border:0;border-radius:50%;background:#d0d0d0;transition:transform .25s ease,background .25s ease;}
+    .dot[aria-current="true"] {background:#ff0051;transform:scale(1.09);}
+    .swipe-guide {display:flex;justify-content:center;align-items:center;text-align:center;gap:10px;color:#2842fa;
+      font-size:clamp(12px,3.15vw,15px);font-weight:400;white-space:nowrap;margin:1px auto 8px;}
+    .swipe-guide::before,.swipe-guide::after {content:"";height:1px;background:rgba(176,159,147,.36);flex:0 1 40px;}
+    .social-panel {max-width:980px;margin:auto;background:rgba(255,255,255,.97);border-radius:23px;
+      min-height:78px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+      align-items:center;padding:5px 10px;gap:0 8px;box-shadow:0 7px 23px rgba(100,65,45,.065);}
+    .social {width:100%;min-width:0;border:0;background:none;display:flex;align-items:center;justify-content:center;
+      padding:1px 0;gap:7px;border-radius:11px;transition:background .15s ease,transform .15s ease;text-align:left;}
+    .social:hover {background:#f6f7ff;transform:translateY(-1px);}
+    .social img {width:31px;height:31px;object-fit:contain;flex-shrink:0;}
+    .social-text strong {display:block;color:#080808;font-size:clamp(12px,3.35vw,18px);letter-spacing:-.7px;line-height:1.05;font-weight:900;white-space:nowrap;}
+    .social-text small {display:block;color:#5a5a5a;font-size:clamp(9px,2.45vw,12px);white-space:nowrap;line-height:1.12;}
+    .dialog-shade {display:none;position:fixed;inset:0;z-index:100;background:rgba(7,11,30,.64);padding:20px;place-items:center;backdrop-filter:blur(3px)}
+    .dialog-shade.open {display:grid;}
+    .dialog {width:min(100%,390px);background:#fff;color:#1b1b25;text-align:center;position:relative;padding:28px 23px;border-radius:20px;box-shadow:0 24px 60px #0004;}
+    .dialog h2 {font-size:23px;margin:3px 0 10px;line-height:1.17;}
+    .dialog p {font-size:15px;line-height:1.5;margin:0 0 18px;}
+    .dialog-close {position:absolute;top:5px;right:12px;border:0;background:none;color:#36394b;font-size:27px;}
+    .dialog-ok {padding:10px 22px;border:0;border-radius:20px;background:#f80753;color:#fff;font-weight:800;font-size:15px;}
+    /* Ajustes finos de encuadre y limpieza visual en móvil */
+    .pink .artwork img { object-position: 46% 52%; transform: scale(1.08); }
+    .orange .artwork img { object-position: 50% 53%; transform: scale(1.10); }
+    .blue .artwork img { object-position: 51% 44%; transform: scale(1.12); }
+    @media(max-width:619px) {
+      .hero { height:61vw; }
+      .hero img { object-position:center top; }
+      .welcome-banner {
+        top:41.5%;
+        width:min(84%, 420px);
+        padding:8px 12px 10px;
+        border-radius:14px;
+      }
+      .welcome-banner h1 { font-size:clamp(13px,4.4vw,21px); }
+      .welcome-banner p { font-size:clamp(8.5px,2.5vw,12px); margin-top:4px; }
+      .cards { height:clamp(150px,39vw,184px); }
+      .artwork { height:42%; flex-basis:42%; }
+      .card-inner { padding:3px 4px 4px; }
+      .card-title { min-height:27px; }
+      .social-panel { min-height:75px; }
+    }
+    @media(min-width:620px) {
+      :root {--gap:14px;--round:25px;}
+      .hero {height:min(75vw,840px);}
+      .content {padding:0 clamp(20px,3vw,38px) 32px;}
+      .cards {height:clamp(280px,34vw,430px);}
+      .artwork {height:48%;flex-basis:48%;}
+      .card-inner {padding:9px clamp(9px,1.6vw,19px) 14px;}
+      .card-title {font-size:clamp(20px,2.45vw,31px);line-height:1.08;min-height:72px;}
+      .line {margin:4px auto 8px;}
+      .description {font-size:clamp(16px,1.8vw,22px);line-height:1.24;}
+      .blue .description {font-size:clamp(15px,1.7vw,20px);}
+      .price-button {height:clamp(42px,4.4vw,55px);font-size:clamp(18px,2vw,25px);gap:9px;}
+      .price-button svg {width:22px;height:22px;}
+      .city svg {width:16px;height:19px;}
+      .carousel-control {height:54px;margin-top:8px;}
+      .arrow {width:60px;height:53px;}.arrow svg {width:28px;height:37px;}
+      .dots {gap:14px;}.dot {width:16px;height:16px;}
+      .swipe-guide {font-size:clamp(18px,2vw,23px);margin:2px auto 24px;gap:17px;}
+      .swipe-guide::before,.swipe-guide::after {flex-basis:155px;}
+      .social-panel {min-height:118px;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:1fr;padding:18px 10px;border-radius:29px;}
+      .social {gap:10px;}.social img {width:56px;height:56px;}.social-text strong {font-size:clamp(20px,2.45vw,31px);}.social-text small {font-size:clamp(14px,1.55vw,20px);}
+    }
+    @media(max-width:359px) {
+      :root {--gap:5px;--round:14px;}
+      .content {padding-left:7px;padding-right:7px;}
+      .hero {height:60vw;}
+      .welcome-banner { top:42%; width:min(88%, 350px); padding:7px 10px 8px; }
+      .welcome-banner h1 { font-size:12px; }
+      .welcome-banner p { font-size:7.8px; }
+      .cards {height:148px;}
+      .artwork {height:41%;flex-basis:41%;}
+      .card-inner {padding:2px 2px 3px;}
+      .card-title {font-size:9.1px;min-height:26px;}
+      .description {font-size:7.2px;line-height:1.12;}
+      .blue .description {font-size:6.8px;}
+      .price-button {height:21px;font-size:8.6px;}
+      .price-button svg {width:11px;height:11px;}
+      .carousel-control {height:26px;}
+      .swipe-guide {font-size:11px; margin-bottom:6px;}
+      .social-panel {min-height:72px; padding:4px 5px;gap:0 4px;}
+      .social img {width:28px;height:28px;}.social-text strong {font-size:11.5px;}.social-text small {font-size:8.6px;}
+    }
+    @media(prefers-reduced-motion:reduce) {
+      *,*::before,*::after {scroll-behavior:auto !important;animation-duration:.01ms!important;transition-duration:.01ms!important;}
+    }
+  </style>
+</head>
+<body>
+<div class="site">
+  <header class="hero" aria-label="El Bello Cubano en Huacachina">
+    <img src="assets/portada.webp" alt="El Bello Cubano en las dunas de Huacachina, con oasis y buggy al atardecer" fetchpriority="high">
+      <div class="welcome-banner" aria-label="Bienvenida a la página">
+      <h1><span class="bang">¡</span><span class="highlight">Asere</span> que bola!</h1>
+      <p>Espero que estos servicios de calidad te sean de ayuda. Dios te bendiga.</p>
+    </div>
+  </header>
+  <main class="content">
+    <section class="cards" id="cards" aria-label="Servicios disponibles. Puedes moverlos manualmente con las flechas o deslizando con el dedo">
+      <article class="service-card pink" data-index="0">
+        <div class="artwork"><img src="assets/promocion.webp" alt="Teléfono, redes sociales y megáfono de promoción de marcas"></div>
+        <div class="card-inner">
+          <h2 class="card-title">Promociona<br>tu negocio o marca</h2>
+          <div class="line"></div>
+          <p class="description"><span>Aumenta tu visibilidad</span><span>de forma creativa</span></p>
+          <button class="price-button" data-service="Promoción de negocios" type="button">Ver precios <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button>
+        </div>
+      </article>
+      <article class="service-card orange" data-index="1">
+        <div class="artwork"><img src="assets/musica.webp" alt="Guitarra, batería, piano y micrófono"></div>
+        <div class="card-inner">
+          <h2 class="card-title">Clases de música<span class="small">con el Bello Cubano</span></h2>
+          <div class="line"></div>
+          <p class="description"><span>Piano&nbsp; | &nbsp;Guitarra</span><span>Batería y Canto</span></p>
+          <button class="price-button" data-service="Clases de música" type="button">Ver precios <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button>
+        </div>
+      </article>
+      <article class="service-card blue" data-index="2">
+        <div class="artwork"><img src="assets/tanques.webp" alt="Técnico limpiando un tanque de agua azul"></div>
+        <div class="card-inner">
+          <h2 class="card-title">Limpieza de<br>tanques de agua</h2>
+          <div class="line"></div>
+          <p class="description"><span>Limpieza y desinfección</span><span class="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>Ica.</span></p>
+          <button class="price-button" data-service="Limpieza de tanques de agua" type="button">Ver precios <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button>
+        </div>
+      </article>
+    </section>
+
+    <nav class="carousel-control" aria-label="Navegación de servicios">
+      <button type="button" class="arrow" id="prev" aria-label="Ver los servicios anteriores"><svg viewBox="0 0 32 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 8 8 24l16 16"/></svg></button>
+      <div class="dots" aria-label="Servicio del centro">
+        <button class="dot" data-dot="0" aria-label="Centrar promoción de negocios" aria-current="false"></button>
+        <button class="dot" data-dot="1" aria-label="Centrar clases de música" aria-current="true"></button>
+        <button class="dot" data-dot="2" aria-label="Centrar limpieza de tanques" aria-current="false"></button>
+      </div>
+      <button type="button" class="arrow" id="next" aria-label="Ver más servicios"><svg viewBox="0 0 32 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8 24 24 8 40"/></svg></button>
+    </nav>
+    <div class="swipe-guide">Desliza para ver más servicios</div>
+
+    <section class="social-panel" aria-label="Comunidad en redes sociales">
+      <button type="button" class="social" data-social="TikTok"><img src="assets/icono-tiktok.webp" alt=""><span class="social-text"><strong>150K+</strong><small>Seguidores</small></span></button>
+      <button type="button" class="social" data-social="Instagram"><img src="assets/icono-instagram.webp" alt=""><span class="social-text"><strong>100K+</strong><small>Seguidores</small></span></button>
+      <button type="button" class="social" data-social="Facebook"><img src="assets/icono-facebook.webp" alt=""><span class="social-text"><strong>80K+</strong><small>Seguidores</small></span></button>
+      <button type="button" class="social" data-social="YouTube"><img src="assets/icono-youtube.webp" alt=""><span class="social-text"><strong>50K+</strong><small>Suscriptores</small></span></button>
+    </section>
+  </main>
+</div>
+
+<div class="dialog-shade" id="dialog" role="presentation">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogText">
+    <button class="dialog-close" id="dialogCloseX" type="button" aria-label="Cerrar">×</button>
+    <h2 id="dialogTitle">Servicio</h2><p id="dialogText">Próximamente encontrarás los precios aquí.</p>
+    <button class="dialog-ok" id="dialogOk" type="button">Entendido</button>
+  </div>
+</div>
+<script>
+(() => {
+  'use strict';
+  // Añadir aquí los enlaces reales cuando estén disponibles.
+  const serviceLinks = {
+    'Promoción de negocios': '',
+    'Clases de música': '',
+    'Limpieza de tanques de agua': ''
+  };
+  const socialLinks = { TikTok:'', Instagram:'', Facebook:'', YouTube:'' };
+
+  const area = document.querySelector('#cards');
+  const cards = [...area.querySelectorAll('.service-card')];
+  const dots = [...document.querySelectorAll('[data-dot]')];
+  let order = [0,1,2], busy = false;
+  let startX = null;
+  let lastFocus = null;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const locations = () => {
+    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gap')) || 6;
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    return [0,cardWidth+gap,2*(cardWidth+gap)];
+  };
+  const frame = (x, scale=1, y=0) => `translate3d(${x}px,${y}px,0) scale(${scale})`;
+  function updateDots() {
+    dots.forEach((dot) => dot.setAttribute('aria-current',String(Number(dot.dataset.dot) === order[1])));
+    area.setAttribute('aria-label',`Servicios: ${order.map(i => cards[i].querySelector('.price-button').dataset.service).join(', ')}`);
+  }
+  function place() {
+    const xs = locations();
+    order.forEach((id,position) => {
+      const card = cards[id]; card.style.transform=frame(xs[position]);
+      card.style.opacity='1'; card.style.zIndex='2';
+    });
+    updateDots();
+  }
+  async function rotate(dir=1, fromUser=false) {
+    if (busy) return;
+    busy = true;
+    const xs = locations();
+    const oldOrder = order.slice();
+    const length = reducedMotion.matches ? 0 : 920;
+    if (length === 0 || !cards[0].animate) {
+      order = dir > 0 ? [oldOrder[1], oldOrder[2], oldOrder[0]] : [oldOrder[2], oldOrder[0], oldOrder[1]];
+      place();
+      busy = false;
+      return;
+    }
+    const specs = dir > 0 ? [
+      [oldOrder[0], [{transform:frame(xs[0]), opacity:1}, {transform:frame(xs[2]), opacity:.98}], 1],
+      [oldOrder[1], [{transform:frame(xs[1]), opacity:1}, {transform:frame(xs[0]), opacity:1}], 2],
+      [oldOrder[2], [{transform:frame(xs[2]), opacity:1}, {transform:frame(xs[1]), opacity:1}], 2]
+    ] : [
+      [oldOrder[2], [{transform:frame(xs[2]), opacity:1}, {transform:frame(xs[0]), opacity:.98}], 1],
+      [oldOrder[0], [{transform:frame(xs[0]), opacity:1}, {transform:frame(xs[1]), opacity:1}], 2],
+      [oldOrder[1], [{transform:frame(xs[1]), opacity:1}, {transform:frame(xs[2]), opacity:1}], 2]
+    ];
+    const anims = specs.map(([id, keyframes, z]) => {
+      cards[id].style.zIndex = String(z);
+      return cards[id].animate(keyframes, {
+        duration: length,
+        easing: 'cubic-bezier(.22,.61,.36,1)',
+        fill: 'forwards'
+      });
+    });
+    try { await Promise.all(anims.map(a => a.finished)); } catch (e) {}
+    order = dir > 0 ? [oldOrder[1], oldOrder[2], oldOrder[0]] : [oldOrder[2], oldOrder[0], oldOrder[1]];
+    anims.forEach(a => a.cancel());
+    place();
+    busy = false;
+  }
+  document.querySelector('#prev').addEventListener('click',()=>rotate(-1,true));
+  document.querySelector('#next').addEventListener('click',()=>rotate(1,true));
+  dots.forEach(dot=>dot.addEventListener('click',()=>{
+    const target=Number(dot.dataset.dot);
+    if (target === order[1]) return;
+    rotate(target===order[2] ? 1 : -1, true);
+  }));
+  area.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});
+  area.addEventListener('touchend',e=>{
+    if(startX===null)return;
+    const distance=e.changedTouches[0].screenX-startX;startX=null;
+    if(Math.abs(distance)>38)rotate(distance<0 ? 1:-1,true);
+  },{passive:true});
+  window.addEventListener('resize',()=>{if(!busy)place()},{passive:true});
+  place();
+
+  const dialog=document.querySelector('#dialog');
+  const title=document.querySelector('#dialogTitle');
+  const message=document.querySelector('#dialogText');
+  function openDialog(name,text) {
+    lastFocus=document.activeElement; title.textContent=name;message.textContent=text;
+    dialog.classList.add('open');document.body.style.overflow='hidden';
+    document.querySelector('#dialogOk').focus();
+  }
+  function closeDialog(){dialog.classList.remove('open');document.body.style.overflow='';lastFocus?.focus();}
+  document.querySelectorAll('[data-service]').forEach(button=>button.addEventListener('click',()=>{
+    const name=button.dataset.service, url=serviceLinks[name];
+    if(url){window.location.assign(url);return;}
+    openDialog(name,'Este botón ya funciona. Aquí pondremos el enlace de precios cuando esté disponible.');
+  }));
+  document.querySelectorAll('[data-social]').forEach(button=>button.addEventListener('click',()=>{
+    const name=button.dataset.social,url=socialLinks[name];
+    if(url){window.open(url,'_blank','noopener,noreferrer');return;}
+    openDialog(name,'Este botón está listo para enlazar a tu red social.');
+  }));
+  document.querySelector('#dialogCloseX').addEventListener('click',closeDialog);
+  document.querySelector('#dialogOk').addEventListener('click',closeDialog);
+  dialog.addEventListener('click',e=>{if(e.target===dialog)closeDialog();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dialog.classList.contains('open'))closeDialog();});
+})();
+</script>
+</body>
+</html>
