@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff7f0">
+<meta name="description" content="El Bello Cubano: limpieza de tanques de agua, promoción de negocios y clases de música.">
+<title>el Bello Cubano | Servicios</title>
+<script>document.documentElement.classList.add("is-loading");</script>
+<script src="./page-ready.js" defer></script>
+<link rel="preload" as="image" href="assets/portada-optimizada.webp">
+<link rel="preload" as="image" href="assets/promocion-optimizada.webp">
+<link rel="preload" as="image" href="assets/musica-optimizada.webp">
+<link rel="preload" as="image" href="assets/limpieza-optimizada.webp">
+<style>
+:root{color-scheme:light;--blue:#0878e9;--ink:#06133d}
+*,*::before,*::after{box-sizing:border-box}
+html{background:#f7f1eb}
+body{margin:0;min-height:100svh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);display:flex;align-items:flex-start;justify-content:center;background:linear-gradient(180deg,#d7ecfd,#f9efe4 54%,#fffaf4)}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid #ff5b3d;outline-offset:3px}
+.poster{position:relative;width:min(100%,1024px,66.6667svh);aspect-ratio:2/3;isolation:isolate;margin:0 auto;user-select:none;-webkit-user-select:none;touch-action:pan-y;background:#fff7f0;overflow:hidden;box-shadow:0 15px 50px #20233c14;container-type:inline-size}
+.poster-picture{width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}
+/* El banner completo continúa detrás de las tarjetas y se funde con la arena. */
+.footer-picture{-webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 83.7%,#000 84%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0%,transparent 83.7%,#000 84%,#000 100%)}
+.hero-picture{position:absolute;inset:0;z-index:1;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 43%,#000e 49%,#0008 62%,#0002 75%,transparent 83.5%);mask-image:linear-gradient(to bottom,#000 0%,#000 43%,#000e 49%,#0008 62%,#0002 75%,transparent 83.5%)}
+.welcome-message{position:absolute;top:4.7%;right:3.6%;width:49.3%;z-index:6;pointer-events:none;text-align:left;filter:drop-shadow(0 1px 2px #ffffffbf)}
+ .welcome-message h1{display:block;margin:0;color:var(--ink);font-family:Arial,system-ui,sans-serif;font-weight:900;font-size:4.5cqw;letter-spacing:-.045em;line-height:1.04;white-space:nowrap}
+
+.welcome-message h1 .saludo-rojo{color:#e71939}
+.community-link{display:inline-flex;align-items:center;justify-content:center;gap:1cqw;max-width:100%;margin-top:1.5cqw;padding:1.1cqw 1.6cqw;border:1px solid #0878e940;border-radius:999px;background:#ffffffed;color:#086bd1;font-family:Arial,system-ui,sans-serif;font-size:2.35cqw;font-weight:750;line-height:1.2;white-space:nowrap;box-shadow:0 .4cqw 1cqw #06133d14;pointer-events:auto;transition:background .18s ease,transform .18s ease}
+.community-link svg{width:2.7cqw;height:2.7cqw;fill:currentColor;flex:none}
+.community-link:hover{background:#eaf5ff}.community-link:active{transform:translateY(.2cqw)}
+.welcome-message p strong{font-weight:800;white-space:nowrap}
+.welcome-message p .welcome-line{display:block;white-space:nowrap}
+.welcome-message p .blessing{display:inline;margin:0}
+.welcome-message p{color:#182130;font-family:Arial,system-ui,sans-serif;font-size:min(2.7cqw,29px);line-height:1.18;font-weight:500;letter-spacing:-.02em;margin:.34em 0 0;max-width:100%;text-wrap:pretty}
+/* Las tarjetas son controles reales y están visibles desde la primera carga. */
+.carousel-layer{position:absolute;z-index:2;left:0;right:0;top:46.223958%;height:37.476042%;background:transparent}
+.carousel-card{position:absolute;top:0;height:86.166%;z-index:2}
+.carousel-layer.ready .carousel-card{transition:left .52s cubic-bezier(.22,1,.36,1),width .52s cubic-bezier(.22,1,.36,1),opacity .52s ease,transform .52s ease}
+.carousel-card[data-card="0"]{left:2.734375%;width:31.738281%}
+.carousel-card[data-card="1"]{left:35.15625%;width:30.078125%}
+.carousel-card[data-card="2"]{left:65.820313%;width:31.640625%}
+.carousel-card:focus-within{z-index:4}
+.carousel-card.returning{z-index:1;transform:scale(.96);opacity:.75}
+.service-card{position:relative;display:block;width:100%;height:100%;padding:0;border:0;border-radius:2.7cqw;background:#fff;color:var(--ink);text-align:center;overflow:hidden;box-shadow:0 .48cqw 0 #d5dfe9,0 .9cqw 1.6cqw #182d4e29;transition:transform .19s ease,box-shadow .19s ease;touch-action:pan-y}
+/* La imagen nunca dibuja el área del botón; así no quedan huellas al pulsar. */
+.service-card img{display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;clip-path:inset(0 0 20.5% 0)}
+.price-button{position:absolute;left:8.3%;right:8.3%;top:83.2%;height:12%;display:flex;align-items:center;justify-content:center;gap:6%;padding:0 6%;border-radius:999px;background:linear-gradient(105deg,#00a7ed,#0065d9);color:#fff;font-family:Arial,system-ui,sans-serif;font-size:2.9cqw;font-weight:750;white-space:nowrap;box-shadow:0 .3cqw 0 #0052ad,0 .45cqw .8cqw #0878e926,inset 0 1px 0 #ffffff59;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+.price-button svg{flex:none;width:1.65cqw;height:2.25cqw;margin-left:auto;fill:none;stroke:currentColor;stroke-width:3.3;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.service-card.is-pressed,.service-card:active{transform:translateY(.32cqw) scale(.992);box-shadow:0 .12cqw 0 #b7cbdc,0 .25cqw .55cqw #182d4e26}
+.service-card.is-pressed .price-button,.service-card:active .price-button{background:linear-gradient(105deg,#0585cd,#004aa7);transform:translateY(.16cqw);box-shadow:inset 0 .35cqw .65cqw #00295859,0 1px 0 #ffffff80}
+/* Mismo plano superior desde el inicio; las imágenes nunca tapan estas flechas. */
+.carousel-nav{position:absolute;z-index:12;top:55.95%;width:6.5%;min-width:32px;aspect-ratio:1;border-radius:50%;border:1px solid #fff;background:#fff;display:grid;place-items:center;padding:0;color:#091843;box-shadow:0 .4cqw 0 #cbd8e7,0 .7cqw 1.5cqw #06133d30;transition:transform .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease;touch-action:manipulation}
+.carousel-nav::after{content:"";position:absolute;inset:-6px;border-radius:50%}
+.carousel-nav.prev{left:.7%}.carousel-nav.next{right:.7%}
+.carousel-nav svg{width:42%;height:48%;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:3.5;pointer-events:none}
+.carousel-nav.is-pressed,.carousel-nav:active{transform:translateY(.25cqw) scale(.94);background:#0059bd;color:#fff;box-shadow:inset 0 .25cqw .6cqw #00295859,0 .1cqw .3cqw #06133d33}
+.carousel-dots{position:absolute;z-index:8;left:0;right:0;top:81.35%;height:2.9%;display:flex;justify-content:center;align-items:center;gap:0}
+.page-dot{display:grid;place-items:center;width:3%;min-width:22px;height:100%;border:0;padding:0;background:transparent;touch-action:manipulation}
+.page-dot span{display:block;width:1.7cqw;height:1.7cqw;border-radius:50%;background:#d3d3d3;transition:background .18s ease,transform .18s ease}
+.page-dot[aria-current="true"] span{background:#0079ee}
+.page-dot:active span{transform:scale(.8)}
+.tap-area{position:absolute;border:0;background:transparent;color:transparent;padding:0;margin:0;z-index:4}
+.tap-area:focus-visible{outline:3px solid var(--blue);border-radius:16px;background:#0077ff1a}
+.social-hit{top:84.3%;height:12.3%;width:21.4%;border-radius:16px}
+.social-hit.s0{left:3.9%}.social-hit.s1{left:27%}.social-hit.s2{left:52%}.social-hit.s3{left:75%}
+#dialog{padding:0;border:0;border-radius:21px;width:min(410px,calc(100vw - 40px));max-height:calc(100svh - 40px);overflow:auto;color:var(--ink);background:#fff;box-shadow:0 15px 60px #0004}
+#dialog::backdrop{background:#04102d85;backdrop-filter:blur(4px)}
+.dialog-content{text-align:center;padding:28px 22px}
+#dialog h2{font-size:21px;line-height:1.22;margin:0 0 12px}
+#dialogText{white-space:pre-line}
+#dialog p{font-size:15px;line-height:1.5;margin:0 0 22px;color:#3b4664}
+#dialogClose{background:var(--blue);border:0;border-radius:24px;color:#fff;padding:10px 30px;font-weight:750;box-shadow:0 3px 0 #0052ad;transition:background .18s ease,transform .18s ease}
+#dialogClose:active{background:#0059bd;transform:translateY(2px);box-shadow:inset 0 2px 5px #00367366}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(hover:hover) and (pointer:fine){
+ .carousel-card:hover{z-index:5}
+ .service-card:hover{transform:translateY(-.55cqw) scale(1.012);box-shadow:0 .9cqw 0 #ccdae8,0 1.5cqw 2.4cqw #182d4e33}
+ .service-card:hover .price-button{background:linear-gradient(105deg,#0096df,#0059bd)}
+ .service-card .price-button:hover{background:linear-gradient(105deg,#0584d0,#004da8);transform:translateY(.14cqw);box-shadow:inset 0 .22cqw .48cqw #00295845,0 1px 0 #ffffff80}
+ .service-card:active,.service-card.is-pressed{transform:translateY(.32cqw) scale(.992);box-shadow:0 .12cqw 0 #b7cbdc,0 .25cqw .55cqw #182d4e26}
+ .service-card:active .price-button,.service-card.is-pressed .price-button{background:linear-gradient(105deg,#0585cd,#004aa7);transform:translateY(.16cqw);box-shadow:inset 0 .35cqw .65cqw #00295859}
+ .carousel-nav:hover{background:#0878e9;color:#fff;transform:translateY(-.2cqw);box-shadow:0 .5cqw 0 #0052ad,0 1cqw 1.5cqw #06133d30}
+ .carousel-nav:active,.carousel-nav.is-pressed{transform:translateY(.25cqw) scale(.94);background:#0059bd;box-shadow:inset 0 .25cqw .6cqw #00295859}
+ #dialogClose:hover{background:#005fca}
+}
+@media(max-width:340px){.poster{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+/* Contadores vivos sobre la zona numérica, sin duplicar las cifras de la imagen. */
+.social-counter{position:absolute;z-index:3;top:90.05%;width:20.8%;height:2.85%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--ink);pointer-events:none;font-family:Arial,system-ui,sans-serif;font-size:3.35cqw;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.social-counter.tt{left:5.2%}.social-counter.ig{left:28.2%}.social-counter.fb{left:50.7%}.social-counter.yt{left:74%}
+.social-counter iframe{position:absolute;left:50%;top:50%;width:300px;height:80px;border:0;transform:translate(-50%,-50%) scale(var(--widget-scale,.5));transform-origin:center;pointer-events:none;background:#fff}
+.social-counter.yt{font-size:3.1cqw}
+
+.counter-label.yt-label{position:absolute;z-index:3;left:74%;width:20.8%;top:92.8%;height:2.15%;display:flex;align-items:center;justify-content:center;background:#fff;color:#596273;font-family:Arial,system-ui,sans-serif;font-size:2.02cqw;line-height:1;pointer-events:none}
+.page-loader{display:none;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center;flex-direction:column;gap:16px;background:linear-gradient(180deg,#d7ecfd,#f9efe4 54%,#fffaf4);color:var(--ink);font-size:16px;text-align:center;padding:24px}
+.page-loader button{border:0;border-radius:999px;background:var(--blue);color:white;font-weight:700;padding:11px 22px}
+.is-loading .page-loader:not([hidden]){display:flex}.is-loading .poster{visibility:hidden}
+</style>
+</head>
+<body>
+<div class="page-loader" id="page-loader" role="status"><p id="loading-message">Cargando el Bello Cubano…</p><button type="button" id="retry-page" hidden>Reintentar</button></div>
+<main class="poster" id="poster" aria-label="El Bello Cubano, servicios disponibles">
+ <img class="poster-picture footer-picture" src="assets/portada-original.webp" width="1024" height="1536" alt="Redes sociales de El Bello Cubano: TikTok, Instagram, Facebook y YouTube. Contadores de seguidores de TikTok, Instagram y Facebook. Suscriptores de YouTube.">
+ <img class="poster-picture hero-picture" src="assets/portada-optimizada.webp" width="1024" height="1536" alt="El Bello Cubano sonríe mirando al frente, con camisa blanca cerrada y reloj, sentado en la arena de Huacachina." fetchpriority="high">
+ <section class="welcome-message" aria-label="Saludo de bienvenida">
+  <h1><span class="saludo-rojo">¡Asere,</span> qué bola!</h1>
+  <p><span class="welcome-line">Espero que estos <strong>servicios de calidad</strong></span> <span class="welcome-line">te sean de ayuda. <strong class="blessing">Dios te bendiga.</strong></span></p>
+  <button type="button" class="community-link" id="community-link" aria-label="Únete a Cubanos en Perú. Información del grupo de Facebook."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-7H7.9V12h2.54V9.8c0-2.5 1.5-3.88 3.79-3.88 1.1 0 2.25.2 2.25.2V8.6h-1.27c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.88h-2.33v7A10 10 0 0 0 22 12Z"/></svg>Únete a Cubanos en Perú</button>
+ </section>
+ <section class="carousel-layer" id="carousel-layer" aria-label="Servicios">
+  <article class="carousel-card" data-card="0">
+   <button type="button" class="service-card" data-service="0" aria-label="Ver precios: Promociona tu negocio o marca">
+    <img decoding="async" fetchpriority="high" src="assets/promocion-optimizada.webp" width="988" height="1591" alt="" draggable="false">
+    <span class="price-button" aria-hidden="true">Ver precios <svg viewBox="0 0 12 20"><path d="m3 3 7 7-7 7"/></svg></span>
+   </button>
+  </article>
+  <article class="carousel-card" data-card="1">
+   <button type="button" class="service-card" data-service="1" aria-label="Ver precios: Clases de música">
+    <img decoding="async" fetchpriority="high" src="assets/musica-optimizada.webp" width="1024" height="1536" alt="" draggable="false">
+    <span class="price-button" aria-hidden="true">Ver precios <svg viewBox="0 0 12 20"><path d="m3 3 7 7-7 7"/></svg></span>
+   </button>
+  </article>
+  <article class="carousel-card" data-card="2">
+   <button type="button" class="service-card" data-service="2" aria-label="Próximamente: limpieza y desinfección de tanques de agua en Ica. Más información.">
+    <img decoding="async" fetchpriority="high" src="assets/limpieza-optimizada.webp" width="1024" height="1536" alt="" draggable="false">
+    <span class="price-button coming-soon" aria-hidden="true">Próximamente</span>
+   </button>
+  </article>
+ </section>
+ <button type="button" class="carousel-nav prev" id="prev" aria-label="Mostrar servicios anteriores" aria-controls="carousel-layer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4-8 8 8 8"/></svg></button>
+ <button type="button" class="carousel-nav next" id="next" aria-label="Mostrar siguientes servicios" aria-controls="carousel-layer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4 8 8-8 8"/></svg></button>
+ <nav class="carousel-dots" aria-label="Posición de los servicios">
+  <button type="button" class="page-dot" data-page="0" aria-current="true" aria-label="Primera posición de servicios"><span></span></button>
+  <button type="button" class="page-dot" data-page="1" aria-current="false" aria-label="Segunda posición de servicios"><span></span></button>
+  <button type="button" class="page-dot" data-page="2" aria-current="false" aria-label="Tercera posición de servicios"><span></span></button>
+ </nav>
+ <p class="sr-only" id="carouselStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+ <div class="social-counter tt"><span id="tt-followers" data-state="loading" title="Consultando seguidores de TikTok">…</span></div>
+ <div class="social-counter ig"><span id="ig-followers" data-state="loading">…</span></div>
+ <div class="social-counter fb"><span id="fb-followers" data-state="loading">…</span></div>
+ <div class="social-counter yt"><span id="yt-subscribers" data-state="loading">…</span></div>
+ <div class="counter-label yt-label">Suscriptores</div>
+ <button type="button" class="tap-area social-hit s0" data-social="TikTok" aria-label="Abrir TikTok en una pestaña nueva"></button>
+ <button type="button" class="tap-area social-hit s1" data-social="Instagram" aria-label="Abrir Instagram en una pestaña nueva"></button>
+ <button type="button" class="tap-area social-hit s2" data-social="Facebook" aria-label="Abrir Facebook en una pestaña nueva"></button>
+ <button type="button" class="tap-area social-hit s3" data-social="YouTube" aria-label="Abrir YouTube en una pestaña nueva. Suscriptores."></button>
+ <section class="sr-only" aria-label="Descripción de servicios">
+  <h2>El Bello Cubano</h2>
+  <h3>Limpieza de tanques de agua</h3><p>Limpieza y desinfección. Ica.</p>
+  <h3>Promociona tu negocio o marca</h3><p>Aumenta tu visibilidad de forma creativa.</p>
+  <h3>Clases de música</h3><p>Piano, guitarra, batería y canto.</p>
+ </section>
+</main>
+<dialog id="dialog" aria-labelledby="dialogTitle" aria-describedby="dialogText">
+ <section class="dialog-content">
+  <h2 id="dialogTitle"></h2><p id="dialogText"></p>
+  <button type="button" id="dialogClose">Entendido</button>
+ </section>
+</dialog>
+<script>
+(() => {
+ "use strict";
+ // Configuración preparada para las páginas de servicios y perfiles definitivos.
+ // Los cuatro contadores consultan las fuentes configuradas mediante la API local.
+ const enlacesPrecios = ["", "", ""];
+ const enlacesRedes = {
+  TikTok:"https://www.tiktok.com/@elbellocubano7?lang=es",
+  Instagram:"https://www.instagram.com/elbellocubano/?hl=es",
+  Facebook:"https://www.facebook.com/elbellocubano",
+  YouTube:"https://www.youtube.com/@elbellocubano"
+ };
+ const servicios = ["Promociona tu negocio o marca","Clases de música","Limpieza y desinfección de tanques de agua"];
+ const poster = document.getElementById("poster");
+ const layer = document.getElementById("carousel-layer");
+ const cards = [...document.querySelectorAll("[data-card]")];
+ const serviceButtons = [...document.querySelectorAll("[data-service]")];
+ const dots = [...document.querySelectorAll("[data-page]")];
+ const navButtons = [document.getElementById("prev"),document.getElementById("next")];
+ const status = document.getElementById("carouselStatus");
+ const dialog = document.getElementById("dialog");
+ const closeButton = document.getElementById("dialogClose");
+ const positions = [2.734375,35.15625,65.820313];
+ const widths = [31.738281,30.078125,31.640625];
+ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+ let offset = 0, busy = false, gesture = null, suppressClickUntil = 0;
+ let previousFocus = null;
+ const currentOrder = () => [0,1,2].map(i => (i + offset) % 3);
+ function showOrder(announce = false) {
+  const order = currentOrder();
+  order.forEach((id,slot) => {
+   cards[id].style.left = positions[slot] + "%";
+   cards[id].style.width = widths[slot] + "%";
+  });
+  dots.forEach((dot,i) => dot.setAttribute("aria-current",String(i === offset)));
+  if(announce) status.textContent = "Primer servicio: " + servicios[order[0]] + ". Posición " + (offset + 1) + " de 3.";
+ }
+ showOrder();
+ requestAnimationFrame(() => layer.classList.add("ready"));
+ function clearPressed() {
+  [...serviceButtons,...navButtons].forEach(button => button.classList.remove("is-pressed"));
+ }
+ function move(direction) {
+  if(busy || dialog.open) return;
+  busy = true;
+  clearPressed();
+  const order = currentOrder();
+  const returning = cards[direction > 0 ? order[0] : order[2]];
+  returning.classList.add("returning");
+  offset = (offset + direction + 3) % 3;
+  showOrder(true);
+  window.setTimeout(() => {returning.classList.remove("returning");busy = false;},reducedMotion.matches ? 0 : 540);
+ }
+ navButtons[0].addEventListener("click",() => move(-1));
+ navButtons[1].addEventListener("click",() => move(1));
+ dots.forEach(button => button.addEventListener("click",() => {
+  const page = Number(button.dataset.page);
+  if(page !== offset) move((page-offset+3)%3 === 1 ? 1 : -1);
+ }));
+ [...serviceButtons,...navButtons].forEach(button => {
+  button.addEventListener("pointerdown",event => {
+   if(event.isPrimary !== false && event.button === 0) button.classList.add("is-pressed");
+  });
+  button.addEventListener("pointerleave",() => button.classList.remove("is-pressed"));
+ });
+ // El gesto horizontal cambia el orden sin abrir accidentalmente la tarjeta.
+ poster.addEventListener("pointerdown",event => {
+  gesture = null;
+  if(event.pointerType === "mouse" || event.isPrimary === false || event.target.closest(".carousel-nav,[data-page]")) return;
+  const rect = poster.getBoundingClientRect();
+  const y = (event.clientY - rect.top) / rect.height;
+  if(y < .46 || y > .83) return;
+  gesture = {id:event.pointerId,x:event.clientX,y:event.clientY};
+ });
+ poster.addEventListener("pointermove",event => {
+  if(!gesture || gesture.id !== event.pointerId) return;
+  const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+  if(Math.abs(dx) > 12 || Math.abs(dy) > 12) clearPressed();
+  if(Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)*1.35 && event.cancelable) event.preventDefault();
+ },{passive:false});
+ poster.addEventListener("pointerup",event => {
+  if(!gesture || gesture.id !== event.pointerId) return;
+  const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+  gesture = null;
+  if(Math.abs(dx) > 12 || Math.abs(dy) > 12) suppressClickUntil = Date.now() + 450;
+  if(Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)*1.35) move(dx < 0 ? 1 : -1);
+ });
+ document.addEventListener("pointerup",() => {gesture = null;clearPressed();});
+ document.addEventListener("pointercancel",() => {gesture = null;clearPressed();});
+ window.addEventListener("blur",() => {gesture = null;clearPressed();});
+ poster.addEventListener("keydown",event => {
+  if(event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  if(event.key === "ArrowRight"){event.preventDefault();move(1);}
+  if(event.key === "ArrowLeft"){event.preventDefault();move(-1);}
+ });
+ function openDialog(heading,body) {
+  if(dialog.open) return;
+  previousFocus = document.activeElement;
+  document.getElementById("dialogTitle").textContent = heading;
+  document.getElementById("dialogText").textContent = body;
+  clearPressed();
+  dialog.showModal();
+  closeButton.focus();
+ }
+ function closeDialog() {
+  dialog.close();
+  previousFocus?.focus();
+ }
+ serviceButtons.forEach(button => button.addEventListener("click",() => {
+  if(busy || Date.now() < suppressClickUntil) return;
+  const id = Number(button.dataset.service), url = enlacesPrecios[id];
+  if(id === 2){
+   openDialog(servicios[id],"A partir del 1 de enero de 2027 estará disponible en Ica nuestro servicio profesional de limpieza y desinfección de tanques de agua.\n\nUna atención enfocada en retirar sedimentos y suciedad acumulada, limpiar las paredes y el fondo y desinfectar el interior, cuidando el tanque y siguiendo un proceso ordenado e higiénico.\n\nPróximamente compartiremos las tarifas y los detalles para programar tu atención.");
+   return;
+  }
+  if(url){window.location.href = url;return;}
+  openDialog(servicios[id],"Próximamente encontrarás aquí los precios y toda la información de este servicio.");
+ }));
+ document.querySelectorAll("[data-social]").forEach(button => button.addEventListener("click",() => {
+  const name = button.dataset.social, url = enlacesRedes[name];
+  if(url){window.open(url,"_blank","noopener,noreferrer");return;}
+  openDialog(name,"Las cifras de seguidores son de muestra. El perfil y su contador estarán disponibles próximamente.");
+ }));
+ document.getElementById("community-link")?.addEventListener("click",()=>openDialog("Cubanos en Perú","El enlace del grupo de Facebook estará disponible próximamente."));
+ closeButton.addEventListener("click",closeDialog);
+ dialog.addEventListener("click",event => {if(event.target === dialog) closeDialog();});
+ dialog.addEventListener("cancel",event => {event.preventDefault();closeDialog();});
+})();
+</script>
+<script src="./counters.js" defer></script>
+</body>
+</html>
