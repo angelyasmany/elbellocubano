@@ -52,6 +52,43 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media(max-width:600px){.service{border-width:2px;border-radius:11px}.service-photo{border-radius:9px 9px 0 0}.service-body{min-height:27cqw;padding:6cqw .55cqw 1.5cqw}.service h2{font-size:3.15cqw}.location{font-size:1.9cqw}.badge{border-width:2px}.action{min-height:8cqw;font-size:2.55cqw}.business{border-width:2px}.social{width:82%}.copyright{font-size:max(10px,1.45cqw)}}
     @media(max-width:360px){.intro{top:16.5%}.intro h1{font-size:6.8cqw}.intro p{font-size:4cqw}.service-body{min-height:30cqw}.service h2{font-size:3cqw}.action{font-size:2.45cqw}.business .space-link{font-size:1.8cqw}}
+
+    /* Corrección de proporciones: altura REAL en píxeles escalables, no solo aspect-ratio.
+       Evita que algunas versiones de Chrome/Android respeten las dimensiones HTML
+       de origen (1402px / 941px) al cambiar el ancho de las fotos. */
+    .service-photo {
+      width:100%;
+      height:clamp(88px,29.5vw,278px);
+      height:29.5cqw;
+      min-height:0;
+      max-height:278px;
+      aspect-ratio:auto;
+      object-fit:cover;
+    }
+    .service-body {
+      height:clamp(62px,20.4vw,192px);
+      height:20.4cqw;
+      min-height:0;
+      padding:5.2cqw .75cqw 1.1cqw;
+    }
+    .business img, .business-placeholder {
+      width:100%;
+      height:clamp(49px,15.8vw,149px);
+      height:15.8cqw;
+      min-height:0;
+      max-height:149px;
+      aspect-ratio:auto;
+      object-fit:cover;
+    }
+    @media (max-width:600px) {
+      .service-photo {height:29.5cqw;max-height:none}
+      .service-body {height:22cqw;min-height:0;padding:5.2cqw .55cqw 1.2cqw}
+      .action {min-height:6.8cqw;font-size:2.7cqw}
+    }
+    @media (max-width:360px) {
+      .service-body {height:23cqw;min-height:0;padding-top:5.5cqw}
+    }
+
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
   </style>
 </head>
@@ -63,9 +100,9 @@
     </section>
 
     <section class="services" id="services" aria-label="Servicios de el Bello Cubano">
-      <article class="service" data-kind="promocion"><img class="service-photo" src="assets/promocion.jpg" width="1122" height="1402" alt="el Bello Cubano grabando con su celular" fetchpriority="high"><div class="service-body"><span class="badge" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 15.2 22.5 8v16L5 16.8zM5 15v9h6v-7zM10 23l2.6 6H17l-3.3-7.8zM24.5 12c3 .9 4.8 2.5 4.8 4s-1.8 3.1-4.8 4v-2.8c1.2-.3 1.9-.8 1.9-1.2s-.7-.9-1.9-1.2z"/></svg></span><h2>Promociona<br>tu negocio o marca</h2><a class="action" href="promociones.html#plan-0"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></a></div></article>
-      <article class="service" data-kind="musica"><img class="service-photo" src="assets/musica.jpg" width="1122" height="1402" alt="el Bello Cubano tocando la guitarra" fetchpriority="high"><div class="service-body"><span class="badge music" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M22 5v17.5a5 5 0 1 1-3-4.58V8l10-2v14.5a5 5 0 1 1-3-4.58V3z"/></svg></span><h2>Clases<br>de Música</h2><button class="action" type="button" data-dialog="music"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></button></div></article>
-      <article class="service" data-kind="limpieza"><img class="service-photo" src="assets/limpieza.jpg" width="1122" height="1402" alt="Limpieza profesional de un tanque de agua en Ica" fetchpriority="high"><div class="service-body"><span class="badge" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 2C12 9 7 15 7 21a9 9 0 0 0 18 0c0-6-5-12-9-19zm0 24a5 5 0 0 1-5-5c0-1 .4-2.2 1.2-3.8-.3 4 1.2 6 4.8 6.8z"/></svg></span><h2>Limpieza de<br>tanques de agua<span class="location">Ica - Perú</span></h2><button class="action soon" type="button" data-dialog="cleaning">Próximamente</button></div></article>
+      <article class="service" data-kind="promocion"><img class="service-photo" src="assets/promocion.jpg" alt="el Bello Cubano grabando con su celular" fetchpriority="high"><div class="service-body"><span class="badge" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M5 15.2 22.5 8v16L5 16.8zM5 15v9h6v-7zM10 23l2.6 6H17l-3.3-7.8zM24.5 12c3 .9 4.8 2.5 4.8 4s-1.8 3.1-4.8 4v-2.8c1.2-.3 1.9-.8 1.9-1.2s-.7-.9-1.9-1.2z"/></svg></span><h2>Promociona<br>tu negocio o marca</h2><a class="action" href="promociones.html#plan-0"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></a></div></article>
+      <article class="service" data-kind="musica"><img class="service-photo" src="assets/musica.jpg" alt="el Bello Cubano tocando la guitarra" fetchpriority="high"><div class="service-body"><span class="badge music" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M22 5v17.5a5 5 0 1 1-3-4.58V8l10-2v14.5a5 5 0 1 1-3-4.58V3z"/></svg></span><h2>Clases<br>de Música</h2><button class="action" type="button" data-dialog="music"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></button></div></article>
+      <article class="service" data-kind="limpieza"><img class="service-photo" src="assets/limpieza.jpg" alt="Limpieza profesional de un tanque de agua en Ica" fetchpriority="high"><div class="service-body"><span class="badge" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 2C12 9 7 15 7 21a9 9 0 0 0 18 0c0-6-5-12-9-19zm0 24a5 5 0 0 1-5-5c0-1 .4-2.2 1.2-3.8-.3 4 1.2 6 4.8 6.8z"/></svg></span><h2>Limpieza de<br>tanques de agua<span class="location">Ica - Perú</span></h2><button class="action soon" type="button" data-dialog="cleaning">Próximamente</button></div></article>
       <button class="carousel-arrow prev" type="button" id="prev" aria-label="Servicio anterior">‹</button>
       <button class="carousel-arrow next" type="button" id="next" aria-label="Servicio siguiente">›</button>
     </section>
@@ -80,8 +117,8 @@
     </nav>
 
     <section class="businesses" aria-labelledby="businesses-title"><h2 id="businesses-title">Negocios del mes</h2><div class="business-grid">
-      <article class="business"><figure><img src="assets/tienda.jpg" width="1672" height="941" alt="Ejemplo de una boutique de ropa" loading="lazy"><figcaption>Tu tienda aquí</figcaption></figure></article>
-      <article class="business"><figure><img src="assets/restaurante.jpg" width="1672" height="941" alt="Ejemplo de un restaurante" loading="lazy"><figcaption>Tu restaurante aquí</figcaption></figure></article>
+      <article class="business"><figure><img src="assets/tienda.jpg" alt="Ejemplo de una boutique de ropa" loading="lazy"><figcaption>Tu tienda aquí</figcaption></figure></article>
+      <article class="business"><figure><img src="assets/restaurante.jpg" alt="Ejemplo de un restaurante" loading="lazy"><figcaption>Tu restaurante aquí</figcaption></figure></article>
       <article class="business"><div class="business-placeholder" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="m7 17 21-8v19L7 21zM7 21v8h6v-6l4 10h4l-4-11M31 15c4 1 5 3 5 5s-1 4-5 5"/></svg><span>Espacio disponible</span></div><a class="space-link" href="promociones.html#plan-0">Quiero este espacio</a></article>
     </div></section>
     <footer class="copyright">© el Bello Cubano</footer>
