@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6e2ca">
+  <meta name="description" content="Promociona tu negocio, aprende música y conoce el próximo servicio de limpieza de tanques de agua en Ica con el Bello Cubano.">
+  <title>el Bello Cubano | Servicios</title>
+  <link rel="icon" href="assets/perfil-el-bello-cubano.jpg">
+  <link rel="preload" as="image" href="assets/huacachina-sin-texto.jpg">
+  <link rel="preload" as="image" href="assets/promocion.jpg">
+  <link rel="preload" as="image" href="assets/musica.jpg">
+  <link rel="preload" as="image" href="assets/limpieza.jpg">
+  <style>
+    :root{font-family:Arial,Helvetica,sans-serif;color:#101827;background:#f7eee4;font-synthesis:none}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:300px;background:radial-gradient(ellipse 75% 34% at 50% 5%,#9fcef5 0%,#edcda7 65%,transparent 100%),linear-gradient(180deg,#d6b78d,#faf5ed 70%)}
+    button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}a:focus-visible,button:focus-visible{outline:3px solid #0e57a8;outline-offset:3px}
+    .site{width:min(100%,940px);margin:auto;overflow:hidden;position:relative;container-type:inline-size;background:linear-gradient(180deg,#edc091 0%,#fff 68%,#fff 100%);box-shadow:0 8px 44px #5e3a1835}
+    .hero{position:relative;aspect-ratio:940/885;background:#e9b37e url('assets/huacachina-sin-texto.jpg') center -5.6cqw/100% auto no-repeat}
+    .hero::after{content:"";position:absolute;inset:auto 0 0;height:17%;background:linear-gradient(transparent,#fff5e967 58%,#fffefde6 100%);pointer-events:none}
+    .intro{position:absolute;z-index:2;top:17%;left:4.2%;width:59%;color:#070809;text-shadow:0 1px 7px #fff9}
+    .intro h1{font-size:7cqw;line-height:1.02;letter-spacing:-.058em;white-space:nowrap;margin:0 0 .19em;font-weight:800}.intro h1 em{font-style:normal;color:#f00842}
+    .intro p{font-size:4.05cqw;line-height:1.08;letter-spacing:-.03em;font-weight:430;margin:0;color:#101216}.intro p span{display:block}.intro p .blessing{margin-top:.1em;color:#080808;font-weight:760}
+    .cart{position:absolute;z-index:6;top:2.3%;right:3.2%;display:grid;place-items:center;width:8.6cqw;height:8.6cqw;border:0;border-radius:50%;background:#fff;color:#111;box-shadow:0 5px 16px #173c6440;transition:transform .2s,box-shadow .2s}
+    .cart svg{width:52%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.cart:hover{transform:translateY(-3px);box-shadow:0 9px 18px #173c6450}.cart:active{transform:translateY(2px)}
+    .services{position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.05cqw;margin:-13.9% 3.1% 0;align-items:stretch}
+    .service{min-width:0;overflow:visible;background:#fff;border:4px solid #fff;border-radius:2.7cqw;box-shadow:0 6px 0 #e2e2e2,0 13px 20px #142b4240;transition:transform .2s,box-shadow .2s}
+    .service:hover,.service:focus-within{transform:translateY(-5px);box-shadow:0 10px 0 #dbe0e6,0 20px 28px #142b4240}.service:active{transform:translateY(2px);box-shadow:0 3px 0 #dbe0e6,0 7px 11px #142b4230}
+    .service-photo{display:block;width:100%;aspect-ratio:1/.98;object-fit:cover;object-position:center 35%;border-radius:2.2cqw 2.2cqw 0 0;background:#d8e5ed}
+    .service[data-kind="promocion"] .service-photo{object-position:center 24%}.service[data-kind="musica"] .service-photo{object-position:center 40%}.service[data-kind="limpieza"] .service-photo{object-position:center 30%}
+    .service-body{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;min-height:21.5cqw;padding:5.4cqw .75cqw 1.45cqw;background:#fff;border-radius:0 0 2.4cqw 2.4cqw}
+    .service-body::before{content:"";position:absolute;z-index:0;left:0;right:0;top:-2.8cqw;height:4.8cqw;border-radius:50% 50% 0 0 / 100% 100% 0 0;background:#fff}
+    .service-body>*{position:relative;z-index:1}.badge{position:absolute;z-index:2;left:50%;top:-4.7cqw;transform:translateX(-50%);width:9.3cqw;height:9.3cqw;display:grid;place-items:center;border:5px solid #fff;border-radius:50%;color:white;background:linear-gradient(145deg,#0cc7f9,#1372fa 75%);box-shadow:0 2px 8px #1457d255}
+    .badge svg{width:60%;height:60%;fill:none;stroke:currentColor;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}.badge.promo svg{width:76%;height:70%;fill:none;stroke:none}.badge.music svg{width:62%;height:62%;fill:currentColor;stroke:none}
+    .service h2{margin:0;min-height:2.4em;color:#164481;font-size:3.25cqw;line-height:1.08;letter-spacing:-.055em;font-weight:750}.location{display:block;margin-top:.23em;font-size:1.9cqw;line-height:1.15;letter-spacing:-.01em;color:#101010;font-weight:700}
+    .action{width:100%;min-height:6.8cqw;border:0;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:.1em;padding:.55cqw 1.15cqw;text-decoration:none;white-space:nowrap;font-size:2.7cqw;line-height:1;font-weight:750;color:#fff;background:linear-gradient(105deg,#0799f8,#1474ef);box-shadow:0 3px 0 #0a65c8,0 7px 11px #145eb545;transition:transform .17s,filter .17s}
+    .action:hover{filter:brightness(.95)}.action:active{transform:translateY(2px);box-shadow:0 1px 0 #0a65c8}.action svg{width:.86em;height:.86em;fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;margin-left:auto}.action .action-spacer{width:.86em;margin-right:auto}
+    .action.soon{background:#e5e9f0;color:#6682ac;box-shadow:none;font-weight:750}.action.soon:hover{background:#dce4ee}
+    .carousel-arrow{position:absolute;z-index:8;top:36%;display:grid;place-items:center;width:7cqw;height:7cqw;min-width:28px;min-height:28px;border:0;border-radius:50%;background:#fff;color:#482ce9;box-shadow:0 3px 10px #1b385b45;font-size:4.6cqw;line-height:1;transition:transform .17s,background .17s}
+    .carousel-arrow:hover{transform:scale(1.09);background:#f0f7ff}.carousel-arrow:active{transform:scale(.95)}.carousel-arrow.prev{left:-2.1%}.carousel-arrow.next{right:-2.1%}
+    .dots{display:flex;justify-content:center;gap:1.15cqw;margin:2.7cqw 0 2.5cqw}.dot{width:1.25cqw;height:1.25cqw;min-width:6px;min-height:6px;padding:0;border:0;border-radius:50%;background:#c0c3ca}.dot.active{background:#087ef5}
+    .reach{text-align:center;margin:0 auto 1.25cqw;padding:0 3%;color:#101010;font-size:clamp(14px,3.1cqw,29px);line-height:1.15;letter-spacing:-.03em;font-weight:750}.reach strong{font-variant-numeric:tabular-nums;color:#101010}.reach[data-state="waiting"]{color:#101010}
+    .social{width:76%;max-width:690px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}.social a{display:flex;flex-direction:column;align-items:center;gap:.7cqw;min-width:0;padding:.4cqw .5cqw;text-decoration:none;color:#2058a6;border-right:1px solid #8aa4cb;transition:transform .18s,color .18s}.social a:last-child{border-right:0}.social a:hover{transform:translateY(-4px);color:#134589}
+    .social svg{display:block;width:5.2cqw;height:5.2cqw;max-width:48px;max-height:48px}.social .count{font-size:clamp(11px,2.3cqw,22px);font-weight:750;line-height:1.2;font-variant-numeric:tabular-nums;color:#18243a;min-height:1.3em}.social .count[data-state="unavailable"]{color:#9098a5}
+    /* Se muestra solo si la API no puede leer la cifra del iframe de Livecounts. */
+    .facebook-embed-fallback[hidden]{display:none!important}.facebook-embed-fallback{max-width:340px;margin:1cqw auto 2cqw;text-align:center;padding:9px 12px;border:1px solid #cde0f7;border-radius:12px;background:#f5faff;color:#285b9b;font-size:12px}.facebook-embed-fallback summary{cursor:pointer;font-weight:700}.facebook-embed-fallback iframe{display:block;width:300px;max-width:100%;height:80px;margin:9px auto 4px;background:white}.facebook-embed-fallback>a{display:block;color:#1769c9;font-size:11px}
+    .businesses{margin:2.8cqw 3.1% 0}.businesses h2{text-align:center;margin:0 0 1.8cqw;font-size:clamp(18px,3.7cqw,35px);line-height:1.05;color:#101010;letter-spacing:-.04em}
+    .business-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2cqw}.business{min-width:0;background:#fff;border:4px solid #fff;border-radius:2.1cqw;box-shadow:0 4px 10px #2b344332;overflow:hidden;text-align:center;transition:transform .18s,box-shadow .18s}.business:hover,.business:focus-within{transform:translateY(-4px);box-shadow:0 8px 18px #2b34433d}
+    .business-card-link{display:block;color:inherit;text-decoration:none}.business img,.business-placeholder{display:block;width:100%;aspect-ratio:1.68;object-fit:cover;background:#edf4fb}.business figcaption{margin:0;padding:.8cqw .4cqw 1cqw;color:#122342;font-size:clamp(10px,1.85cqw,18px);font-weight:700}.business figure{margin:0}
+    .business-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65cqw;color:#325c85;border:2px dashed #a2b8cd;border-radius:1.5cqw;background:linear-gradient(135deg,#eff8ff,#fff8ee)}.business-placeholder svg{width:5.5cqw;height:5.5cqw;fill:none;stroke:#2a7dc4;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 4px rgba(17,92,159,.12))}.business-placeholder span{font-size:clamp(10px,2.3cqw,22px);font-weight:750}
+    .business .space-link{display:inline-flex;align-items:center;justify-content:center;margin:.45cqw auto .6cqw;padding:.7cqw 1.1cqw;border-radius:999px;background:#1182ee;color:#fff;text-decoration:none;font-size:clamp(10px,1.9cqw,18px);font-weight:750;transition:filter .15s,transform .15s}.business .space-link:hover{filter:brightness(.9);transform:translateY(-2px)}.business .space-disabled{background:#e9edf5;color:#5c6f8c;cursor:default}.business .space-disabled:hover{filter:none;transform:none}
+    .copyright{margin:1.2cqw 0 0;padding:0 0 2.4cqw;text-align:center;color:#46617f;font-size:1.45cqw}
+    dialog{max-width:min(450px,calc(100vw - 32px));border:0;border-radius:18px;padding:26px 26px 22px;color:#15223b;box-shadow:0 22px 65px #0712256e}dialog::backdrop{background:#071225aa;backdrop-filter:blur(3px)}dialog h2{margin:0 0 12px;font-size:23px}dialog p{white-space:pre-line;line-height:1.5;margin:0 0 20px}dialog button{border:0;border-radius:999px;background:#087df0;color:#fff;padding:11px 20px;font-weight:700}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:600px){.service{border-width:2px;border-radius:11px}.service-photo{border-radius:9px 9px 0 0}.service-body{min-height:27cqw;padding:6cqw .55cqw 1.5cqw}.service h2{font-size:3.15cqw}.location{font-size:1.9cqw}.badge{border-width:2px}.action{min-height:8cqw;font-size:2.55cqw}.business{border-width:2px}.social{width:82%}.copyright{font-size:max(10px,1.45cqw)}}
+    @media(max-width:360px){.intro{top:16.5%}.intro h1{font-size:6.8cqw}.intro p{font-size:4cqw}.service-body{min-height:30cqw}.service h2{font-size:3cqw}.action{font-size:2.45cqw}.business .space-link{font-size:1.8cqw}}
+
+    /* Corrección de proporciones: altura REAL en píxeles escalables, no solo aspect-ratio.
+       Evita que algunas versiones de Chrome/Android respeten las dimensiones HTML
+       de origen (1402px / 941px) al cambiar el ancho de las fotos. */
+    .service-photo {
+      width:100%;
+      height:clamp(88px,29.5vw,278px);
+      height:29.5cqw;
+      min-height:0;
+      max-height:278px;
+      aspect-ratio:auto;
+      object-fit:cover;
+    }
+    .service-body {
+      height:clamp(62px,20.4vw,192px);
+      height:20.4cqw;
+      min-height:0;
+      padding:5.2cqw .75cqw 1.1cqw;
+    }
+    .business img, .business-placeholder {
+      width:100%;
+      height:clamp(49px,15.8vw,149px);
+      height:15.8cqw;
+      min-height:0;
+      max-height:149px;
+      aspect-ratio:auto;
+      object-fit:cover;
+    }
+    @media (max-width:600px) {
+      .service-photo {height:29.5cqw;max-height:none}
+      .service-body {height:22cqw;min-height:0;padding:5.2cqw .55cqw 1.2cqw}
+      .action {min-height:6.8cqw;font-size:2.7cqw}
+    }
+    @media (max-width:360px) {
+      .service-body {height:23cqw;min-height:0;padding-top:5.5cqw}
+    }
+
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <main class="site">
+    <section class="hero" aria-label="Atardecer en Huacachina con el Bello Cubano">
+      <div class="intro"><h1><em>¡Asere,</em> qué bola!</h1><p><span>Espero que estos servicios</span><span>te sean de ayuda.</span><span class="blessing">Dios te bendiga.</span></p></div>
+      <button class="cart" type="button" id="cart" aria-label="Abrir información de la tienda"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 5h3l3 17h17l3-12H7"/><circle cx="11" cy="27" r="1.4"/><circle cx="25" cy="27" r="1.4"/></svg></button>
+    </section>
+
+    <section class="services" id="services" aria-label="Servicios de el Bello Cubano">
+      <article class="service" data-kind="promocion"><img class="service-photo" src="assets/promocion.jpg" alt="el Bello Cubano grabando con su celular" fetchpriority="high"><div class="service-body"><span class="badge promo" aria-hidden="true"><svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M4.4 12.1h7.5L24.7 6c1.3-.6 2.8.3 2.8 1.8v16.4c0 1.5-1.5 2.4-2.8 1.8l-12.8-6.1H4.4c-1.5 0-2.7-1.2-2.7-2.7v-2.4c0-1.5 1.2-2.7 2.7-2.7Zm7.4 8.8 2.3 6c.2.6.8 1 1.5 1h4.1l-3.2-7H11.8Z"/><path d="M29.5 11.2c2.3 1.2 3.6 2.9 3.6 4.8s-1.3 3.6-3.6 4.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/></svg></span><h2>Promociona<br>tu negocio o marca</h2><a class="action" href="promociones.html#plan-0"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></a></div></article>
+      <article class="service" data-kind="musica"><img class="service-photo" src="assets/musica.jpg" alt="el Bello Cubano tocando la guitarra" fetchpriority="high"><div class="service-body"><span class="badge music" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M22.4 4.7c.5-.1 1 .3 1 .8v12.7a4.5 4.5 0 1 1-2-3.7v-7l-8.8 1.7v11a4.5 4.5 0 1 1-2-3.7V8.2c0-.5.3-.9.8-1l11-2.5z"/></svg></span><h2>Clases<br>de Música</h2><button class="action" type="button" data-dialog="music"><span class="action-spacer"></span>Ver precios<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 9 9-9 9"/></svg></button></div></article>
+      <article class="service" data-kind="limpieza"><img class="service-photo" src="assets/limpieza.jpg" alt="Limpieza profesional de un tanque de agua en Ica" fetchpriority="high"><div class="service-body"><span class="badge" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 2C12 9 7 15 7 21a9 9 0 0 0 18 0c0-6-5-12-9-19zm0 24a5 5 0 0 1-5-5c0-1 .4-2.2 1.2-3.8-.3 4 1.2 6 4.8 6.8z"/></svg></span><h2>Limpieza de<br>tanques de agua<span class="location">Ica - Perú</span></h2><button class="action soon" type="button" data-dialog="cleaning">Próximamente</button></div></article>
+      <button class="carousel-arrow prev" type="button" id="prev" aria-label="Servicio anterior">‹</button>
+      <button class="carousel-arrow next" type="button" id="next" aria-label="Servicio siguiente">›</button>
+    </section>
+    <div class="dots" aria-label="Posición de los servicios"><button class="dot active" type="button" data-dot="0" aria-label="Primera posición" aria-current="true"></button><button class="dot" type="button" data-dot="1" aria-label="Segunda posición"></button><button class="dot" type="button" data-dot="2" aria-label="Tercera posición"></button></div>
+
+    <p class="reach" id="reach" data-state="waiting" title="Suma de seguidores de TikTok y Facebook, y suscriptores de YouTube disponibles; no son personas únicas.">Tu negocio lo ven <strong id="reach-total">—</strong> personas</p>
+    <nav class="social" aria-label="Redes sociales y contadores">
+      <a href="https://www.tiktok.com/@elbellocubano7?lang=es" target="_blank" rel="noopener noreferrer" data-social="TikTok" aria-label="Abrir TikTok de el Bello Cubano"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z"/></svg><span class="count" id="tt-followers" aria-live="polite">—</span></a>
+      <a href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" data-social="Facebook" aria-label="Abrir Facebook de el Bello Cubano"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" d="M26.8 41V26.1H32l.8-5.8h-6v-3.7c0-1.8.6-3.1 3.2-3.1H33V8.3c-.6-.1-2.5-.3-4.8-.3-4.8 0-8.1 2.9-8.1 8.2v4.1h-4.8V26h4.8v15z"/></svg><span class="count" id="fb-followers" data-state="unavailable" title="Contador pendiente">—</span></a>
+      <a href="https://www.instagram.com/elbellocubano/?hl=es" target="_blank" rel="noopener noreferrer" data-social="Instagram" aria-label="Abrir Instagram de el Bello Cubano"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="9" width="30" height="30" rx="9" fill="none" stroke="currentColor" stroke-width="3.4"/><circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="3.4"/><circle cx="33.2" cy="14.8" r="2.2" fill="currentColor"/></svg><span class="count" id="ig-followers" data-state="unavailable" title="Contador pendiente">—</span></a>
+      <a href="https://www.youtube.com/@elbellocubano" target="_blank" rel="noopener noreferrer" data-social="YouTube" aria-label="Abrir YouTube de el Bello Cubano"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="3.2"/><path d="m21 18.5 10 5.5-10 5.5z" fill="currentColor"/></svg><span class="count" id="yt-subscribers" aria-live="polite">—</span></a>
+    </nav>
+    <!-- Respaldo VISUAL del contador de Facebook. El iframe no ofrece su número al JavaScript de esta página. -->
+    <details class="facebook-embed-fallback" id="facebook-embed-fallback" hidden>
+      <summary>Ver contador de Facebook en vivo</summary>
+      <iframe src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano" width="300" height="80" style="border:0;overflow:hidden" scrolling="no" title="elBelloCubano live Facebook follower count" loading="lazy"></iframe>
+      <a href="https://livecounts.nl/facebook-realtime/?u=elbellocubano" target="_blank" rel="noopener noreferrer">Abrir contador de Facebook</a>
+    </details>
+
+    <section class="businesses" aria-labelledby="businesses-title"><h2 id="businesses-title">Negocios del mes</h2><div class="business-grid">
+      <article class="business"><a class="business-card-link" href="#contacto-negocio" data-business-whatsapp="Hola Bello, me interesa promocionar mi tienda y tener mi espacio en Negocios del mes." aria-label="Consultar por WhatsApp sobre espacio para tienda"><figure><img src="assets/tienda.jpg" alt="Ejemplo de una boutique de ropa" loading="lazy"><figcaption>Tu tienda aquí</figcaption></figure></a></article>
+      <article class="business"><a class="business-card-link" href="#contacto-negocio" data-business-whatsapp="Hola Bello, me interesa promocionar mi restaurante y tener mi espacio en Negocios del mes." aria-label="Consultar por WhatsApp sobre espacio para restaurante"><figure><img src="assets/restaurante.jpg" alt="Ejemplo de un restaurante" loading="lazy"><figcaption>Tu restaurante aquí</figcaption></figure></a></article>
+      <article class="business"><div class="business-placeholder" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M7.5 20c0-1.4 1.1-2.5 2.5-2.5h5.1L26.8 12c.8-.4 1.7.2 1.7 1.1v13.8c0 .9-.9 1.5-1.7 1.1l-11.7-5.5H10c-1.4 0-2.5-1.1-2.5-2.5z"/><path d="M15.2 22.7l2 6c.2.6.7 1 1.3 1h4.1c.8 0 1.3-.8 1-1.5l-1.9-5.5"/><path d="M31 15.2c2.1.9 3.5 2.7 3.5 4.8s-1.4 3.9-3.5 4.8"/><path d="M34.3 11.8c3.3 1.4 5.2 4.5 5.2 8.2s-1.9 6.8-5.2 8.2"/></svg><span>Espacio disponible</span></div><button class="space-link" type="button" aria-label="Quiero este espacio (disponible próximamente)">Quiero este espacio</button></article>
+    </div></section>
+    <footer class="copyright">© el Bello Cubano</footer>
+  </main>
+
+  <dialog id="info" aria-labelledby="info-title"><h2 id="info-title"></h2><p id="info-text"></p><button type="button" id="close">Entendido</button></dialog>
+  <dialog id="contacto-negocio" aria-labelledby="contacto-negocio-title"><h2 id="contacto-negocio-title">Contacto por WhatsApp</h2><p id="contacto-negocio-text">Configura tu número de WhatsApp en el código para abrir el chat directo desde estas tarjetas.</p><button type="button" id="close-business">Entendido</button></dialog>
+  <script>
+  window.BELLO_CONFIG_INDEX = { whatsappNumber: "" };
+  </script>
+  <script>
+  (()=>{'use strict';
+    const services=document.getElementById('services');
+    const cards=[...services.querySelectorAll('.service')];
+    const dots=[...document.querySelectorAll('[data-dot]')];
+    const dialog=document.getElementById('info');
+    const businessDialog=document.getElementById('contacto-negocio');
+    const businessLinks=[...document.querySelectorAll('[data-business-whatsapp]')];
+    let current=0,touchStart=null;
+    function render(){cards.forEach((card,i)=>{card.style.order=(i-current+cards.length)%cards.length});dots.forEach((dot,i)=>{dot.classList.toggle('active',i===current);dot.setAttribute('aria-current',String(i===current))})}
+    function move(delta){current=(current+delta+cards.length)%cards.length;render()}
+    document.getElementById('prev').addEventListener('click',()=>move(-1));
+    document.getElementById('next').addEventListener('click',()=>move(1));
+    dots.forEach(dot=>dot.addEventListener('click',()=>{current=Number(dot.dataset.dot);render()}));
+    services.addEventListener('touchstart',event=>{touchStart={x:event.touches[0].clientX,y:event.touches[0].clientY}},{passive:true});
+    services.addEventListener('touchend',event=>{if(!touchStart)return;const dx=event.changedTouches[0].clientX-touchStart.x,dy=event.changedTouches[0].clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.4)move(dx<0?1:-1)},{passive:true});
+    function open(title,body){document.getElementById('info-title').textContent=title;document.getElementById('info-text').textContent=body;dialog.showModal()}
+    document.getElementById('cart').addEventListener('click',()=>open('Tienda','La tienda de ropa cubana estará disponible próximamente.'));
+    document.querySelector('[data-dialog="music"]').addEventListener('click',()=>open('Clases de música','Próximamente compartiremos la página de clases y sus precios.'));
+    document.querySelector('[data-dialog="cleaning"]').addEventListener('click',()=>open('Limpieza y desinfección de tanques de agua','Disponible a partir del 1 de enero de 2027 en Ica.\n\nEste servicio profesional ayudará a retirar sedimentos y suciedad acumulada en las paredes y el fondo del tanque, seguido de la desinfección de su interior.\n\nPróximamente compartiremos las tarifas y los detalles para programar tu atención.'));
+    function openBusinessWhatsapp(message){const number=String(window.BELLO_CONFIG_INDEX?.whatsappNumber||'').replace(/\D/g,'');if(number){window.open('https://wa.me/'+number+'?text='+encodeURIComponent(message),'_blank','noopener');return}document.getElementById('contacto-negocio-text').textContent='Agrega tu número en window.BELLO_CONFIG_INDEX.whatsappNumber para que estas tarjetas abran el WhatsApp directo.';businessDialog.showModal()}
+    businessLinks.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();openBusinessWhatsapp(link.dataset.businessWhatsapp)}));
+    document.getElementById('close').addEventListener('click',()=>dialog.close());
+    document.getElementById('close-business').addEventListener('click',()=>businessDialog.close());
+    dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
+    businessDialog.addEventListener('click',event=>{if(event.target===businessDialog)businessDialog.close()});
+  })();
+  </script>
+  <script>
+  (()=>{'use strict';
+    const format=new Intl.NumberFormat('es-PE');
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reach=document.getElementById('reach'),reachTotal=document.getElementById('reach-total');
+    const facebookFallback=document.getElementById('facebook-embed-fallback');
+    const sources=[
+      {name:'TikTok',id:'tt-followers',url:'/api/followers',field:'tiktok',account:'elbellocubano7',unit:'seguidores'},
+      {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano',unit:'seguidores'},
+      {name:'YouTube',id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ',unit:'suscriptores'}
+    ].map(source=>({...source,node:document.getElementById(source.id),link:document.querySelector(`[data-social="${source.name}"]`),value:null,shown:null,frame:null,busy:false}));
+    let totalShown=null,totalFrame=null;
+    function animate(from,to,render,onEnd){if(reduced.matches||document.hidden||from===to){render(to);onEnd?.();return null}const started=performance.now(),duration=from===null?1600:700,initial=from??0,animation={id:null,cancel(){if(this.id!==null)cancelAnimationFrame(this.id)}};function step(now){const progress=Math.min(1,(now-started)/duration);render(Math.round(initial+(to-initial)*(1-(1-progress)**3)));if(progress<1){animation.id=requestAnimationFrame(step)}else{animation.id=null;onEnd?.()}}animation.id=requestAnimationFrame(step);return animation}
+    function updateTotal(){const essential=sources.filter(source=>source.name!=='Facebook');if(essential.some(source=>source.value===null)){reach.dataset.state='waiting';reachTotal.textContent='—';return}const total=sources.reduce((sum,source)=>sum+(source.value??0),0);if(!Number.isSafeInteger(total))return;reach.dataset.state='ready';totalFrame?.cancel();totalFrame=animate(totalShown,total,value=>{reachTotal.textContent=format.format(value)},()=>{totalFrame=null});totalShown=total}
+    async function update(source){if(source.busy||document.hidden)return;source.busy=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),17000);
+      try{const response=await fetch(source.url,{signal:controller.signal,cache:'no-store'});if(!response.ok)throw new Error('Fuente no disponible');const data=await response.json();const value=data[source.field];if(data.consulta_ok!==true||data.cuenta!==source.account||!Number.isSafeInteger(value)||value<0)throw new Error('Dato inválido');
+        source.frame?.cancel();source.frame=animate(source.shown,value,n=>{source.node.textContent=format.format(n)},()=>{source.frame=null});source.shown=value;source.value=value;source.node.dataset.state=data.source_stale?'stale':'ready';source.node.title=`${format.format(value)} ${source.unit} · ${data.fuente}${data.source_stale?' · último dato disponible':''}`;source.link.setAttribute('aria-label',`Abrir ${source.name}: ${format.format(value)} ${source.unit}`);if(source.name==='Facebook')facebookFallback.hidden=true;updateTotal();
+      }catch(error){if(source.value===null){source.node.textContent='—';source.node.dataset.state='unavailable';source.node.title='Contador no disponible por ahora';if(source.name==='Facebook')facebookFallback.hidden=false;}else{source.node.dataset.state='stale';source.node.title='Último dato recibido; no se pudo actualizar ahora';}}
+      finally{clearTimeout(timer);source.busy=false}
+    }
+    function refresh(){sources.forEach(update)}
+    refresh();setInterval(refresh,30000);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+    window.addEventListener('online',refresh);
+  })();
+  </script>
+</body>
+</html>
