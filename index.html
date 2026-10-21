@@ -132,7 +132,11 @@
     .service[data-kind="envio"] h2,.service[data-kind="paquetes"] h2{flex:0 0 auto;line-height:1.12;margin:0}
     .service[data-kind="envio"] .service-description,.service[data-kind="paquetes"] .service-description{flex:0 0 auto;margin:0 0 .7cqw;line-height:1.35}
     .service[data-kind="envio"] .service-photo{object-position:center 40%}
-    .service[data-kind="paquetes"] .service-photo{object-position:center 23%}
+    .service[data-kind="paquetes"] .service-photo{object-position:center center}
+    /* Proteger las etiquetas de los cuatro países: el círculo no cubre la foto. */
+    .service[data-kind="paquetes"] .service-body::before{display:none}
+    .service[data-kind="paquetes"] .badge{top:-1.4cqw;width:7cqw;height:7cqw;border-width:3px}
+    .service[data-kind="paquetes"] .service-body{padding-top:6cqw}
     .service[data-kind="paquetes"] .service-description{font-size:1.55cqw;line-height:1.05;margin:.12cqw 0 .22cqw}
     .service[data-kind="paquetes"] .action{margin-top:auto}
     @media (max-width:600px){.service[data-kind="paquetes"] .service-description{font-size:1.85cqw}}
