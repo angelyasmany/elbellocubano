@@ -186,9 +186,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .promo-social-proof>div{margin-top:0!important}
 @media(max-width:390px){.promo-header>div{gap:8px!important}.promo-header img{width:30px!important;height:30px!important}.promo-header>div>div>div:first-of-type{font-size:13px}.header-community{font-size:11px;padding:9px}.back-home{font-size:12px}}
 
-/* Cantidad de seguidores, pequeña y centrada, antes de los tres contadores. */
-.followers-caption{margin:0 auto 4px;text-align:center;color:#64748b;font-size:11px;line-height:1.4;font-weight:400;letter-spacing:.015em}
-/* Contadores individuales, sin cifras agregadas ni alcance prometido. */
+/* Resumen compacto de seguidores, en lugar de repetir precios */
 .mini-social-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px auto 0;max-width:580px;opacity:.25;transition:opacity .28s ease}.counters-ready .mini-social-summary{opacity:1}
 .mini-social-link{min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;min-height:51px;padding:8px 5px;border:1px solid #dbe9f7;border-radius:14px;background:#f8fbff;color:#1769b9;text-decoration:none;transition:border-color .2s,transform .2s,background .2s}
 .mini-social-link:hover{transform:translateY(-2px);border-color:#6daeed;background:#eefdff}
@@ -204,7 +202,10 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 @media(max-width:390px){.back-home{width:36px;height:40px;min-height:40px}.back-home svg{width:31px;height:31px}}
 
     .instagram-social{position:relative}
+    .instagram-counter{position:relative;display:block;overflow:hidden;width:4.75em;height:1.3em;min-height:1.3em;flex:0 0 auto;color:#111;--ig-scale:.4}
+    .instagram-counter iframe{position:absolute;left:50%;top:50%;display:block;width:300px!important;height:80px!important;max-width:none!important;border:0;background:transparent;transform:translate(-50%,-50%) scale(var(--ig-scale));transform-origin:center;pointer-events:none}
     .instagram-profile-link{position:absolute!important;inset:0!important;display:block!important;z-index:2;padding:0!important;border:0!important;transform:none!important;background:transparent!important}
+.facebook-counter[hidden],#fb-followers[hidden]{display:none!important}
 </style>
 
 </head>
@@ -239,11 +240,10 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
   </section>
 
 <section id="promociones" style="margin-top:64px;max-width:1020px;margin-left:auto;margin-right:auto" class="pricing-section">
-<p class="followers-caption">Cantidad de seguidores</p>
 <nav class="mini-social-summary" aria-label="Seguidores en TikTok, Facebook e Instagram">
     <a href="https://www.tiktok.com/@elbellocubano7" target="_blank" rel="noopener noreferrer" data-social="TikTok" class="mini-social-link" aria-label="Abrir TikTok de el Bello Cubano"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#101014"/><path d="M14.3 4.4c.35 2.65 1.85 4 4.2 4.35v2.35c-1.55-.05-2.9-.55-4.2-1.5v5.35c0 3.65-2.55 6-6 6a5.65 5.65 0 0 1-5.65-5.55c0-3.2 2.5-5.45 5.7-5.45.45 0 .95.07 1.35.2v2.8a3 3 0 0 0-1.3-.3c-1.45 0-2.55 1.05-2.55 2.55 0 1.42 1.1 2.47 2.47 2.47 1.63 0 2.58-1.06 2.58-2.87V4.4Z" fill="#25f4ee" transform="translate(-.55 .55)"/><path d="M14.3 4.4c.35 2.65 1.85 4 4.2 4.35v2.35c-1.55-.05-2.9-.55-4.2-1.5v5.35c0 3.65-2.55 6-6 6a5.65 5.65 0 0 1-5.65-5.55c0-3.2 2.5-5.45 5.7-5.45.45 0 .95.07 1.35.2v2.8a3 3 0 0 0-1.3-.3c-1.45 0-2.55 1.05-2.55 2.55 0 1.42 1.1 2.47 2.47 2.47 1.63 0 2.58-1.06 2.58-2.87V4.4Z" fill="#fe2c55" transform="translate(.6 -.5)"/><path d="M14.3 4.4c.35 2.65 1.85 4 4.2 4.35v2.35c-1.55-.05-2.9-.55-4.2-1.5v5.35c0 3.65-2.55 6-6 6a5.65 5.65 0 0 1-5.65-5.55c0-3.2 2.5-5.45 5.7-5.45.45 0 .95.07 1.35.2v2.8a3 3 0 0 0-1.3-.3c-1.45 0-2.55 1.05-2.55 2.55 0 1.42 1.1 2.47 2.47 2.47 1.63 0 2.58-1.06 2.58-2.87V4.4Z" fill="#fff"/></svg><span id="tt-followers" class="mini-social-count" title="Cargando seguidores de TikTok">—</span></a>
-    <div class="instagram-social facebook-social mini-social-link" role="group" aria-label="Facebook y contador"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.7 22V13h3.1l.5-3.5h-3.6V7.2c0-1.1.4-1.8 1.9-1.8h1.9V2.1C17 2 15.8 1.9 14.6 1.9c-3.1 0-5.2 1.9-5.2 5.3v2.3H6.3V13h3.1v9z"/></svg><span id="fb-followers" class="mini-social-count" title="Cargando seguidores de Facebook">—</span><a class="instagram-profile-link" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" data-social="Facebook" aria-label="Abrir Facebook de el Bello Cubano"></a></div>
-    <div class="mini-social-link instagram-social" role="group" aria-label="Instagram y contador de seguidores"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="instagram-brand-mini" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#feda75"/><stop offset=".25" stop-color="#fa7e1e"/><stop offset=".53" stop-color="#e1306c"/><stop offset=".76" stop-color="#c13584"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect x=".5" y=".5" width="23" height="23" rx="6.5" fill="url(#instagram-brand-mini)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4.2" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="17.2" cy="6.9" r="1.2" fill="#fff"/></svg><span id="ig-followers" class="mini-social-count" data-state="unavailable" aria-live="polite" title="Seguidores de Instagram">—</span><a class="instagram-profile-link" href="https://www.instagram.com/elbellocubano/" target="_blank" rel="noopener noreferrer" data-social="Instagram" aria-label="Abrir Instagram de el Bello Cubano"></a></div>
+    <div class="instagram-social facebook-social mini-social-link" role="group" aria-label="Facebook y contador"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.7 22V13h3.1l.5-3.5h-3.6V7.2c0-1.1.4-1.8 1.9-1.8h1.9V2.1C17 2 15.8 1.9 14.6 1.9c-3.1 0-5.2 1.9-5.2 5.3v2.3H6.3V13h3.1v9z"/></svg><span id="fb-followers" class="mini-social-count" title="Cargando seguidores de Facebook">—</span><span class="mini-social-count instagram-counter facebook-counter" hidden></span><a class="instagram-profile-link" href="https://www.facebook.com/elbellocubano" target="_blank" rel="noopener noreferrer" data-social="Facebook" aria-label="Abrir Facebook de el Bello Cubano"></a></div>
+    <div class="mini-social-link instagram-social" role="group" aria-label="Instagram y contador de seguidores"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="instagram-brand-mini" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#feda75"/><stop offset=".25" stop-color="#fa7e1e"/><stop offset=".53" stop-color="#e1306c"/><stop offset=".76" stop-color="#c13584"/><stop offset="1" stop-color="#833ab4"/></linearGradient></defs><rect x=".5" y=".5" width="23" height="23" rx="6.5" fill="url(#instagram-brand-mini)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4.2" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="17.2" cy="6.9" r="1.2" fill="#fff"/></svg><span class="mini-social-count instagram-counter" title="Seguidores de @elbellocubano · contador original de Livecounts"><iframe src="https://livecounts.nl/instagram-realtime/embed/?u=elbellocubano&amp;theme=light&amp;size=s&amp;avatar=0&amp;name=0&amp;look=light&amp;tc=111111&amp;cc=111111&amp;pb=transparent&amp;cb=f8fbff&amp;bc=transparent&amp;ring=0&amp;hide=avatar%2Cname%2Ccheck%2Clabel%2Cgoal%2Clogo&amp;cw=800&amp;lh=1&amp;tf=system&amp;cf=system&amp;ts=comma" title="Seguidores en vivo de Instagram de el Bello Cubano" width="300" height="70" loading="eager" tabindex="-1" referrerpolicy="strict-origin-when-cross-origin"></iframe></span><span id="ig-followers" hidden></span><a class="instagram-profile-link" href="https://www.instagram.com/elbellocubano/" target="_blank" rel="noopener noreferrer" data-social="Instagram" aria-label="Abrir Instagram de el Bello Cubano"></a></div>
   </nav>
   <div style="text-align:center;margin-top:14px">
     <h2 style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:30px;margin:0">Elija su promoción</h2>
@@ -281,7 +281,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
           <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 180</div>
         </div>
-        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Estandar%20S%2F180" data-whatsapp-message="Quiero la Promo Estandar S/180" target="_blank" rel="noopener noreferrer" class="whatsapp-action whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
+        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Estandar%20S%2F180" data-whatsapp-message="Quiero la Promo Estandar S/180" rel="noopener noreferrer" class="whatsapp-action whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
       </div>
     </div>
 
@@ -316,7 +316,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
           <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 280</div>
         </div>
-        <a class="whatsapp-action" href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Premium%20S%2F280" data-whatsapp-message="Quiero la Promo Premium S/280" target="_blank" rel="noopener noreferrer" id="btn-premium" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px;background:#18181b;color:#fff;transition:all .22s ease">Pedir por WhatsApp</a>
+        <a class="whatsapp-action" href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Premium%20S%2F280" data-whatsapp-message="Quiero la Promo Premium S/280" rel="noopener noreferrer" id="btn-premium" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px;background:#18181b;color:#fff;transition:all .22s ease">Pedir por WhatsApp</a>
       </div>
     </div>
 
@@ -358,7 +358,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
           <div style="font-size:12px;color:#71717a;font-weight:600">INVERSIÓN</div>
           <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;margin-top:4px">S/ 350</div>
         </div>
-        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Full%20S%2F350" data-whatsapp-message="Quiero la Promo Full S/350" target="_blank" rel="noopener noreferrer" class="whatsapp-action whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
+        <a href="https://wa.me/elbellocubano?text=Quiero%20la%20Promo%20Full%20S%2F350" data-whatsapp-message="Quiero la Promo Full S/350" rel="noopener noreferrer" class="whatsapp-action whatsapp-btn" style="margin-top:16px;display:flex;justify-content:center;gap:8px;border-radius:9999px;padding:12px 28px;text-decoration:none;font-weight:700;font-size:14px">Pedir por WhatsApp</a>
       </div>
     </div>
 
@@ -440,7 +440,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
       <b style="color:#18181b">Hola!</b> Soy el Bello. ¿Qué vendes y dónde estás? Te respondo con ideas en 5 min.
     </div>
 
-    <a class="whatsapp-action" href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20que%20mi%20negocio%20llegue%20a%20Peru%20y%20al%20extranjero" data-whatsapp-message="Hola Bello quiero que mi negocio llegue a Peru y al extranjero" target="_blank" rel="noopener noreferrer" style="margin-top:16px;display:flex;width:100%;justify-content:center;background:#18181b;color:#fff;padding:12px;border-radius:9999px;font-size:14px;font-weight:700;text-decoration:none">Hablar por WhatsApp ahora</a>
+    <a class="whatsapp-action" href="https://wa.me/elbellocubano?text=Hola%20Bello%20quiero%20que%20mi%20negocio%20llegue%20a%20Peru%20y%20al%20extranjero" data-whatsapp-message="Hola Bello quiero que mi negocio llegue a Peru y al extranjero" rel="noopener noreferrer" style="margin-top:16px;display:flex;width:100%;justify-content:center;background:#18181b;color:#fff;padding:12px;border-radius:9999px;font-size:14px;font-weight:700;text-decoration:none">Hablar por WhatsApp ahora</a>
   </div>
 </section>
 
@@ -454,7 +454,6 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
  'use strict';
  for(const link of document.querySelectorAll('[data-whatsapp-message]')){
   link.href='https://wa.me/elbellocubano?text='+encodeURIComponent(link.dataset.whatsappMessage);
-  link.target='_blank';
   link.rel='noopener noreferrer';
  }
 })();
@@ -477,8 +476,23 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 })();
 </script>
 
-
+<script>
+(()=>{'use strict';
+ const counters=[...document.querySelectorAll('.instagram-counter:not(.facebook-counter)')];
+ function fit(counter){counter.style.setProperty('--ig-scale',String(parseFloat(getComputedStyle(counter).fontSize)/40));}
+ counters.forEach(fit);
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+ counters.forEach(counter=>{
+  const frame=counter.querySelector('iframe');let loaded=false,visible=false,played=false;
+  function reveal(){if(!loaded||!visible||played)return;played=true;if(!reduced.matches&&counter.animate)counter.animate([{opacity:.25,transform:'translateY(2px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'ease-out'});}
+  frame.addEventListener('load',()=>{loaded=true;reveal()},{once:true});
+  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{visible=entries.some(entry=>entry.isIntersecting);reveal();if(played)observer.disconnect()},{threshold:.25});observer.observe(counter);}
+  else{visible=true;reveal();}
+ });
+ if('ResizeObserver' in window){const observer=new ResizeObserver(entries=>entries.forEach(entry=>fit(entry.target)));counters.forEach(counter=>observer.observe(counter));}
+ window.addEventListener('resize',()=>counters.forEach(fit),{passive:true});
+})();
+</script>
 <script defer src="assets/social-counters.js"></script>
-<script defer src="assets/tiktok-browser-help.js"></script>
 </body>
 </html>
