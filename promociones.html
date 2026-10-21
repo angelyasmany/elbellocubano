@@ -218,7 +218,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .wa-copy-buttons button{flex:1;min-width:0;cursor:pointer;border-radius:10px;padding:12px 10px;font:700 13px/1.3 system-ui,-apple-system,'Segoe UI',sans-serif}
 .wa-copy-submit{border:1px solid #16844d;background:#16844d;color:white}
 .wa-copy-dismiss{border:1px solid #d4d4d8;background:white;color:#3f3f46}
-.wa-copy-status{min-height:16px;font-size:11px;line-height:1.4;color:#166534;margin-top:9px}
+.wa-copy-status{min-height:16px;font-size:11px;line-height:1.4;color:#166534;margin-top:9px;text-align:center}
 @media(max-width:370px){.wa-copy-card{padding:20px 15px}.wa-copy-buttons{gap:7px}}
 
 </style>
@@ -504,7 +504,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 <div class="wa-copy-overlay" id="wa-copy-overlay" hidden>
   <section class="wa-copy-card" role="dialog" aria-modal="true" aria-labelledby="wa-copy-heading" aria-describedby="wa-copy-description">
     <h2 id="wa-copy-heading">Copiar enlace al navegador</h2>
-    <p id="wa-copy-description">TikTok limita los enlaces de WhatsApp. Por favor cópielo y pegue en Chrome u otro navegador.</p>
+    <p id="wa-copy-description">TikTok limita los enlaces de WhatsApp. Por favor, cópielo y péguelo en Chrome u otro navegador.</p>
     <input id="wa-copy-link" class="wa-copy-url" type="text" readonly aria-label="Enlace de la página Promociónate con el Bello Cubano" spellcheck="false">
     <div class="wa-copy-buttons">
       <button id="wa-copy-button" class="wa-copy-submit" type="button">Copiar enlace</button>
@@ -562,7 +562,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
       try{await navigator.clipboard.writeText(linkField.value);success=true;}catch(e){}
     }
     if(!success)success=legacyCopy();
-    if(success){button.textContent='¡Copiado!';status.textContent='Pegar en su navegador favorito';}
+    if(success){button.textContent='¡Copiado!';status.textContent='Listo, asere, pégalo en tu navegador favorito';}
     else{status.textContent='Mantén pulsado el enlace para seleccionarlo y copiarlo.';linkField.focus();linkField.select();}
   });
 
