@@ -504,7 +504,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 <div class="wa-copy-overlay" id="wa-copy-overlay" hidden>
   <section class="wa-copy-card" role="dialog" aria-modal="true" aria-labelledby="wa-copy-heading" aria-describedby="wa-copy-description">
     <h2 id="wa-copy-heading">Copiar enlace al navegador</h2>
-    <p id="wa-copy-description">El navegador interno de TikTok limita los enlaces de WhatsApp. Para abrirlos, copia el enlace y pégalo en Chrome u otro navegador.</p>
+    <p id="wa-copy-description">TikTok limita los enlaces de WhatsApp. Para abrirlos, copie el enlace y péguelo en Chrome u otro navegador.</p>
     <input id="wa-copy-link" class="wa-copy-url" type="text" readonly aria-label="Enlace de la página Promociónate con el Bello Cubano" spellcheck="false">
     <div class="wa-copy-buttons">
       <button id="wa-copy-button" class="wa-copy-submit" type="button">Copiar enlace</button>
@@ -562,7 +562,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
       try{await navigator.clipboard.writeText(linkField.value);success=true;}catch(e){}
     }
     if(!success)success=legacyCopy();
-    if(success){button.textContent='¡Copiado!';status.textContent='Pega el enlace en Chrome u otro navegador.';}
+    if(success){button.textContent='¡Copiado!';status.textContent='Pegar en su navegador favorito';}
     else{status.textContent='Mantén pulsado el enlace para seleccionarlo y copiarlo.';linkField.focus();linkField.select();}
   });
 
