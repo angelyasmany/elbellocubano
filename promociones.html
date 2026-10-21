@@ -206,6 +206,23 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
     .instagram-counter iframe{position:absolute;left:50%;top:50%;display:block;width:300px!important;height:80px!important;max-width:none!important;border:0;background:transparent;transform:translate(-50%,-50%) scale(var(--ig-scale));transform-origin:center;pointer-events:none}
     .instagram-profile-link{position:absolute!important;inset:0!important;display:block!important;z-index:2;padding:0!important;border:0!important;transform:none!important;background:transparent!important}
 .facebook-counter[hidden],#fb-followers[hidden]{display:none!important}
+
+/* Alternativas de WhatsApp solo tras pulsar desde TikTok en un movil. */
+.wa-rescue[hidden]{display:none!important}
+.wa-rescue{position:fixed;inset:0;z-index:100001;display:flex;justify-content:center;align-items:flex-end;padding:12px;background:rgba(10,18,27,.58);box-sizing:border-box}
+.wa-rescue-panel{box-sizing:border-box;width:min(100%,440px);max-height:min(92vh,820px);overflow-y:auto;border-radius:22px;background:#fff;color:#18181b;box-shadow:0 14px 55px rgba(0,0,0,.24);padding:20px 17px 18px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.wa-rescue-panel h2{font-size:18px;line-height:1.25;margin:0 36px 8px 0;font-weight:850}
+.wa-rescue-panel p{font-size:13px;line-height:1.55;color:#52525b;margin:0 0 12px}
+.wa-rescue-close{float:right;background:#f4f4f5;border:0;border-radius:100%;width:34px;height:34px;color:#52525b;font-size:24px;cursor:pointer;line-height:34px}
+.wa-rescue-actions{display:grid;gap:8px}
+.wa-rescue-actions a,.wa-rescue-actions button{box-sizing:border-box;display:block;width:100%;border:1px solid #d4d4d8;border-radius:12px;padding:12px 14px;text-align:center;text-decoration:none;font:700 13px/1.35 system-ui,-apple-system,'Segoe UI',sans-serif;cursor:pointer;background:#fff;color:#27272a}
+.wa-rescue-actions [hidden]{display:none!important}
+.wa-rescue-actions a.wa-rescue-primary{background:#128c55;color:#fff;border-color:#128c55}
+.wa-rescue-actions a.wa-rescue-chrome{background:#eef5ff;border-color:#bed7ff;color:#1453a0}
+.wa-rescue-manual-url{box-sizing:border-box;width:100%;border:1px solid #d4d4d8;background:#fafafa;border-radius:8px;padding:9px;color:#52525b;font:11px/1.35 system-ui,sans-serif;margin-top:8px}
+.wa-rescue-small{font-size:11px!important;color:#71717a!important;margin:12px 2px 0!important}
+@media(min-width:500px){.wa-rescue{align-items:center}}
+
 </style>
 
 </head>
@@ -449,35 +466,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 </footer>
 
 </div>
-<script>
-// Solicitudes de promocion: WhatsApp directo en el navegador de TikTok (Android).
-// En otros navegadores se conserva el enlace web de WhatsApp que ya funciona.
-(() => {
-  'use strict';
-  const numero = '51964912979';
-  const agente = navigator.userAgent || '';
-  const esTikTokAndroid = /Android/i.test(agente) &&
-    /TikTok|musical_ly|trill_|AppName\/ultralite/i.test(agente);
 
-  for (const enlace of document.querySelectorAll('[data-whatsapp-message]')) {
-    const mensaje = encodeURIComponent(enlace.dataset.whatsappMessage || '');
-    const enlaceWeb = 'https://wa.me/' + numero + '?text=' + mensaje;
-
-    // Una pulsacion directa activa el intent: sin ventanas nuevas ni redirecciones por temporizador.
-    // Sin package, Android puede resolver WhatsApp o WhatsApp Business segun sus ajustes.
-    if (esTikTokAndroid) {
-      enlace.href = 'intent://send?phone=' + numero + '&text=' + mensaje +
-        '#Intent;scheme=whatsapp;action=android.intent.action.VIEW;' +
-        'category=android.intent.category.BROWSABLE;' +
-        'S.browser_fallback_url=' + encodeURIComponent(enlaceWeb) + ';end';
-    } else {
-      enlace.href = enlaceWeb;
-    }
-    enlace.removeAttribute('target');
-    enlace.rel = 'noopener noreferrer';
-  }
-})();
-</script>
 
 <script>
 (() => {
@@ -512,6 +501,142 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
  window.addEventListener('resize',()=>counters.forEach(fit),{passive:true});
 })();
 </script>
+
+<!-- Ayuda de salida de WhatsApp: se presenta solamente tras un toque desde TikTok movil. -->
+<div class="wa-rescue" id="wa-rescue" hidden>
+  <section class="wa-rescue-panel" role="dialog" aria-modal="true" aria-labelledby="wa-rescue-title" aria-describedby="wa-rescue-help">
+    <button class="wa-rescue-close" id="wa-rescue-close" type="button" aria-label="Cerrar alternativas">×</button>
+    <h2 id="wa-rescue-title">Abrir conversación de WhatsApp</h2>
+    <p id="wa-rescue-help">Estamos intentando abrir WhatsApp. Si TikTok no lo permite, prueba otra opción:</p>
+    <nav class="wa-rescue-actions" aria-label="Alternativas de apertura de WhatsApp">
+      <a id="wa-rescue-direct" href="#">Reintentar abrir WhatsApp directamente</a>
+      <a id="wa-rescue-business" href="#">Abrir WhatsApp Business (Android)</a>
+      <a id="wa-rescue-normal" href="#">Abrir WhatsApp normal (Android)</a>
+      <a id="wa-rescue-web" class="wa-rescue-primary" href="#">Abrir mediante enlace por número</a>
+      <a id="wa-rescue-user" href="#">Probar enlace @elbellocubano</a>
+      <a id="wa-rescue-chrome" class="wa-rescue-chrome" href="#">Intentar abrir con Chrome (Android)</a>
+      <button id="wa-rescue-copy" type="button">Copiar enlace para pegarlo en Chrome</button>
+    </nav>
+    <input class="wa-rescue-manual-url" id="wa-rescue-url" type="text" readonly aria-label="Enlace de WhatsApp para copiar manualmente">
+    <p class="wa-rescue-small">Si TikTok bloquea las aplicaciones, no es posible anular esa restricción desde la web. Las alternativas requieren un toque.</p>
+  </section>
+</div>
+
+
+<script>
+/* El Bello Cubano · apertura escalonada de WhatsApp para el navegador de TikTok.
+ * El resto de navegadores conserva el enlace oficial por numero del HTML.
+ * Un navegador no puede saber con certeza si otra app se abrio: la comprobacion
+ * de visibilidad/foco es solo una aproximacion, y siempre hay alternativas manuales.
+ */
+(function(){
+  'use strict';
+  var phone='51964912979';
+  var username='elbellocubano';
+  var ua=navigator.userAgent||'';
+  var android=/android/i.test(ua);
+  var ios=/iphone|ipad|ipod/i.test(ua);
+  var tiktokMobile=(android||ios)&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
+  var overlay=document.getElementById('wa-rescue');
+  var close=document.getElementById('wa-rescue-close');
+  var copy=document.getElementById('wa-rescue-copy');
+  var manualUrl=document.getElementById('wa-rescue-url');
+  var nodes={
+    direct:document.getElementById('wa-rescue-direct'),
+    business:document.getElementById('wa-rescue-business'),
+    normal:document.getElementById('wa-rescue-normal'),
+    web:document.getElementById('wa-rescue-web'),
+    user:document.getElementById('wa-rescue-user'),
+    chrome:document.getElementById('wa-rescue-chrome')
+  };
+  var timer=null;
+  var manuallyChosen=false;
+  var lastWebUrl='';
+
+  function stopTimer(){if(timer!==null){clearTimeout(timer);timer=null;}}
+  function hide(){stopTimer();manuallyChosen=true;overlay.hidden=true;}
+  function intentWhatsApp(message,packageName,webUrl){
+    return 'intent://send?phone='+phone+'&text='+encodeURIComponent(message)+
+      '#Intent;scheme=whatsapp;package='+packageName+
+      ';action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url='+
+      encodeURIComponent(webUrl)+';end';
+  }
+  function intentChrome(webUrl){
+    var u=new URL(webUrl);
+    return 'intent://'+u.host+u.pathname+u.search+
+      '#Intent;scheme=https;package=com.android.chrome;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url='+
+      encodeURIComponent(webUrl)+';end';
+  }
+  function prepare(message){
+    var text=encodeURIComponent(message);
+    var web='https://wa.me/'+phone+'?text='+text;
+    lastWebUrl=web;
+    manualUrl.value=web;
+    nodes.direct.href='whatsapp://send?phone='+phone+'&text='+text;
+    nodes.web.href=web;
+    // Enlace por nombre de usuario: alternativa experimental, no documentada como
+    // equivalente del formato numerico en las instrucciones oficiales de WhatsApp.
+    nodes.user.href='https://wa.me/'+encodeURIComponent(username)+'?text='+text;
+    nodes.normal.href=intentWhatsApp(message,'com.whatsapp',web);
+    nodes.business.href=intentWhatsApp(message,'com.whatsapp.w4b',web);
+    nodes.chrome.href=intentChrome(web);
+    nodes.normal.hidden=!android;
+    nodes.business.hidden=!android;
+    nodes.chrome.hidden=!android;
+    return {web:web,app:'whatsapp://send?phone='+phone+'&text='+text};
+  }
+
+  Object.keys(nodes).forEach(function(k){
+    nodes[k].addEventListener('click',function(){manuallyChosen=true;stopTimer();});
+  });
+  close.addEventListener('click',hide);
+  overlay.addEventListener('click',function(ev){if(ev.target===overlay)hide();});
+  document.addEventListener('keydown',function(ev){if(!overlay.hidden&&ev.key==='Escape')hide();});
+  copy.addEventListener('click',function(){
+    manuallyChosen=true;stopTimer();
+    var text=lastWebUrl;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){copy.textContent='Enlace copiado ✓';},function(){fallbackCopy();});
+    }else{fallbackCopy();}
+    function fallbackCopy(){
+      try{var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();var ok=document.execCommand('copy');t.remove();copy.textContent=ok?'Enlace copiado ✓':'Selecciona el enlace de abajo y cópialo';if(!ok){manualUrl.focus();manualUrl.select();}}catch(err){copy.textContent='Selecciona el enlace de abajo y cópialo';manualUrl.focus();manualUrl.select();}
+    }
+  });
+
+  document.addEventListener('visibilitychange',function(){if(document.hidden)stopTimer();});
+  var links=document.querySelectorAll('a[data-whatsapp-message]');
+  links.forEach(function(a){
+    var message=a.getAttribute('data-whatsapp-message')||'';
+    var web='https://wa.me/'+phone+'?text='+encodeURIComponent(message);
+    // URL publica valida y funcional sin JavaScript y fuera de TikTok.
+    a.href=web;
+    a.removeAttribute('target');
+    if(!tiktokMobile){return;}
+    a.addEventListener('click',function(ev){
+      if(ev.defaultPrevented||ev.button!==0||ev.ctrlKey||ev.metaKey||ev.shiftKey||ev.altKey){return;}
+      ev.preventDefault();
+      stopTimer();
+      manuallyChosen=false;
+      copy.textContent='Copiar enlace para pegarlo en Chrome';
+      var urls=prepare(message);
+      overlay.hidden=false;
+      // Primer intento: deep link nativo, distinto al intent:// que TikTok rechazo antes.
+      // Si seguimos aqui, probar el enlace web automaticamente UNA sola vez.
+      timer=setTimeout(function(){
+        timer=null;
+        if(!manuallyChosen&&!document.hidden&&document.hasFocus()){
+          window.location.assign(urls.web);
+        }
+      },2400);
+      try{window.location.href=urls.app;}catch(err){
+        stopTimer();
+        // En caso de excepcion sin navegacion, el usuario puede pulsar una alternativa.
+      }
+    });
+  });
+})();
+</script>
+
 <script defer src="assets/social-counters.js"></script>
 </body>
 </html>
