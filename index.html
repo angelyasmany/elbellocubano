@@ -163,15 +163,21 @@
 .tt-copy-modal{position:fixed;z-index:100020;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(10,31,23,.65);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);animation:tt-backdrop .26s ease both}
 .tt-copy-panel{width:min(100%,370px);padding:26px 22px 22px;text-align:center;background:#fff;border-radius:23px;box-shadow:0 25px 75px #061e1670;font:inherit;color:#17251d;animation:tt-pop .36s cubic-bezier(.19,1.25,.4,1) both}
 .tt-copy-check{display:grid;place-items:center;width:66px;height:66px;margin:0 auto 12px;border-radius:50%;background:#e8f8ee;color:#168746;font-size:39px;font-weight:bold}
-.tt-copy-panel h2{font-size:22px;line-height:1.2;margin:0 0 9px;color:#143922}
+.tt-copy-panel h2{font-size:22px;line-height:1.25;margin:0 0 7px;color:#143922}
 .tt-copy-panel p{font-size:13px;line-height:1.45;margin:0 0 13px;color:#476253}
 .tt-copy-number{display:block;width:100%;padding:13px 8px;border:1px solid #b5e6c8;border-radius:12px;background:#eefaf2;font-size:23px;font-weight:800;text-align:center;color:#166a38;letter-spacing:.045em;user-select:text;-webkit-user-select:text}
 .tt-copy-confirm{display:block;width:100%;margin-top:16px;padding:13px 8px;border:0;border-radius:999px;background:linear-gradient(110deg,#12954b,#167b3c);color:#fff;font-size:15px;font-weight:800;position:relative;overflow:hidden;cursor:pointer}
 .tt-copy-confirm::after{content:'';position:absolute;top:-50%;bottom:-50%;left:-65%;width:40%;background:linear-gradient(105deg,transparent,#fff9,transparent);transform:skewX(-18deg);animation:ebc-tt-shine 1s ease-out .25s both;pointer-events:none}
 .tt-copy-panel .tt-copy-manual{font-size:12px;color:#176a38;margin:10px 0 0}
-.tt-copy-number-wrap{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:0 8px;border:1px solid #b5e6c8;border-radius:12px;background:#eefaf2}
-.tt-copy-number-wrap .tt-copy-number{width:12ch;min-width:0;max-width:calc(100% - 33px);flex:0 1 auto;border:0;background:transparent;padding:13px 0;text-align:left;letter-spacing:0;font-size:clamp(16px,5vw,22px)}
-.tt-wa-icon{width:26px;height:26px;flex:0 0 26px;color:#168746}
+.tt-copy-number-wrap{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;min-width:0;padding:0 10px;border:1px solid #b5e6c8;border-radius:12px;background:#eefaf2}
+.tt-copy-number-wrap .tt-copy-number{width:100%;min-width:0;max-width:none;flex:1 1 auto;border:0;background:transparent;padding:13px 0;text-align:left;letter-spacing:-.02em;font-size:clamp(17px,4.7vw,21px);font-variant-numeric:tabular-nums;text-overflow:clip;box-shadow:none;outline-offset:-2px}
+.tt-wa-icon{width:25px;height:25px;flex:0 0 25px;color:#168746}
+.tt-copy-panel .tt-copy-status{font-size:14px;line-height:1.4;color:#168746;font-weight:500;margin:0 0 11px}
+.tt-copy-panel .tt-copy-status[hidden]{display:none!important}
+/* Ajustes finales: título en una sola línea y grupo WhatsApp+número centrado. */
+.tt-copy-panel h2{white-space:nowrap;font-size:clamp(13px,4vw,19px);letter-spacing:-.025em}
+.tt-copy-number-wrap .tt-copy-number{width:16ch;max-width:calc(100% - 30px);flex:0 1 auto;text-align:left;font-size:clamp(15px,4.4vw,20px)}
+
 /* Todos los servicios TikTok: primero se dibuja la palomita y vibra suavemente;
    al terminar, el destello blanco recorre el botón de matrícula. */
 .tt-copy-check svg{display:block;width:38px;height:38px;overflow:visible}
@@ -322,8 +328,10 @@
     }
     services.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')paused=true});
     services.addEventListener('pointerleave',()=>{paused=false});
-    services.addEventListener('focusin',()=>paused=true);
+    services.addEventListener('focusin',()=>{if(!document.documentElement.classList.contains('ebc-tiktok'))paused=true});
     services.addEventListener('focusout',event=>{if(!services.contains(event.relatedTarget))paused=false});
+    // Los avisos de teléfono no deben dejar el carrusel detenido tras cerrar.
+    window.addEventListener('ebc:resume-carousel',()=>{paused=false;touchStart=null;position=track.scrollLeft});
     services.addEventListener('touchstart',event=>{paused=true;manual=null;touchStart={x:event.touches[0].clientX,left:track.scrollLeft}},{passive:true});
     services.addEventListener('touchmove',event=>{
       if(touchStart){position=touchStart.left+touchStart.x-event.touches[0].clientX;normalize();track.scrollLeft=position;}
@@ -377,8 +385,8 @@
 <div class="tt-copy-modal" id="tt-copy-modal" hidden>
   <section class="tt-copy-panel" role="dialog" aria-modal="true" aria-labelledby="tt-copy-title" aria-describedby="tt-copy-instructions">
     <div class="tt-copy-check" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 25 L20 35 L40 13" /></svg></div>
-    <h2 id="tt-copy-title">¡Número copiado!</h2>
-    <p id="tt-copy-instructions">Abre WhatsApp y pega el número.</p>
+    <h2 id="tt-copy-title">Abre WhatsApp y escríbeme</h2>
+    <p id="tt-copy-status" class="tt-copy-status" role="status" aria-live="polite" hidden>Número copiado</p>
     <div class="tt-copy-number-wrap"><svg class="tt-wa-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 2.5A13.4 13.4 0 0 0 4.5 22.8L2.6 29l6.5-1.8A13.5 13.5 0 1 0 16 2.5Zm0 24.3a10.8 10.8 0 0 1-5.5-1.5l-.4-.2-3.8 1.1 1.1-3.7-.3-.4A10.8 10.8 0 1 1 16 26.8Zm6.1-8.1c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.1-.4.1-.7 0-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.2-.6l.5-.6c.1-.2.2-.4.1-.6l-.9-2.2c-.2-.5-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.6s1.2 2.9 1.3 3.1c.2.2 2.4 3.7 5.8 5.1.8.4 1.4.5 1.9.6.8.1 1.5.1 2.1-.1.6-.2 1.8-.8 2.1-1.6.3-.7.3-1.4.2-1.6-.1-.2-.3-.3-.6-.5Z"/></svg><input class="tt-copy-number" id="tt-copy-number" readonly aria-label="Número de WhatsApp" /></div>
     <p class="tt-copy-manual" id="tt-copy-manual" hidden>Si no se copia, mantén pulsado el número para seleccionarlo.</p>
     <button class="tt-copy-confirm" id="tt-copy-confirm" type="button">¡Perfecto!</button>
@@ -391,9 +399,17 @@
  var ua=navigator.userAgent||'';
  var tiktok=/android|iphone|ipad|ipod/i.test(ua)&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
  if(!tiktok)return;
+ document.documentElement.classList.add('ebc-tiktok');
+ // TikTok: conservar las tres rayitas como elemento visual, sin desplegar grupos.
+ var menu=document.getElementById('community-menu');
+ if(menu){
+   menu.open=false;
+   var summary=menu.querySelector('summary');
+   if(summary){summary.setAttribute('aria-disabled','true');summary.setAttribute('tabindex','-1');summary.style.pointerEvents='none';summary.style.cursor='default';}
+ }
  var modal=document.getElementById('tt-copy-modal'), heading=document.getElementById('tt-copy-title');
  var field=document.getElementById('tt-copy-number'), hint=document.getElementById('tt-copy-manual');
- var confirm=document.getElementById('tt-copy-confirm'),instructions=document.getElementById('tt-copy-instructions');
+ var confirm=document.getElementById('tt-copy-confirm'),status=document.getElementById('tt-copy-status');
  var previousFocus=null, busy=false, activeConfig=null;
  var info={
   paquetes:{number:'+51970342941',ok:'¡Número copiado!',button:'¡Tu envío comienza aquí!'},
@@ -409,8 +425,8 @@
    document.body.removeChild(el);return success;
  }
  function finish(success,config){
-   heading.textContent=success?config.ok:'Copia este número';
-   instructions.textContent='Abre WhatsApp y pega el número.';
+   heading.textContent=(config===info.envio||config===info.paquetes)?'Abre WhatsApp y escríbenos':'Abre WhatsApp y escríbeme';
+   status.hidden=!success;status.textContent='Número copiado';
    hint.hidden=success;
    confirm.textContent=success?(config.button||'¡Perfecto!'):'Copiar número';
    busy=false;
@@ -422,19 +438,20 @@
    field.value=config.number.replace(/^(\+51)(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3 $4');
    // Reiniciar las animaciones del check y el brillo en cada apertura.
    modal.classList.remove('is-animated');void modal.offsetWidth;modal.classList.add('is-animated');
-   heading.textContent='Copiando número…';
-   instructions.textContent='Preparando tu número de WhatsApp.';
+   heading.textContent=(config===info.envio||config===info.paquetes)?'Abre WhatsApp y escríbenos':'Abre WhatsApp y escríbeme';
+   status.hidden=true;
    hint.hidden=true;confirm.textContent='Cerrar';
    // Copia sincrónica dentro del gesto del usuario: importante para WebViews antiguas.
    var copied=legacyCopy(config.number);
    modal.hidden=false;
+   window.dispatchEvent(new Event('ebc:resume-carousel'));
    if(copied){finish(true,config);confirm.focus();return;}
    if(navigator.clipboard&&navigator.clipboard.writeText){
      navigator.clipboard.writeText(config.number).then(function(){finish(true,config)},function(){finish(false,config)});
    }else finish(false,config);
    confirm.focus();
  }
- function close(){modal.hidden=true;modal.classList.remove('is-animated');activeConfig=null;if(previousFocus&&previousFocus.focus)previousFocus.focus()}
+ function close(){modal.hidden=true;modal.classList.remove('is-animated');activeConfig=null;if(previousFocus&&previousFocus.focus)previousFocus.focus();window.dispatchEvent(new Event('ebc:resume-carousel'))}
  confirm.addEventListener('click',function(){
    if(confirm.textContent==='Copiar número'){
      var config=activeConfig||{ok:'¡Número copiado!',button:'Cerrar'};
