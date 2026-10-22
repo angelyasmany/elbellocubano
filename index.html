@@ -169,6 +169,16 @@
 .tt-copy-confirm{display:block;width:100%;margin-top:16px;padding:13px 8px;border:0;border-radius:999px;background:linear-gradient(110deg,#12954b,#167b3c);color:#fff;font-size:15px;font-weight:800;position:relative;overflow:hidden;cursor:pointer}
 .tt-copy-confirm::after{content:'';position:absolute;top:-50%;bottom:-50%;left:-65%;width:40%;background:linear-gradient(105deg,transparent,#fff9,transparent);transform:skewX(-18deg);animation:ebc-tt-shine 1s ease-out .25s both;pointer-events:none}
 .tt-copy-panel .tt-copy-manual{font-size:12px;color:#176a38;margin:10px 0 0}
+/* Música en TikTok: primero se dibuja la palomita y vibra suavemente;
+   al terminar, el destello blanco recorre el botón de matrícula. */
+.tt-copy-check svg{display:block;width:38px;height:38px;overflow:visible}
+.tt-copy-check svg path{fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.tt-copy-modal.is-music .tt-copy-check{animation:tt-music-tick .82s ease-out both}
+.tt-copy-modal.is-music .tt-copy-check svg path{stroke-dasharray:44;stroke-dashoffset:44;animation:tt-music-draw .65s ease-out .12s forwards}
+.tt-copy-modal.is-music .tt-copy-confirm::after{animation:ebc-tt-shine 1s ease-out .88s both}
+@keyframes tt-music-draw{to{stroke-dashoffset:0}}
+@keyframes tt-music-tick{0%{transform:scale(.65) rotate(-12deg);opacity:.35}42%{transform:scale(1.13) rotate(8deg);opacity:1}60%{transform:scale(.96) rotate(-5deg)}80%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){.tt-copy-modal.is-music .tt-copy-check,.tt-copy-modal.is-music .tt-copy-check svg path,.tt-copy-modal.is-music .tt-copy-confirm::after{animation:none!important}.tt-copy-check svg path{stroke-dashoffset:0!important}}
 @keyframes tt-pop{from{opacity:0;transform:translateY(18px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes tt-backdrop{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.tt-copy-modal,.tt-copy-panel,.tt-copy-confirm::after{animation:none!important}}
@@ -363,7 +373,7 @@
 
 <div class="tt-copy-modal" id="tt-copy-modal" hidden>
   <section class="tt-copy-panel" role="dialog" aria-modal="true" aria-labelledby="tt-copy-title" aria-describedby="tt-copy-instructions">
-    <div class="tt-copy-check" aria-hidden="true">✓</div>
+    <div class="tt-copy-check" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 25 L20 35 L40 13" /></svg></div>
     <h2 id="tt-copy-title">¡Número copiado!</h2>
     <p id="tt-copy-instructions">Abre WhatsApp y pega el número para escribirnos.</p>
     <input class="tt-copy-number" id="tt-copy-number" readonly aria-label="Número de WhatsApp" />
@@ -387,7 +397,7 @@
  var info={
   paquetes:{number:'970342941',ok:'¡Número copiado!'},
   envio:{number:'908890523',ok:'¡Número copiado!'},
-  musica:{number:'964912979',ok:'¡Número copiado!',button:'¡Ya puedes matricularte!'},
+  musica:{number:'964912979',ok:'¡Número copiado!',button:'¡Ya puedes matricular!'},
   promocion:{number:'964912979',ok:'¡Número copiado!'}
  };
  function legacyCopy(number){
@@ -408,6 +418,9 @@
    if(busy)return;busy=true;
    previousFocus=document.activeElement;
    field.value=config.number;
+   modal.classList.toggle('is-music',config===info.musica);
+   // Reiniciar las animaciones cada vez que se abre la ventana.
+   if(config===info.musica){modal.classList.remove('is-music');void modal.offsetWidth;modal.classList.add('is-music');}
    heading.textContent='Copiando número…';
    instructions.textContent='Preparando tu número de WhatsApp.';
    hint.hidden=true;confirm.textContent='¡Perfecto!';
