@@ -191,6 +191,21 @@
 @keyframes tt-pop{from{opacity:0;transform:translateY(18px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes tt-backdrop{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.tt-copy-modal,.tt-copy-panel,.tt-copy-confirm::after{animation:none!important}}
+
+    /* TikTok: menú compacto a la izquierda de las tres rayitas. */
+    .ebc-tiktok .community-menu .community-panel{display:none!important}
+    .tt-browser-panel{display:none;position:absolute;right:calc(100% + 3px);top:0;width:min(285px,74vw);padding:11px;background:#fffffff7;border:1px solid #d8e5f4;border-radius:11px;box-shadow:0 6px 17px #173b6a30;font-family:Arial,Helvetica,sans-serif;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+    .ebc-tiktok .community-menu[open] .tt-browser-panel{display:block;animation:tt-browser-slide .22s ease-out both}
+    @keyframes tt-browser-slide{from{opacity:0;transform:translateX(13px)}to{opacity:1;transform:translateX(0)}}
+    .tt-browser-title{display:flex;align-items:center;gap:6px;color:#143451;font-size:clamp(11px,2.65cqw,13px);font-weight:750;white-space:nowrap;margin:0 0 8px}
+    .tt-browser-title svg{width:18px;height:18px;flex:none;stroke:#0877eb;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .tt-browser-row{display:flex;align-items:center;gap:5px;min-width:0}
+    .tt-browser-url{flex:1 1 0;min-width:0;padding:8px 6px;border:1px solid #e2e8f0;border-radius:6px;background:#f1f5f9;color:#475569;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:all;-webkit-user-select:all}
+    .tt-browser-copy{flex:none;position:relative;overflow:hidden;padding:8px 9px;border:0;border-radius:6px;background:#0877eb;color:white;font-weight:750;font-size:11px;line-height:1.1;cursor:pointer}
+    .tt-browser-copy::after{content:'';position:absolute;inset:-30% auto -30% -65%;width:40%;background:linear-gradient(105deg,transparent,#fff9,transparent);transform:skewX(-18deg);pointer-events:none}
+    .tt-browser-copy.is-copied::after{animation:tt-browser-shine .8s ease-out both}
+    @keyframes tt-browser-shine{to{left:140%}}
+    @media(prefers-reduced-motion:reduce){.ebc-tiktok .community-menu[open] .tt-browser-panel,.tt-browser-copy.is-copied::after{animation:none}}
 </style>
 </head>
 <body>
@@ -400,12 +415,46 @@
  var tiktok=/android|iphone|ipad|ipod/i.test(ua)&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
  if(!tiktok)return;
  document.documentElement.classList.add('ebc-tiktok');
- // TikTok: conservar las tres rayitas como elemento visual, sin desplegar grupos.
+ // TikTok: tres rayitas activas con copia de la dirección de esta página.
  var menu=document.getElementById('community-menu');
  if(menu){
    menu.open=false;
    var summary=menu.querySelector('summary');
-   if(summary){summary.setAttribute('aria-disabled','true');summary.setAttribute('tabindex','-1');summary.style.pointerEvents='none';summary.style.cursor='default';}
+   if(summary){
+     summary.removeAttribute('aria-disabled');summary.removeAttribute('tabindex');
+     summary.style.pointerEvents='';summary.style.cursor='pointer';
+     summary.setAttribute('aria-label','Abrir opciones para navegador');
+     summary.setAttribute('title','Abrir en navegador');
+   }
+   var panel=document.createElement('div');
+   panel.className='tt-browser-panel';
+   panel.innerHTML='<div class="tt-browser-title"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-3 3-3 15 0 18M12 3c3 3 3 15 0 18"/></svg><span>Abrir en navegador</span></div><div class="tt-browser-row"><input class="tt-browser-url" readonly aria-label="Enlace de la página"><button class="tt-browser-copy" type="button">Copiar</button></div>';
+   menu.appendChild(panel);
+   var urlInput=panel.querySelector('input');
+   var copyButton=panel.querySelector('button');
+   var copyUrl=new URL(window.location.href);copyUrl.search='';copyUrl.hash='';
+   urlInput.value=copyUrl.href;
+   urlInput.addEventListener('click',function(){urlInput.select()});
+   function fallbackCopy(){
+     urlInput.focus();urlInput.select();
+     try{return document.execCommand('copy')}catch(err){return false}
+   }
+   function copied(ok){
+     copyButton.textContent=ok?'¡Copiado!':'Seleccionar';
+     copyButton.classList.remove('is-copied');
+     if(ok){void copyButton.offsetWidth;copyButton.classList.add('is-copied')}
+     else{urlInput.focus();urlInput.select()}
+   }
+   copyButton.addEventListener('click',function(){
+     // Intentar copiar dentro del gesto para favorecer WebViews antiguas.
+     if(fallbackCopy()){copied(true);return}
+     if(navigator.clipboard&&navigator.clipboard.writeText){
+       navigator.clipboard.writeText(urlInput.value).then(function(){copied(true)},function(){copied(false)});
+     }else copied(false);
+   });
+   menu.addEventListener('toggle',function(){
+     if(menu.open){copyButton.textContent='Copiar';copyButton.classList.remove('is-copied')}
+   });
  }
  var modal=document.getElementById('tt-copy-modal'), heading=document.getElementById('tt-copy-title');
  var field=document.getElementById('tt-copy-number'), hint=document.getElementById('tt-copy-manual');
