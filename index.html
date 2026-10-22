@@ -169,9 +169,9 @@
 .tt-copy-confirm{display:block;width:100%;margin-top:16px;padding:13px 8px;border:0;border-radius:999px;background:linear-gradient(110deg,#12954b,#167b3c);color:#fff;font-size:15px;font-weight:800;position:relative;overflow:hidden;cursor:pointer}
 .tt-copy-confirm::after{content:'';position:absolute;top:-50%;bottom:-50%;left:-65%;width:40%;background:linear-gradient(105deg,transparent,#fff9,transparent);transform:skewX(-18deg);animation:ebc-tt-shine 1s ease-out .25s both;pointer-events:none}
 .tt-copy-panel .tt-copy-manual{font-size:12px;color:#176a38;margin:10px 0 0}
-.tt-copy-number-wrap{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:0 12px;border:1px solid #b5e6c8;border-radius:12px;background:#eefaf2}
-.tt-copy-number-wrap .tt-copy-number{width:fit-content;min-width:0;flex:1;border:0;background:transparent;padding:13px 0;font-size:clamp(17px,5.5vw,23px)}
-.tt-wa-icon{width:29px;height:29px;flex:0 0 29px;color:#168746}
+.tt-copy-number-wrap{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:0 8px;border:1px solid #b5e6c8;border-radius:12px;background:#eefaf2}
+.tt-copy-number-wrap .tt-copy-number{width:12ch;min-width:0;max-width:calc(100% - 33px);flex:0 1 auto;border:0;background:transparent;padding:13px 0;text-align:left;letter-spacing:0;font-size:clamp(16px,5vw,22px)}
+.tt-wa-icon{width:26px;height:26px;flex:0 0 26px;color:#168746}
 /* Todos los servicios TikTok: primero se dibuja la palomita y vibra suavemente;
    al terminar, el destello blanco recorre el botón de matrícula. */
 .tt-copy-check svg{display:block;width:38px;height:38px;overflow:visible}
@@ -391,17 +391,15 @@
  var ua=navigator.userAgent||'';
  var tiktok=/android|iphone|ipad|ipod/i.test(ua)&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
  if(!tiktok)return;
- var android=/Android\s([0-9]+)/i.exec(ua),ios=/(?:iPhone OS|CPU OS)\s([0-9]+)/i.exec(ua);
- var older=!!((android&&+android[1]<=9)||(ios&&+ios[1]<=12));
  var modal=document.getElementById('tt-copy-modal'), heading=document.getElementById('tt-copy-title');
  var field=document.getElementById('tt-copy-number'), hint=document.getElementById('tt-copy-manual');
  var confirm=document.getElementById('tt-copy-confirm'),instructions=document.getElementById('tt-copy-instructions');
  var previousFocus=null, busy=false, activeConfig=null;
  var info={
-  paquetes:{number:'970342941',ok:'¡Número copiado!',button:'¡Tu envío comienza aquí!'},
-  envio:{number:'908890523',ok:'¡Número copiado!',button:'¡Envía con confianza!'},
-  musica:{number:'964912979',ok:'¡Número copiado!',button:'¡Ya puedes matricular!'},
-  promocion:{number:'964913979',ok:'¡Número copiado!',button:'¡Hagamos crecer tu negocio!'}
+  paquetes:{number:'+51970342941',ok:'¡Número copiado!',button:'¡Tu envío comienza aquí!'},
+  envio:{number:'+51908890523',ok:'¡Número copiado!',button:'¡Envía con confianza!'},
+  musica:{number:'+51964912979',ok:'¡Número copiado!',button:'¡Ya puedes matricular!'},
+  promocion:{number:'+51964913979',ok:'¡Número copiado!',button:'¡Hagamos crecer tu negocio!'}
  };
  function legacyCopy(number){
    var el=document.createElement('textarea');el.value=number;el.readOnly=true;
@@ -421,7 +419,7 @@
    if(busy)return;busy=true;
    previousFocus=document.activeElement;
    activeConfig=config;
-   field.value=config.number;
+   field.value=config.number.replace(/^(\+51)(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3 $4');
    // Reiniciar las animaciones del check y el brillo en cada apertura.
    modal.classList.remove('is-animated');void modal.offsetWidth;modal.classList.add('is-animated');
    heading.textContent='Copiando número…';
@@ -440,7 +438,7 @@
  confirm.addEventListener('click',function(){
    if(confirm.textContent==='Copiar número'){
      var config=activeConfig||{ok:'¡Número copiado!',button:'Cerrar'};
-     finish(legacyCopy(field.value),config);
+     finish(legacyCopy(config.number),config);
      if(confirm.textContent==='Copiar número'){field.focus();field.select()}
    }else close();
  });
@@ -450,8 +448,6 @@
    var card=target.closest('.service');
    if(card){
      var kind=card.getAttribute('data-kind');
-     // En teléfonos que sí abren promociones, conservar esa navegación.
-     if(kind==='promocion'&&!older)return null;
      return info[kind]||null;
    }
    if(target.closest('[data-business-whatsapp]'))return info.promocion;
