@@ -147,6 +147,16 @@
     .social>.instagram-social{color:#2058a6;display:flex;flex-direction:column;align-items:center;gap:.7cqw;min-width:0;padding:.4cqw .5cqw;border-right:1px solid #8aa4cb;transition:transform .18s}
     .social>.instagram-social:hover{transform:translateY(-4px)}
 .facebook-counter[hidden],#fb-followers[hidden]{display:none!important}
+
+/* Solución exclusiva para el navegador integrado de TikTok. */
+.ebc-tt-number{display:inline-flex!important;align-items:center;justify-content:center;gap:.4em;white-space:nowrap;position:relative;overflow:hidden;animation:ebc-tt-appear .36s ease-out both;background:#16854e!important;color:#fff!important;border-color:#16854e!important;box-shadow:0 3px 13px #16a34a55!important;font-variant-numeric:tabular-nums;user-select:text;-webkit-user-select:text}
+.ebc-tt-number svg{width:1.1em!important;height:1.1em!important;flex:none;fill:currentColor!important;stroke:none!important;margin:0!important}
+.ebc-tt-number:after{content:"";position:absolute;top:-40%;bottom:-40%;left:-65%;width:42%;background:linear-gradient(105deg,transparent,#fff9,transparent);transform:skewX(-18deg);pointer-events:none;animation:ebc-tt-shine 1s ease-out .1s both}
+.ebc-tt-hint{margin:5px 0 0;text-align:center;font:700 clamp(10px,2.15cqw,12px)/1.3 Arial,sans-serif;color:#16854e;animation:ebc-tt-appear .25s ease-out}
+.ebc-tt-hint[hidden]{display:none!important}
+@keyframes ebc-tt-appear{from{opacity:.35;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes ebc-tt-shine{0%{left:-65%}100%{left:135%}}
+@media(prefers-reduced-motion:reduce){.ebc-tt-number,.ebc-tt-number:after,.ebc-tt-hint{animation:none!important}}
 </style>
 </head>
 <body>
@@ -182,9 +192,9 @@
 <a aria-label="Abrir YouTube de el Bello Cubano" data-social="YouTube" href="https://www.youtube.com/@elbellocubano" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><rect fill="none" height="22" rx="7" stroke="currentColor" stroke-width="3.2" width="36" x="6" y="13"></rect><path d="m21 18.5 10 5.5-10 5.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="yt-subscribers">—</span></a>
 </nav>
 <section aria-labelledby="businesses-title" class="businesses"><h2 id="businesses-title">Negocios del mes</h2><div class="business-grid">
-<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para tienda" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi tienda y tener mi espacio en Negocios del mes." href="https://wa.me/elbellocubano?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20tienda%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img alt="Ejemplo de una boutique de ropa" loading="eager" src="assets/tienda.webp"/><figcaption>Tu tienda aquí</figcaption></figure></a></article>
-<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para restaurante" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi restaurante y tener mi espacio en Negocios del mes." href="https://wa.me/elbellocubano?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20restaurante%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img alt="Ejemplo de un restaurante" loading="eager" src="assets/restaurante.webp"/><figcaption>Tu restaurante aquí</figcaption></figure></a></article>
-<article class="business"><div aria-hidden="true" class="business-placeholder"><svg viewbox="0 0 40 40"><path d="M7.5 20c0-1.4 1.1-2.5 2.5-2.5h5.1L26.8 12c.8-.4 1.7.2 1.7 1.1v13.8c0 .9-.9 1.5-1.7 1.1l-11.7-5.5H10c-1.4 0-2.5-1.1-2.5-2.5z"></path><path d="M15.2 22.7l2 6c.2.6.7 1 1.3 1h4.1c.8 0 1.3-.8 1-1.5l-1.9-5.5"></path><path d="M31 15.2c2.1.9 3.5 2.7 3.5 4.8s-1.4 3.9-3.5 4.8"></path><path d="M34.3 11.8c3.3 1.4 5.2 4.5 5.2 8.2s-1.9 6.8-5.2 8.2"></path></svg><span>Espacio disponible</span></div><a aria-label="Solicitar este espacio a el Bello Cubano por WhatsApp" class="space-link" data-business-whatsapp="Hola, el Bello Cubano. Quiero reservar el espacio disponible en Negocios del mes para promocionar mi negocio. ¿Me compartes los detalles?" href="https://wa.me/elbellocubano?text=Hola%2C%20el%20Bello%20Cubano.%20Quiero%20reservar%20el%20espacio%20disponible%20en%20Negocios%20del%20mes%20para%20promocionar%20mi%20negocio.%20%C2%BFMe%20compartes%20los%20detalles%3F" rel="noopener noreferrer" target="_blank">Quiero este espacio</a></article>
+<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para tienda" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi tienda y tener mi espacio en Negocios del mes." href="https://wa.me/51964912979?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20tienda%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img alt="Ejemplo de una boutique de ropa" loading="eager" src="assets/tienda.webp"/><figcaption>Tu tienda aquí</figcaption></figure></a></article>
+<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para restaurante" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi restaurante y tener mi espacio en Negocios del mes." href="https://wa.me/51964912979?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20restaurante%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img alt="Ejemplo de un restaurante" loading="eager" src="assets/restaurante.webp"/><figcaption>Tu restaurante aquí</figcaption></figure></a></article>
+<article class="business"><div aria-hidden="true" class="business-placeholder"><svg viewbox="0 0 40 40"><path d="M7.5 20c0-1.4 1.1-2.5 2.5-2.5h5.1L26.8 12c.8-.4 1.7.2 1.7 1.1v13.8c0 .9-.9 1.5-1.7 1.1l-11.7-5.5H10c-1.4 0-2.5-1.1-2.5-2.5z"></path><path d="M15.2 22.7l2 6c.2.6.7 1 1.3 1h4.1c.8 0 1.3-.8 1-1.5l-1.9-5.5"></path><path d="M31 15.2c2.1.9 3.5 2.7 3.5 4.8s-1.4 3.9-3.5 4.8"></path><path d="M34.3 11.8c3.3 1.4 5.2 4.5 5.2 8.2s-1.9 6.8-5.2 8.2"></path></svg><span>Espacio disponible</span></div><a aria-label="Solicitar este espacio a el Bello Cubano por WhatsApp" class="space-link" data-business-whatsapp="Hola, el Bello Cubano. Quiero reservar el espacio disponible en Negocios del mes para promocionar mi negocio. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20el%20Bello%20Cubano.%20Quiero%20reservar%20el%20espacio%20disponible%20en%20Negocios%20del%20mes%20para%20promocionar%20mi%20negocio.%20%C2%BFMe%20compartes%20los%20detalles%3F" rel="noopener noreferrer" target="_blank">Quiero este espacio</a></article>
 </div></section>
 <footer class="copyright">© el Bello Cubano</footer>
 </main>
@@ -207,7 +217,7 @@
     const businessLinks=[...document.querySelectorAll('[data-business-whatsapp],[data-money-whatsapp],[data-package-whatsapp]')];
     businessLinks.forEach(link=>{
       const message=link.dataset.packageWhatsapp||link.dataset.businessWhatsapp||link.dataset.moneyWhatsapp;
-      const targetBase=link.dataset.packageWhatsapp?'https://wa.me/51970342941':link.dataset.moneyWhatsapp?'https://wa.me/51908890523':'https://wa.me/elbellocubano';
+      const targetBase=link.dataset.packageWhatsapp?'https://wa.me/51970342941':link.dataset.moneyWhatsapp?'https://wa.me/51908890523':'https://wa.me/51964912979';
       link.href=targetBase+'?text='+encodeURIComponent(message);
       link.target='_blank';
       link.rel='noopener noreferrer';
@@ -270,6 +280,72 @@
  });
 })();
 </script>
+
+<script>
+/* Exclusivo TikTok: copiar teléfonos sin salir del navegador integrado. */
+(function(){
+ 'use strict';
+ var ua=navigator.userAgent||'';
+ var mobile=/android|iphone|ipad|ipod/i.test(ua);
+ var tiktok=mobile&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
+ if(!tiktok)return;
+ var android=/Android\s([0-9]+)/i.exec(ua), ios=/(?:iPhone OS|CPU OS)\s([0-9]+)/i.exec(ua);
+ // En versiones antiguas evitamos por completo saltar a otra página.
+ var older=!!((android&&+android[1]<=9)||(ios&&+ios[1]<=12));
+ var wa='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.5 11.5 0 0 0 2.8 17.3L1 23l5.9-1.7A11.5 11.5 0 1 0 20.5 3.5ZM12 21a9 9 0 0 1-4.6-1.2l-.3-.2-3.5 1 1.1-3.4-.2-.3A9 9 0 1 1 12 21Zm5.1-6.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.1-.4.1-.7 0-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.2-.6l.5-.6c.1-.2.2-.4.1-.6l-.9-2.2c-.2-.5-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.6s1.2 2.9 1.3 3.1c.2.2 2.4 3.7 5.8 5.1.8.4 1.4.5 1.9.6.8.1 1.5.1 2.1-.1.6-.2 1.8-.8 2.1-1.6.3-.7.3-1.4.2-1.6-.1-.2-.3-.3-.6-.5Z"/></svg>';
+ function fallback(number){
+   var el=document.createElement('input');el.value=number;el.setAttribute('readonly','');
+   el.style.cssText='position:fixed;top:0;left:-1000px;opacity:0;font-size:16px';
+   document.body.appendChild(el);el.focus();el.select();el.setSelectionRange(0,number.length);
+   var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+   document.body.removeChild(el);return ok;
+ }
+ function reveal(element,number){
+   if(!element)return;
+   number=String(number).replace(/\D/g,'');
+   if(!number)return;
+   var hint=element.nextElementSibling;
+   if(!hint||!hint.classList.contains('ebc-tt-hint')){
+     hint=document.createElement('div');hint.className='ebc-tt-hint';hint.setAttribute('role','status');hint.setAttribute('aria-live','polite');element.insertAdjacentElement('afterend',hint);
+   }
+   element.classList.add('ebc-tt-number');element.innerHTML=wa+'<span>'+number+'</span>';
+   element.setAttribute('aria-label','Copiar número de WhatsApp '+number);
+   hint.textContent='Copiando número…';
+   var copied=fallback(number);
+   if(copied){hint.textContent='✓ ¡Número copiado!';return;}
+   if(navigator.clipboard&&navigator.clipboard.writeText){
+     navigator.clipboard.writeText(number).then(function(){hint.textContent='✓ ¡Número copiado!'},function(){hint.textContent='Mantén pulsado el número para copiarlo';});
+   }else hint.textContent='Mantén pulsado el número para copiarlo';
+ }
+ function intercept(element,number){
+   if(!element)return;
+   element.addEventListener('click',function(e){
+     if(e.button&&e.button!==0)return;
+     e.preventDefault();e.stopPropagation();reveal(element,number);
+   },true);
+ }
+ if(document.querySelector('.services-track')){
+   // Los links de WhatsApp en el index no funcionan de forma consistente en TikTok.
+   intercept(document.querySelector('[data-money-whatsapp]'),'908890523');
+   intercept(document.querySelector('[data-package-whatsapp]'),'970342941');
+   document.querySelectorAll('[data-business-whatsapp]').forEach(function(a){intercept(a,'964912979')});
+   // Clases: usar el mismo teléfono que promoción, solo en TikTok.
+   var music=document.querySelector('[data-dialog="music"]');
+   if(music){music.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault();reveal(music,'964912979')},true)}
+   if(older){
+     var card=document.querySelector('.service[data-kind="promocion"]');
+     var action=card&&card.querySelector('.action');
+     intercept(action,'964912979');
+     if(card&&action)card.addEventListener('click',function(e){if(e.target.closest('a,button'))return;e.stopImmediatePropagation();e.preventDefault();reveal(action,'964912979')},true);
+     if(card&&action)card.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===card){e.stopImmediatePropagation();e.preventDefault();reveal(action,'964912979')}},true);
+   }
+   // La limpieza permanece como Próximamente.
+ }else{
+   document.querySelectorAll('a[data-whatsapp-message]').forEach(function(a){intercept(a,'964912979')});
+ }
+})();
+</script>
+
 <script defer="" src="assets/social-counters.js"></script>
 </body>
 </html>
