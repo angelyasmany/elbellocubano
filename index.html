@@ -222,23 +222,87 @@
       link.target='_blank';
       link.rel='noopener noreferrer';
     });
-    let current=0,touchStart=null,direction=1,lastTime=0,paused=false,manual=null,position=0;
+    // Carrusel continuo: los cinco servicios se repiten sin invertir la marcha.
+    // Las copias redirigen sus pulsaciones a los elementos originales para
+    // conservar los comportamientos especiales de TikTok y WhatsApp.
+    cards.forEach((original)=>{
+      const copy=original.cloneNode(true);
+      copy.removeAttribute('id');
+      copy.addEventListener('click',(event)=>{
+        const control=event.target.closest('a,button');
+        event.preventDefault();event.stopPropagation();
+        if(control){
+          const originals=[...original.querySelectorAll('a,button')];
+          const copies=[...copy.querySelectorAll('a,button')];
+          const index=copies.indexOf(control);
+          if(index>=0&&originals[index])originals[index].click();
+        }else openService(original);
+      });
+      copy.addEventListener('keydown',(event)=>{
+        if((event.key==='Enter'||event.key===' ')&&event.target===copy){
+          event.preventDefault();openService(original);
+        }
+      });
+      track.appendChild(copy);
+    });
     const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
-    function updateDots(){const max=track.scrollWidth-track.clientWidth;current=max&&track.scrollLeft>max/2?1:0;dots.forEach((dot,i)=>{dot.classList.toggle('active',i===current);dot.setAttribute('aria-current',String(i===current))})}
-    function move(delta){const max=track.scrollWidth-track.clientWidth;manual={from:track.scrollLeft,to:delta>0?max:0,start:performance.now()};direction=delta>0?1:-1}
+    let current=0,touchStart=null,lastTime=0,paused=false,manual=null,position=0;
+    // Medir mediante la primera tarjeta copiada también al cambiar el tamaño.
+    function cycleWidth(){return track.children[cards.length].offsetLeft-track.children[0].offsetLeft;}
+    function normalize(){
+      const cycle=cycleWidth();
+      if(!cycle)return;
+      if(position>=cycle){position-=cycle;track.scrollLeft=position;}
+      if(position<0){position+=cycle;track.scrollLeft=position;}
+    }
+    function updateDots(){
+      const cycle=cycleWidth();
+      const local=cycle?((track.scrollLeft%cycle)+cycle)%cycle:0;
+      current=local>cycle/2?1:0;
+      dots.forEach((dot,i)=>{dot.classList.toggle('active',i===current);dot.setAttribute('aria-current',String(i===current))});
+    }
+    function move(delta){
+      const step=cards[1].offsetLeft-cards[0].offsetLeft;
+      if(!step)return;
+      position=track.scrollLeft;
+      manual={from:position,to:position+delta*step,start:performance.now()};
+    }
     document.getElementById('prev').addEventListener('click',()=>move(-1));
     document.getElementById('next').addEventListener('click',()=>move(1));
     dots.forEach(dot=>dot.addEventListener('click',()=>move(Number(dot.dataset.dot)===0?-1:1)));
-    function tick(time){const dt=lastTime?Math.min(time-lastTime,50):0;lastTime=time;const max=track.scrollWidth-track.clientWidth;
-      if(manual){const t=Math.min((time-manual.start)/(motion.matches?1:1800),1),ease=t*t*(3-2*t);position=manual.from+(manual.to-manual.from)*ease;track.scrollLeft=position;if(t===1)manual=null}
-      else if(!paused&&!document.hidden&&!motion.matches&&max>0){position=Math.max(0,Math.min(max,position+direction*max*dt/22000));track.scrollLeft=position;if(track.scrollLeft>=max-.5)direction=-1;else if(track.scrollLeft<=.5)direction=1}
-      updateDots();requestAnimationFrame(tick)
+    // Los dos segundos se cuentan desde que la portada termina de prepararse.
+    let startAt=null;
+    function begin(){if(startAt===null)startAt=performance.now()+2000;}
+    if(document.documentElement.classList.contains('is-ready'))begin();
+    else window.addEventListener('ebc:assets-ready',begin,{once:true});
+    // Fallback si algún recurso tarda demasiado o falla.
+    window.addEventListener('load',begin,{once:true});
+    function tick(time){
+      const dt=lastTime?Math.min(time-lastTime,50):0;lastTime=time;
+      const cycle=cycleWidth();
+      if(manual){
+        const t=Math.min((time-manual.start)/(motion.matches?1:700),1);
+        const ease=t*t*(3-2*t);
+        position=manual.from+(manual.to-manual.from)*ease;
+        normalize();track.scrollLeft=position;
+        if(t===1)manual=null;
+      }else if(startAt!==null&&time>=startAt&&!paused&&!document.hidden&&!motion.matches&&cycle>0){
+        position+=cycle*dt/36000;
+        normalize();track.scrollLeft=position;
+      }
+      updateDots();requestAnimationFrame(tick);
     }
-    services.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')paused=true});services.addEventListener('pointerleave',()=>{paused=false});
-    services.addEventListener('focusin',()=>paused=true);services.addEventListener('focusout',event=>{if(!services.contains(event.relatedTarget))paused=false});
+    services.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')paused=true});
+    services.addEventListener('pointerleave',()=>{paused=false});
+    services.addEventListener('focusin',()=>paused=true);
+    services.addEventListener('focusout',event=>{if(!services.contains(event.relatedTarget))paused=false});
     services.addEventListener('touchstart',event=>{paused=true;manual=null;touchStart={x:event.touches[0].clientX,left:track.scrollLeft}},{passive:true});
-    services.addEventListener('touchmove',event=>{if(touchStart)track.scrollLeft=touchStart.left+touchStart.x-event.touches[0].clientX},{passive:true});
-    services.addEventListener('touchend',()=>{touchStart=null;position=track.scrollLeft;paused=false},{passive:true});services.addEventListener('touchcancel',()=>{touchStart=null;paused=false},{passive:true});
+    services.addEventListener('touchmove',event=>{
+      if(touchStart){position=touchStart.left+touchStart.x-event.touches[0].clientX;normalize();track.scrollLeft=position;}
+    },{passive:true});
+    services.addEventListener('touchend',()=>{touchStart=null;position=track.scrollLeft;paused=false},{passive:true});
+    services.addEventListener('touchcancel',()=>{touchStart=null;paused=false},{passive:true});
+    window.addEventListener('resize',()=>{position=track.scrollLeft;normalize();},{passive:true});
     requestAnimationFrame(tick);
     function open(title,body,withChannel=false){document.getElementById('info-title').textContent=title;document.getElementById('info-text').textContent=body;document.getElementById('info-extra').hidden=!withChannel;dialog.showModal()}
     document.querySelector('[data-dialog="music"]').addEventListener('click',()=>open('Clases de música','Próximamente compartiremos la página de clases y sus precios.'));
