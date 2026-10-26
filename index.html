@@ -5,14 +5,23 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="#f6e2ca" name="theme-color"/>
-<meta content="Promociona tu negocio, aprende música y conoce el próximo servicio de limpieza de tanques de agua en Ica con el Bello Cubano." name="description"/>
+<meta name="description" content="el Bello Cubano en Ica, Perú: promoción de negocios, clases de música, envío de dinero y paquetes internacionales. Conoce nuestros servicios y contáctanos."/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="es_PE"/>
+<meta property="og:site_name" content="El Bello Cubano en Perú"/>
+<meta property="og:title" content="El Bello Cubano en Perú"/>
+<meta property="og:description" content="Promoción de negocios, clases de música, envío de dinero y paquetes internacionales en el Bello Cubano."/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="El Bello Cubano en Perú"/>
+<meta name="twitter:description" content="Descubre los servicios del Bello Cubano: promociones, música y envíos internacionales."/>
 <script>
     window.va = window.va || function () {
       (window.vaq = window.vaq || []).push(arguments);
     };
   </script>
 <script defer="" src="/_vercel/insights/script.js"></script>
-<title>el Bello Cubano | Servicios</title>
+<title>El Bello Cubano en Perú</title>
 <link href="assets/perfil-el-bello-cubano.webp" rel="icon"/>
 <link as="image" fetchpriority="high" href="assets/huacachina-real-v15.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/musica.webp" rel="preload" type="image/webp"/>
@@ -20,6 +29,7 @@
 <link as="image" href="assets/envio-dinero.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/envio-paquetes.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/limpieza.webp" rel="preload" type="image/webp"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"El Bello Cubano en Perú","description":"Proyecto de servicios y contenido de el Bello Cubano en Ica, Perú.","sameAs":["https://www.tiktok.com/@elbellocubano7","https://www.facebook.com/elbellocubano","https://www.instagram.com/elbellocubano/","https://www.youtube.com/@elbellocubano"]},{"@type":"WebPage","name":"El Bello Cubano en Perú","inLanguage":"es-PE","description":"Información sobre promoción de negocios, clases de música, envío de dinero y paquetes internacionales de el Bello Cubano."}]}</script>
 <script>document.documentElement.classList.add('is-preparing')</script>
 <style>
     :root{font-family:Arial,Helvetica,sans-serif;color:#101827;background:#f7eee4;font-synthesis:none}
@@ -206,6 +216,58 @@
     .tt-browser-copy.is-copied::after{animation:tt-browser-shine .8s ease-out both}
     @keyframes tt-browser-shine{to{left:140%}}
     @media(prefers-reduced-motion:reduce){.ebc-tiktok .community-menu[open] .tt-browser-panel,.tt-browser-copy.is-copied::after{animation:none}}
+
+
+/* el Bello Cubano · Selector de agencias: solo ventana de envíos de dinero. */
+.money-choice[hidden],.mc-countries[hidden],.mc-wa-help[hidden]{display:none!important}
+.money-choice{position:fixed;z-index:100030;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(7,26,50,.62);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+.money-choice-panel{position:relative;display:flex;flex-direction:column;width:min(100%,520px);max-height:calc(100vh - 22px);max-height:calc(100dvh - 22px);overflow-y:auto;overscroll-behavior:contain;border-radius:24px;background:#fff;box-shadow:0 24px 76px #071b3b7a;padding:15px 15px 17px;color:#122a52;font-family:Arial,Helvetica,sans-serif;animation:money-enter .32s cubic-bezier(.2,1,.3,1) both;scrollbar-width:thin}
+.money-choice-heading{text-align:center;position:relative;padding:5px 33px 11px}
+.money-choice-icon{display:inline-grid;place-items:center;background:#eaf4ff;border-radius:50%;width:34px;height:34px;font-size:23px;margin:0 auto 3px}
+.money-choice-title{font-size:clamp(20px,5.35vw,27px);line-height:1.15;font-weight:850;color:#101f61;letter-spacing:-.035em;margin:0;white-space:nowrap}
+.money-choice-subtitle{font-size:13px;color:#657286;font-weight:600;margin:3px 0 0}
+.money-choice-close{position:absolute;right:0;top:0;width:33px;height:33px;display:grid;place-items:center;border:0;border-radius:50%;background:#edf1f7;color:#41536b;font-size:23px;line-height:1;cursor:pointer}
+.mc-agency{margin:0 0 10px;border:1px solid #e2eaf4;border-radius:18px;background:#fff;box-shadow:0 4px 15px #172d5b13;padding:11px 12px 12px;text-align:center}
+.mc-brand{display:block;text-decoration:none;width:max-content;max-width:100%;margin:0 auto 4px;border-radius:6px;line-height:0}
+.mc-brand:focus-visible{outline:3px solid #1677eb;outline-offset:3px}
+.mc-logo{height:58px;width:min(270px,72vw);object-fit:contain;display:block;mix-blend-mode:multiply}
+/* Peruven: conservar el símbolo y la palabra oficiales, ocultando la segunda línea
+   "Remesas JJ" y el eslogan SIN modificar el archivo original del logo. */
+.mc-peruven-mark{display:flex;align-items:center;justify-content:center;gap:1px;height:56px;max-width:100%;line-height:0}
+.mc-pv-symbol,.mc-pv-word{display:block;flex:none;background-image:url("assets/peruven-logo.webp");background-repeat:no-repeat;background-size:206px 73px}
+.mc-pv-symbol{width:54px;height:56px;background-position:0 0}
+.mc-pv-word{width:112px;height:29px;background-position:-56px 0}
+.mc-route{display:flex;justify-content:center;align-items:center;gap:8px;white-space:nowrap;font-size:clamp(15px,4.1vw,19px);line-height:1.2;font-weight:800;color:#101f61;margin:0 0 4px}
+.mc-route .mc-flag{font-size:clamp(22px,6vw,26px);line-height:1;flex-shrink:0}
+.mc-arrow{color:#15278b;font-size:25px;line-height:1.05;font-weight:900;display:inline-block;min-width:28px}
+.mc-more{display:flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:30px;background:#eff6ff;color:#14477b;font-size:13px;font-weight:800;padding:5px 11px;margin:0 auto 7px;cursor:pointer}
+.mc-more span:first-child{font-size:17px}.mc-more-plus{font-size:17px;line-height:1;transition:transform .2s}.mc-more[aria-expanded=true] .mc-more-plus{transform:rotate(45deg)}
+.mc-countries{font-size:12px;line-height:1.6;max-width:370px;margin:0 auto 8px;color:#254667;padding:7px 10px;border-radius:12px;background:#f4f8fd}
+.mc-countries .mc-flaglist{font-size:19px;line-height:1.6;letter-spacing:2px;margin-bottom:2px}
+.mc-prompt{background:linear-gradient(#e9f7ff,#eaf7ff);border-radius:13px;padding:6px 7px 7px;margin:4px 0 0}
+.mc-prompt-title{font-size:clamp(13px,3.75vw,16px);font-weight:850;letter-spacing:-.035em;text-align:center;margin:0 0 6px;line-height:1.25;color:#132469}
+.mc-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.mc-action{min-height:73px;padding:5px 4px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid transparent;border-radius:12px;background:#d9effd;color:#101f61;text-decoration:none;cursor:pointer;font:700 clamp(11px,3.4vw,14px)/1.12 Arial,Helvetica,sans-serif;transition:transform .15s,border-color .15s,background .15s}
+.mc-action:hover{background:#d1e9ff;border-color:#a4cbf3;transform:translateY(-2px)}
+.mc-action:active{transform:scale(.97)}
+.mc-action svg{width:29px;height:29px;display:block;flex-shrink:0}
+.mc-action small{display:block;font-size:.9em;font-weight:650;line-height:1.05}
+.mc-rate{margin:0 auto 10px;display:flex;justify-content:center;align-items:center;gap:6px;width:max-content;max-width:100%;border:1.5px solid #aecbff;border-radius:999px;background:#eff8ff;padding:9px 13px;font-weight:750;color:#17286a;text-align:center;flex-wrap:wrap;font-size:clamp(11px,3.35vw,15px);line-height:1.25}
+.mc-rate-title{white-space:nowrap}.mc-rate-value{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:850}
+.mc-live{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#20bb64;box-shadow:0 0 0 2px #d5ffe4;animation:mc-beat 1.6s ease-out infinite}
+.mc-live.is-offline{background:#9ca8ba;box-shadow:none;animation:none}
+.mc-rate a{color:#115aad;text-decoration:underline;text-underline-offset:2px}
+.mc-wa-help{font-size:12px;text-align:center;color:#1d663e;margin:6px 0 0}
+@keyframes money-enter{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mc-beat{0%,100%{box-shadow:0 0 0 2px #d5ffe4}50%{box-shadow:0 0 0 6px #dcffec}}
+@media (max-width:380px){.money-choice{padding:6px}.money-choice-panel{padding:10px 9px;max-height:calc(100dvh - 10px);border-radius:18px}.mc-agency{padding:8px;margin-bottom:7px}.mc-logo{height:45px}.mc-peruven-mark{transform:scale(.86);transform-origin:center;height:46px}.money-choice-heading{padding-bottom:7px}.mc-action{min-height:64px}.mc-action svg{width:25px;height:25px}.mc-prompt-title{margin-bottom:4px}}
+@media (min-width:601px){.money-choice-panel{width:min(100%,565px);padding:16px 24px}.mc-action{min-height:81px}.mc-logo{height:63px}.mc-peruven-mark{transform:scale(1.06);transform-origin:center;height:60px}}
+@media(prefers-reduced-motion:reduce){.money-choice-panel,.mc-live{animation:none!important}}
+
+/* Texto que conserva la intención de consulta cuando TikTok bloquea abrir WhatsApp. */
+.tt-money-message{padding:7px 8px;margin:9px 0 5px!important;max-height:92px;overflow:auto;border-radius:9px;background:#f3f7f9;color:#24435e!important;text-align:left;font-size:12px!important;white-space:pre-wrap}
+.tt-money-copy-message{padding:7px 14px;background:#eaf6ff;border:1px solid #c2daf3;color:#12529e;border-radius:999px;font-size:12px;font-weight:800;margin:auto;cursor:pointer}
+.tt-money-copy-message[hidden],.tt-money-message[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -224,8 +286,8 @@
 </section>
 <section aria-label="Servicios de el Bello Cubano" class="services" id="services">
 <div class="services-track"><article aria-label="Abrir Promoción de negocios" class="service" data-kind="promocion" role="link" tabindex="0"><img alt="el Bello Cubano grabando contenido para promocionar tu negocio" class="service-photo" fetchpriority="high" src="assets/promocion-final.webp"/><div class="service-body"><span aria-hidden="true" class="badge promo"><svg aria-hidden="true" viewbox="0 0 36 32" xmlns="http://www.w3.org/2000/svg"><path d="M4.4 12.1h7.5L24.7 6c1.3-.6 2.8.3 2.8 1.8v16.4c0 1.5-1.5 2.4-2.8 1.8l-12.8-6.1H4.4c-1.5 0-2.7-1.2-2.7-2.7v-2.4c0-1.5 1.2-2.7 2.7-2.7Zm7.4 8.8 2.3 6c.2.6.8 1 1.5 1h4.1l-3.2-7H11.8Z" fill="currentColor"></path><path d="M29.5 11.2c2.3 1.2 3.6 2.9 3.6 4.8s-1.3 3.6-3.6 4.8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.7"></path></svg></span><h2>Promociona<br/>tu negocio</h2><a class="action" href="promociones.html"><span class="action-spacer"></span>Ver precios<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
-<article aria-label="Abrir servicio de envío de dinero" class="service" data-kind="envio" role="link" tabindex="0"><img alt="Envío de dinero entre Perú, Cuba y otros países" class="service-photo" src="assets/envio-dinero.webp"/><div class="service-body"><span aria-hidden="true" class="badge"><svg viewbox="0 0 32 32"><path d="M16 4v24M21 9.5c-1.2-1.2-2.7-1.8-4.8-1.8-3.2 0-5.2 1.7-5.2 4 0 6.2 11 2.5 11 8.4 0 2.4-2.1 4.2-5.4 4.2-2.4 0-4.3-.8-5.6-2.2"></path></svg></span><h2>Envío de dinero<br/>de Perú a Cuba</h2><a class="action" data-money-whatsapp="Hola, vengo de parte del Bello Cubano y quiero enviar dinero entre Perú y Cuba." href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20parte%20del%20Bello%20Cubano%20y%20quiero%20enviar%20dinero%20entre%20Per%C3%BA%20y%20Cuba." rel="noopener noreferrer" target="_blank"><span class="action-spacer"></span>Consultar<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
-<article aria-label="Abrir servicio de envío de paquetes internacionales" class="service" data-kind="paquetes" role="link" tabindex="0"><img alt="Envío de paquetes internacionales entre Cuba, Perú, Venezuela y Colombia" class="service-photo" src="assets/envio-paquetes.webp"/><div class="service-body"><span aria-hidden="true" class="badge"><svg viewbox="0 0 32 32"><path d="M16 3.5 25.5 8v16L16 28.5 6.5 24V8L16 3.5Zm0 2.4-7 3.3 6.9 3.1 7-3.1-6.9-3.3Zm-7.7 5.2v11.4l6.7 3.1V14.1l-6.7-3Zm16.4 0-6.7 3v11.5l6.7-3.1V11.1Z"></path></svg></span><h2>Envío de paquetes<br/>internacionales</h2><p class="service-description"></p><a class="action" data-package-whatsapp="Hola, vengo de parte del Bello Cubano y quiero información para hacer envíos internacionales con la agencia Peruven." href="https://wa.me/51970342941?text=Hola%2C%20vengo%20de%20parte%20del%20Bello%20Cubano%20y%20quiero%20informaci%C3%B3n%20para%20hacer%20env%C3%ADos%20internacionales%20con%20la%20agencia%20Peruven." rel="noopener noreferrer" target="_blank"><span class="action-spacer"></span>Consultar<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
+<article aria-label="Abrir servicio de envío de dinero" class="service" data-kind="envio" role="link" tabindex="0"><img alt="Envío de dinero entre Perú, Cuba y otros países" class="service-photo" src="assets/envio-dinero.webp"/><div class="service-body"><span aria-hidden="true" class="badge"><svg viewbox="0 0 32 32"><path d="M16 4v24M21 9.5c-1.2-1.2-2.7-1.8-4.8-1.8-3.2 0-5.2 1.7-5.2 4 0 6.2 11 2.5 11 8.4 0 2.4-2.1 4.2-5.4 4.2-2.4 0-4.3-.8-5.6-2.2"></path></svg></span><h2>Envía dinero<br/>de Perú a Cuba</h2><a class="action" data-money-whatsapp="Hola, vengo de parte del Bello Cubano y quiero enviar dinero entre Perú y Cuba." href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20parte%20del%20Bello%20Cubano%20y%20quiero%20enviar%20dinero%20entre%20Per%C3%BA%20y%20Cuba." rel="noopener noreferrer" target="_blank"><span class="action-spacer"></span>Consultar<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
+<article aria-label="Abrir servicio de envío de paquetes internacionales" class="service" data-kind="paquetes" role="link" tabindex="0"><img alt="Envío de paquetes internacionales entre Cuba, Perú, Venezuela y Colombia" class="service-photo" src="assets/envio-paquetes.webp"/><div class="service-body"><span aria-hidden="true" class="badge"><svg viewbox="0 0 32 32"><path d="M16 3.5 25.5 8v16L16 28.5 6.5 24V8L16 3.5Zm0 2.4-7 3.3 6.9 3.1 7-3.1-6.9-3.3Zm-7.7 5.2v11.4l6.7 3.1V14.1l-6.7-3Zm16.4 0-6.7 3v11.5l6.7-3.1V11.1Z"></path></svg></span><h2>Envío de<br/>paquetes</h2><p class="service-description"></p><a class="action" data-package-whatsapp="Hola, vengo de parte del Bello Cubano y quiero información para hacer envíos internacionales con la agencia Peruven." href="https://wa.me/51970342941?text=Hola%2C%20vengo%20de%20parte%20del%20Bello%20Cubano%20y%20quiero%20informaci%C3%B3n%20para%20hacer%20env%C3%ADos%20internacionales%20con%20la%20agencia%20Peruven." rel="noopener noreferrer" target="_blank"><span class="action-spacer"></span>Consultar<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
 <article aria-label="Abrir información de clases de música" class="service" data-kind="musica" role="link" tabindex="0"><img alt="el Bello Cubano tocando la guitarra" class="service-photo" fetchpriority="high" src="assets/musica.webp"/><div class="service-body"><span aria-hidden="true" class="badge music"><svg viewbox="0 0 32 32"><path d="M22.4 4.7c.5-.1 1 .3 1 .8v12.7a4.5 4.5 0 1 1-2-3.7v-7l-8.8 1.7v11a4.5 4.5 0 1 1-2-3.7V8.2c0-.5.3-.9.8-1l11-2.5z"></path></svg></span><h2>Clases<br/>de Música</h2><a class="action" data-music-whatsapp href="https://wa.me/51964912979?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20de%20m%C3%BAsica." target="_blank" rel="noopener noreferrer"><span class="action-spacer"></span>Ver más<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
 <article aria-label="Abrir información de limpieza de tanques" class="service" data-kind="limpieza" role="button" tabindex="0"><img alt="Limpieza profesional de un tanque de agua en Ica" class="service-photo" fetchpriority="high" src="assets/limpieza.webp"/><div class="service-body"><span aria-hidden="true" class="badge"><svg viewbox="0 0 32 32"><path d="M16 2C12 9 7 15 7 21a9 9 0 0 0 18 0c0-6-5-12-9-19zm0 24a5 5 0 0 1-5-5c0-1 .4-2.2 1.2-3.8-.3 4 1.2 6 4.8 6.8z"></path></svg></span><h2>Limpieza de<br/>tanques de agua<span class="location">Ica - Perú</span></h2><button class="action soon" data-dialog="cleaning" type="button">Próximamente</button></div></article>
 </div>
@@ -396,12 +458,107 @@
 </script>
 
 
+
+
+<!-- Ventana de agencias de envío: original del index preservado detrás. -->
+<div id="money-choice" class="money-choice" hidden>
+ <section class="money-choice-panel" role="dialog" aria-modal="true" aria-labelledby="money-choice-heading" tabindex="-1">
+  <header class="money-choice-heading">
+   <span class="money-choice-icon" aria-hidden="true">🌐</span>
+   <h2 class="money-choice-title" id="money-choice-heading">Envía dinero a Cuba</h2>
+   <p class="money-choice-subtitle">Elige tu agencia</p>
+   <button type="button" class="money-choice-close" aria-label="Cerrar ventana">×</button>
+  </header>
+  <article class="mc-agency" aria-label="Transfint Cuba">
+   <a class="mc-brand" href="https://transfint.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir página y calculadora de Transfint Cuba"><img class="mc-logo" src="assets/transfint-logo.webp" alt="Transfint Cuba" width="270" height="63" loading="lazy"></a>
+   <div class="mc-route"><span class="mc-flag">🇵🇪</span><span>Perú</span><span class="mc-arrow" aria-label="ida y vuelta">↔</span><span class="mc-flag">🇨🇺</span><span>Cuba</span></div>
+   <button type="button" class="mc-more" aria-expanded="false" aria-controls="mc-countries-transfint"><span>🌐</span>Más países <span class="mc-more-plus">+</span></button>
+   <div class="mc-countries" id="mc-countries-transfint" hidden><div class="mc-flaglist" aria-hidden="true">🇵🇪 🇺🇾 🇲🇽 🇧🇷 🇪🇸 🇺🇸 🇨🇷 🇷🇺 🇨🇱 🇸🇷 🇬🇾</div><span>Perú, Uruguay, México, Brasil, España, EE. UU., Costa Rica, Rusia, Chile, Surinam y Guyana. Consulta disponibilidad de cada ruta.</span></div>
+   <div class="mc-prompt"><h3 class="mc-prompt-title">Cómo deseas enviar dinero a Cuba</h3><div class="mc-actions"><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="efectivo" aria-label="efectivo · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="9" width="32" height="22" rx="4" fill="#13ae64"/><rect x="8" y="13" width="24" height="14" rx="2" fill="#64dba2"/><circle cx="20" cy="20" r="6" fill="#dbfff0"/><path d="M21.7 16.7c-2.4-1.4-5 1.4-2.3 2.5 3.5 1 3 3.6.6 4.1" fill="none" stroke="#0b8352" stroke-width="2" stroke-linecap="round"/><rect x="7" y="6" width="26" height="4" rx="2" fill="#0b9258"/></svg><span>Efectivo</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="tarjeta" aria-label="tarjeta · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="8" width="36" height="24" rx="5" fill="#0d91f5"/><path d="M2 15h36v6H2z" fill="#0956a9"/><rect x="7" y="25" width="10" height="3" rx="1" fill="#ffe474"/><rect x="23" y="25" width="9" height="3" rx="1" fill="#b6e8ff"/></svg><span>Tarjeta</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="recarga" aria-label="recarga · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="11" y="3" width="18" height="34" rx="4" fill="#17408a"/><rect x="14" y="7" width="12" height="24" rx="1" fill="#9de0ff"/><circle cx="20" cy="34" r="1.5" fill="#fff"/><path d="M32 13q6 7 0 14M35 9q10 11 0 22" fill="none" stroke="#147bec" stroke-width="2.3" stroke-linecap="round"/></svg><span>Recarga<br>ETECSA</span></a></div></div>
+  </article>
+  <div class="mc-rate" aria-live="polite"><span class="mc-rate-title">Cambio aproximado</span><span class="mc-live is-offline" aria-hidden="true"></span><span class="mc-rate-value" id="mc-rate-value">Consultando tasa…</span></div>
+  <article class="mc-agency" aria-label="Peruven">
+   <a class="mc-brand" href="https://remesasjj.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir página de Peruven"><span class="mc-peruven-mark" role="img" aria-label="Peruven"><span class="mc-pv-symbol" aria-hidden="true"></span><span class="mc-pv-word" aria-hidden="true"></span></span></a>
+   <div class="mc-route"><span class="mc-flag">🇵🇪</span><span>Perú</span><span class="mc-arrow" aria-label="hacia">→</span><span class="mc-flag">🇨🇺</span><span>Cuba</span></div>
+   <button type="button" class="mc-more" aria-expanded="false" aria-controls="mc-countries-peruven"><span>🌐</span>Más países <span class="mc-more-plus">+</span></button>
+   <div class="mc-countries" id="mc-countries-peruven" hidden><div class="mc-flaglist" aria-hidden="true">🇧🇷 🇨🇱 🇨🇴 🇻🇪 🇪🇨 🇧🇴 🇲🇽 🇺🇾 🇺🇸 🇪🇸</div><span>Brasil, Chile, Colombia, Venezuela, Ecuador, Bolivia, México, Uruguay, EE. UU. y España. Consulta las rutas disponibles.</span></div>
+   <div class="mc-prompt"><h3 class="mc-prompt-title">Cómo deseas enviar a Cuba</h3><div class="mc-actions"><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="paquetes" aria-label="paquetes · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 3 16 9v17L20 38 4 29V12Z" fill="#e9a746"/><path d="m4 12 16 9 16-9M20 21v17" fill="none" stroke="#a96e28" stroke-width="1.8"/><path d="m12 7 16 9v7l-5-2v-5L8 9" fill="#ffe6ac"/></svg><span>Envío de<br>paquetes</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="efectivo" aria-label="efectivo · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="9" width="32" height="22" rx="4" fill="#13ae64"/><rect x="8" y="13" width="24" height="14" rx="2" fill="#64dba2"/><circle cx="20" cy="20" r="6" fill="#dbfff0"/><path d="M21.7 16.7c-2.4-1.4-5 1.4-2.3 2.5 3.5 1 3 3.6.6 4.1" fill="none" stroke="#0b8352" stroke-width="2" stroke-linecap="round"/><rect x="7" y="6" width="26" height="4" rx="2" fill="#0b9258"/></svg><span>Efectivo</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="tarjeta" aria-label="tarjeta · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="8" width="36" height="24" rx="5" fill="#0d91f5"/><path d="M2 15h36v6H2z" fill="#0956a9"/><rect x="7" y="25" width="10" height="3" rx="1" fill="#ffe474"/><rect x="23" y="25" width="9" height="3" rx="1" fill="#b6e8ff"/></svg><span>Tarjeta</span></a></div></div>
+  </article>
+ </section>
+</div>
+
+<script>
+/* Ventana de dinero: abrir las tarjetas del carrusel sin tocar otros servicios. */
+(function(){'use strict';
+ var overlay=document.getElementById('money-choice'),panel=overlay.querySelector('.money-choice-panel');
+ var previouslyFocused=null,rateQueried=false;
+ var contacts={transfint:'51972580509',peruven:'51908890523',paquetes:'51970342941'};
+ var texts={
+  transfint:{
+    efectivo:'Hola, vengo de la página del Bello Cubano y deseo enviar dinero en efectivo a Cuba. Provincia de entrega: ',
+    tarjeta:'Hola, vengo de la página del Bello Cubano y deseo enviar dinero a una tarjeta en Cuba. Tipo de tarjeta: ',
+    recarga:'Hola, vengo de la página del Bello Cubano y deseo hacer una recarga Cubacel (ETECSA). Número de teléfono: '
+  },
+  peruven:{
+    paquetes:'Hola, vengo de la página del Bello Cubano y deseo enviar un paquete a través de Peruven. País de destino: ',
+    efectivo:'Hola, vengo de la página del Bello Cubano y deseo enviar dinero en efectivo a Cuba. Provincia de entrega: ',
+    tarjeta:'Hola, vengo de la página del Bello Cubano y deseo enviar dinero a una tarjeta en Cuba. Tipo de tarjeta: '
+  }
+ };
+ window.ebcMoneyContacts={contacts:contacts,texts:texts};
+ function queryRate(){
+  if(rateQueried)return;rateQueried=true;
+  var node=document.getElementById('mc-rate-value');var indicator=overlay.querySelector('.mc-live');
+  var controller=new AbortController();var timeout=setTimeout(function(){controller.abort()},8500);
+  fetch('/api/cambio-pen-cup',{signal:controller.signal,headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw Error('Sin dato');return r.json()}).then(function(data){
+   if(!data.ok||!Number.isFinite(data.rate)||data.rate<=0)throw Error('Sin tasa verificable');
+   node.textContent='1 PEN ≈ '+new Intl.NumberFormat('es-PE',{maximumFractionDigits:4}).format(data.rate)+' CUP';
+   node.title='Tasa publicada por Remesas JJ; confirma condiciones y vigencia con la agencia.';
+   indicator.classList.remove('is-offline');
+  }).catch(function(){node.innerHTML='<a href="https://www.remesasjj.com/tasas-de-cambio" target="_blank" rel="noopener noreferrer">Consultar tasa ↗</a>';indicator.classList.add('is-offline')}).finally(function(){clearTimeout(timeout)});
+ }
+ function show(){previouslyFocused=document.activeElement;overlay.hidden=false;panel.scrollTop=0;document.body.style.overflow='hidden';panel.focus();queryRate();window.dispatchEvent(new Event('ebc:resume-carousel'))}
+ function close(){overlay.hidden=true;document.body.style.overflow='';if(previouslyFocused&&previouslyFocused.focus)previouslyFocused.focus({preventScroll:true});window.dispatchEvent(new Event('ebc:resume-carousel'))}
+ overlay.querySelector('.money-choice-close').addEventListener('click',close);
+ overlay.addEventListener('click',function(e){if(e.target===overlay)close()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!overlay.hidden){e.preventDefault();close()}});
+ overlay.querySelectorAll('.mc-more').forEach(function(button){button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));document.getElementById(button.getAttribute('aria-controls')).hidden=expanded})});
+ overlay.querySelectorAll('.mc-action').forEach(function(link){
+  var agency=link.dataset.mcAgency,kind=link.dataset.mcKind;
+  var number=agency==='peruven'&&kind==='paquetes'?contacts.paquetes:contacts[agency];
+  var message=texts[agency][kind];
+  link.href='https://wa.me/'+number+'?text='+encodeURIComponent(message);
+  link.target='_blank';link.rel='noopener noreferrer';
+  link.title='Abrir WhatsApp de '+(agency==='transfint'?'Transfint Cuba':'Peruven');
+  link.addEventListener('click',function(event){
+   if(!document.documentElement.classList.contains('ebc-tiktok'))return;
+   event.preventDefault();event.stopPropagation();
+   // TikTok: no se puede garantizar apertura de wa.me; copiar teléfono y mostrar mensaje.
+   close();
+   window.dispatchEvent(new CustomEvent('ebc:open-money-contact',{detail:{number:'+'+number,message:message,agency:agency}}));
+  });
+ });
+ // Capturar sólo el servicio dinero, incluso las copias del carrusel. Nunca interceptar otros servicios.
+ document.addEventListener('click',function(e){
+  if(!overlay.hidden||e.button!==0||e.metaKey||e.ctrlKey||e.altKey||e.shiftKey)return;
+  if(!e.target.closest('.service[data-kind="envio"]'))return;
+  e.preventDefault();e.stopImmediatePropagation();show();
+ },true);
+ document.addEventListener('keydown',function(e){
+  if(!overlay.hidden||(e.key!=='Enter'&&e.key!==' '))return;
+  var card=e.target.closest('.service[data-kind="envio"]');if(!card||e.target!==card)return;
+  e.preventDefault();e.stopImmediatePropagation();show();
+ },true);
+})();
+</script>
+
 <div class="tt-copy-modal" id="tt-copy-modal" hidden>
   <section class="tt-copy-panel" role="dialog" aria-modal="true" aria-labelledby="tt-copy-title" aria-describedby="tt-copy-instructions">
     <div class="tt-copy-check" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 25 L20 35 L40 13" /></svg></div>
     <h2 id="tt-copy-title">Abre WhatsApp y escríbeme</h2>
     <p id="tt-copy-status" class="tt-copy-status" role="status" aria-live="polite" hidden>Número copiado</p>
     <div class="tt-copy-number-wrap"><svg class="tt-wa-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 2.5A13.4 13.4 0 0 0 4.5 22.8L2.6 29l6.5-1.8A13.5 13.5 0 1 0 16 2.5Zm0 24.3a10.8 10.8 0 0 1-5.5-1.5l-.4-.2-3.8 1.1 1.1-3.7-.3-.4A10.8 10.8 0 1 1 16 26.8Zm6.1-8.1c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.1-.4.1-.7 0-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.2-.6l.5-.6c.1-.2.2-.4.1-.6l-.9-2.2c-.2-.5-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.6s1.2 2.9 1.3 3.1c.2.2 2.4 3.7 5.8 5.1.8.4 1.4.5 1.9.6.8.1 1.5.1 2.1-.1.6-.2 1.8-.8 2.1-1.6.3-.7.3-1.4.2-1.6-.1-.2-.3-.3-.6-.5Z"/></svg><input class="tt-copy-number" id="tt-copy-number" readonly aria-label="Número de WhatsApp" /></div>
+    <p id="tt-money-message" class="tt-money-message" hidden></p><button type="button" id="tt-money-copy-message" class="tt-money-copy-message" hidden>Copiar mensaje</button>
     <p class="tt-copy-manual" id="tt-copy-manual" hidden>Si no se copia, mantén pulsado el número para seleccionarlo.</p>
     <button class="tt-copy-confirm" id="tt-copy-confirm" type="button">¡Perfecto!</button>
   </section>
@@ -509,10 +666,28 @@
  });
  modal.addEventListener('click',function(e){if(e.target===modal)close()});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)close()});
+  // Dinero: sólo copiar el número en el primer toque; permitir copiar el texto sugerido.
+  var moneyMessage=document.getElementById('tt-money-message');
+  var moneyCopy=document.getElementById('tt-money-copy-message');
+  window.addEventListener('ebc:open-money-contact',function(e){
+    var d=e.detail||{};if(!/^\+51\d{9}$/.test(d.number||''))return;
+    moneyMessage.hidden=false;moneyCopy.hidden=false;
+    moneyMessage.textContent=d.message||'';
+    show({number:d.number,button:'¡Envía con confianza!'});
+  });
+  moneyCopy.addEventListener('click',function(){
+    var msg=moneyMessage.textContent;if(!msg)return;
+    var el=document.createElement('textarea');el.value=msg;el.style.cssText='position:fixed;top:0;left:-9999px';
+    document.body.appendChild(el);el.select();var ok=false;try{ok=document.execCommand('copy')}catch(_){}document.body.removeChild(el);
+    if(ok){moneyCopy.textContent='¡Mensaje copiado!';return}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(msg).then(function(){moneyCopy.textContent='¡Mensaje copiado!'},function(){moneyCopy.textContent='Selecciona el texto'});
+    else moneyCopy.textContent='Selecciona el texto';
+  });
  function kindFor(target){
    var card=target.closest('.service');
    if(card){
      var kind=card.getAttribute('data-kind');
+     if(kind==='envio')return null; // Siempre elegir agencia antes de copiar un contacto.
      return info[kind]||null;
    }
    if(target.closest('[data-business-whatsapp]'))return info.promocion;
