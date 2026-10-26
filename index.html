@@ -5,14 +5,23 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="#f6e2ca" name="theme-color"/>
-<meta content="Promociona tu negocio, aprende música y conoce el próximo servicio de limpieza de tanques de agua en Ica con el Bello Cubano." name="description"/>
+<meta name="description" content="el Bello Cubano en Ica, Perú: promoción de negocios, clases de música, envío de dinero y paquetes internacionales. Conoce nuestros servicios y contáctanos."/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="es_PE"/>
+<meta property="og:site_name" content="El Bello Cubano en Perú"/>
+<meta property="og:title" content="El Bello Cubano en Perú"/>
+<meta property="og:description" content="Promoción de negocios, clases de música, envío de dinero y paquetes internacionales en el Bello Cubano."/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="El Bello Cubano en Perú"/>
+<meta name="twitter:description" content="Descubre los servicios del Bello Cubano: promociones, música y envíos internacionales."/>
 <script>
     window.va = window.va || function () {
       (window.vaq = window.vaq || []).push(arguments);
     };
   </script>
 <script defer="" src="/_vercel/insights/script.js"></script>
-<title>el Bello Cubano | Servicios</title>
+<title>El Bello Cubano en Perú</title>
 <link href="assets/perfil-el-bello-cubano.webp" rel="icon"/>
 <link as="image" fetchpriority="high" href="assets/huacachina-real-v15.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/musica.webp" rel="preload" type="image/webp"/>
@@ -20,6 +29,7 @@
 <link as="image" href="assets/envio-dinero.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/envio-paquetes.webp" rel="preload" type="image/webp"/>
 <link as="image" href="assets/limpieza.webp" rel="preload" type="image/webp"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"El Bello Cubano en Perú","description":"Proyecto de servicios y contenido de el Bello Cubano en Ica, Perú.","sameAs":["https://www.tiktok.com/@elbellocubano7","https://www.facebook.com/elbellocubano","https://www.instagram.com/elbellocubano/","https://www.youtube.com/@elbellocubano"]},{"@type":"WebPage","name":"El Bello Cubano en Perú","inLanguage":"es-PE","description":"Información sobre promoción de negocios, clases de música, envío de dinero y paquetes internacionales de el Bello Cubano."}]}</script>
 <script>document.documentElement.classList.add('is-preparing')</script>
 <style>
     :root{font-family:Arial,Helvetica,sans-serif;color:#101827;background:#f7eee4;font-synthesis:none}
@@ -206,6 +216,32 @@
     .tt-browser-copy.is-copied::after{animation:tt-browser-shine .8s ease-out both}
     @keyframes tt-browser-shine{to{left:140%}}
     @media(prefers-reduced-motion:reduce){.ebc-tiktok .community-menu[open] .tt-browser-panel,.tt-browser-copy.is-copied::after{animation:none}}
+
+/* Vista conceptual: selector de dos agencias de envío de dinero. */
+.money-choice[hidden]{display:none!important}
+.money-choice{position:fixed;z-index:100030;inset:0;display:flex;align-items:center;justify-content:center;padding:17px;background:rgba(9,28,47,.56);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.money-choice-panel{width:min(100%,390px);background:#fff;border-radius:23px;padding:21px 18px 19px;box-shadow:0 20px 65px #071c3f55;animation:money-enter .27s ease-out both;font:inherit;color:#1c3044}
+.money-choice-head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.money-choice-symbol{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:12px;background:#e6f2ff;color:#0877eb;font-size:23px}
+.money-choice-title{margin:0;font-size:19px;font-weight:800;line-height:1.14;color:#123554}
+.money-choice-subtitle{margin:3px 0 0;font-size:12px;color:#587186}
+.money-choice-close{margin-left:auto;align-self:flex-start;border:0;background:#f0f5f9;color:#456077;width:29px;height:29px;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.money-choice-option{display:flex;align-items:center;gap:11px;text-align:left;width:100%;border:1px solid #dce7ef;background:#fff;border-radius:15px;padding:13px 11px;margin-top:10px;cursor:pointer;transition:border-color .2s,background .2s,transform .2s}
+.money-choice-option:hover,.money-choice-option:focus-visible{border-color:#82b8eb;background:#f7fbff;transform:translateY(-1px)}
+.money-choice-icon{display:grid;place-items:center;width:46px;height:46px;flex:0 0 46px;border-radius:13px;font-size:24px}
+.money-choice-option.cash .money-choice-icon{background:#e9f8ee;color:#168746}
+.money-choice-option.card .money-choice-icon{background:#e9f3ff;color:#0877eb}
+.money-choice-option strong{display:block;font-size:15px;color:#17334b}
+.money-choice-option small{display:block;font-size:11px;color:#64798a;margin-top:3px}
+.money-choice-arrow{margin-left:auto;color:#56809a;font-size:23px}
+.money-choice-detail[hidden],.money-choice-options[hidden]{display:none!important}
+.money-choice-detail{padding:18px 8px 7px;text-align:center}
+.money-choice-detail h3{font-size:19px;margin:6px 0 9px;color:#17334b}
+.money-choice-detail p{font-size:13px;color:#526c7f;line-height:1.5;margin:0 0 16px}
+.money-choice-back{border:0;border-radius:99px;background:#0877eb;color:#fff;padding:10px 19px;font-weight:700;cursor:pointer}
+.money-choice-note{font-size:11px;color:#789;line-height:1.4;text-align:center;margin:13px 4px 0}
+@keyframes money-enter{from{opacity:0;transform:translateY(13px) scale(.96)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.money-choice-panel{animation:none}.money-choice-option{transition:none}}
 </style>
 </head>
 <body>
@@ -395,6 +431,61 @@
 })();
 </script>
 
+
+
+<!-- Vista previa de elección de agencia: no se asignan números sin confirmarlos. -->
+<div id="money-choice" class="money-choice" hidden>
+  <section class="money-choice-panel" role="dialog" aria-modal="true" aria-labelledby="money-choice-heading">
+    <div class="money-choice-head">
+      <span class="money-choice-symbol" aria-hidden="true">↗</span>
+      <div><h2 id="money-choice-heading" class="money-choice-title">Envío de dinero</h2><p class="money-choice-subtitle">¿Cómo deseas enviarlo?</p></div>
+      <button class="money-choice-close" type="button" aria-label="Cerrar opciones">×</button>
+    </div>
+    <div class="money-choice-options">
+      <button class="money-choice-option cash" type="button" data-money-choice="cash"><span class="money-choice-icon" aria-hidden="true">▣</span><span><strong>Dinero en efectivo</strong><small>Recibe tu dinero en efectivo</small></span><span class="money-choice-arrow" aria-hidden="true">›</span></button>
+      <button class="money-choice-option card" type="button" data-money-choice="card"><span class="money-choice-icon" aria-hidden="true">▤</span><span><strong>Dinero a tarjeta</strong><small>Recibe tu dinero de forma digital</small></span><span class="money-choice-arrow" aria-hidden="true">›</span></button>
+      <p class="money-choice-note">Dos agencias, según la forma de recibir el dinero.</p>
+    </div>
+    <div class="money-choice-detail" hidden>
+      <h3 id="money-choice-detail-title"></h3>
+      <p>Aquí aparecerán la agencia, sus destinos y su contacto de WhatsApp cuando confirmemos esos datos.</p>
+      <button type="button" class="money-choice-back">← Volver a las opciones</button>
+    </div>
+  </section>
+</div>
+<script>
+/* Menú conceptual de envío de dinero, independiente del tratamiento de TikTok. */
+(function(){
+ 'use strict';
+ var overlay=document.getElementById('money-choice');
+ var options=overlay.querySelector('.money-choice-options');
+ var detail=overlay.querySelector('.money-choice-detail');
+ var detailTitle=document.getElementById('money-choice-detail-title');
+ var closeButton=overlay.querySelector('.money-choice-close');
+ var previousFocus=null;
+ function show(){previousFocus=document.activeElement;overlay.hidden=false;options.hidden=false;detail.hidden=true;closeButton.focus();window.dispatchEvent(new Event('ebc:resume-carousel'));}
+ function close(){overlay.hidden=true;if(previousFocus&&previousFocus.focus)previousFocus.focus();window.dispatchEvent(new Event('ebc:resume-carousel'));}
+ function choose(which){detailTitle.textContent=which==='cash'?'Dinero en efectivo':'Dinero a tarjeta';options.hidden=true;detail.hidden=false;overlay.querySelector('.money-choice-back').focus();}
+ overlay.querySelectorAll('[data-money-choice]').forEach(function(b){b.addEventListener('click',function(){choose(b.dataset.moneyChoice)});});
+ overlay.querySelector('.money-choice-back').addEventListener('click',function(){options.hidden=false;detail.hidden=true;overlay.querySelector('[data-money-choice]').focus()});
+ closeButton.addEventListener('click',close);
+ overlay.addEventListener('click',function(e){if(e.target===overlay)close()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!overlay.hidden)close()});
+ // Captura temprana: funciona en las tarjetas originales y en las duplicadas del carrusel.
+ document.addEventListener('click',function(e){
+   if(!overlay.hidden||e.button!==0||e.ctrlKey||e.metaKey||e.altKey||e.shiftKey)return;
+   var card=e.target.closest('.service[data-kind="envio"]');
+   if(!card)return;
+   e.preventDefault();e.stopImmediatePropagation();show();
+ },true);
+ document.addEventListener('keydown',function(e){
+   if(!overlay.hidden||(e.key!=='Enter'&&e.key!==' '))return;
+   var card=e.target.closest('.service[data-kind="envio"]');
+   if(!card||e.target!==card)return;
+   e.preventDefault();e.stopImmediatePropagation();show();
+ },true);
+})();
+</script>
 
 <div class="tt-copy-modal" id="tt-copy-modal" hidden>
   <section class="tt-copy-panel" role="dialog" aria-modal="true" aria-labelledby="tt-copy-title" aria-describedby="tt-copy-instructions">
