@@ -375,6 +375,55 @@
 }
 @media(prefers-reduced-motion:reduce){.mc-live{animation:none!important}}
 
+
+/* 27 oct 2026: diseño final con logos centrados y cambio entre agencias.
+   El resto del sitio y los eventos de WhatsApp/TikTok permanecen iguales. */
+.money-choice-heading{padding-top:5px;padding-bottom:9px}
+.money-choice-title{font-size:clamp(22px,5.6vw,29px)}
+.money-choice-panel{gap:9px}
+.mc-agency{padding-bottom:12px}
+.mc-brand{width:100%;max-width:100%;margin:0 auto 3px;min-height:76px;padding:11px 10px 4px;display:flex;justify-content:center;align-items:center;background:transparent;isolation:auto}
+.mc-brand .mc-logo{height:62px;width:min(285px,84%);max-width:100%;object-position:center center;mix-blend-mode:multiply}
+.mc-peruven-mark{justify-content:center;height:58px;transform:scale(1.25);transform-origin:center;mix-blend-mode:multiply}
+.mc-agency::before{height:85px;opacity:.78}
+.mc-rate{order:initial;flex:0 0 auto;width:max-content;max-width:100%;margin:0 auto;border:1.3px solid #b6d6f6;border-radius:999px;background:linear-gradient(110deg,#edf8ff,#e7f4ff);padding:9px 13px;color:#17286a;font-size:clamp(12px,3.3vw,15px)}
+.mc-rate .mc-rate-title{color:#152a6c}
+.mc-rate .mc-live.is-offline{background:#a0aebd}
+@media(max-width:600px){
+ .money-choice-panel{gap:7px}
+ .money-choice-heading{padding:4px 38px 6px}
+ .mc-agency{padding-bottom:9px}
+ .mc-brand{min-height:58px;padding:7px 6px 2px;margin:0 auto 3px}
+ .mc-brand .mc-logo{height:47px;width:min(265px,86%)}
+ .mc-peruven-mark{height:47px;transform:scale(1.03);transform-origin:center}
+ .mc-agency::before{height:64px}
+ .mc-rate{margin:0 auto;padding:7px 10px;font-size:clamp(11px,3.1vw,13px);gap:6px}
+}
+@media(max-width:350px){
+ .money-choice-heading{padding-bottom:5px}
+ .money-choice-panel{gap:6px}
+ .mc-brand{min-height:50px;padding:5px 2px 0}
+ .mc-brand .mc-logo{height:42px}
+ .mc-peruven-mark{height:40px;transform:scale(.93)}
+ .mc-rate{font-size:11px;gap:5px}
+}
+
+
+/* Logotipos limpios: sin cuadrados blancos sobre los paneles azules y verdes. */
+.mc-brand .mc-logo{mix-blend-mode:normal;object-fit:contain;object-position:center center}
+.mc-peruven .mc-logo{height:70px;width:min(270px,84%)}
+.mc-rate-reference{font-size:.72em;color:#64758e;font-weight:650;white-space:nowrap}
+.mc-rate-reference[hidden]{display:none!important}
+@media(max-width:600px){
+ .mc-peruven .mc-logo{height:61px;width:min(245px,84%)}
+ .mc-route-dual{font-size:clamp(10px,3.35vw,13px)}
+ .mc-rate{flex-wrap:nowrap}
+ .mc-rate-reference{font-size:.7em}
+}
+@media(max-width:350px){
+ .mc-peruven .mc-logo{height:52px}
+ .mc-rate{padding:7px 6px;gap:4px;font-size:10.6px}
+}
 </style>
 </head>
 <body>
@@ -571,23 +620,23 @@
 <div id="money-choice" class="money-choice" hidden>
  <section class="money-choice-panel" role="dialog" aria-modal="true" aria-labelledby="money-choice-heading" tabindex="-1">
   <header class="money-choice-heading">
-   <h2 class="money-choice-title" id="money-choice-heading">Escoja su agencia</h2>
+   <h2 class="money-choice-title" id="money-choice-heading">Envío de dinero</h2>
    <button type="button" class="money-choice-close" aria-label="Cerrar ventana">×</button>
   </header>
   <article class="mc-agency mc-transfint" aria-label="Transfint Cuba">
-   <a class="mc-brand" href="https://transfint.com/#calculadora" target="_blank" rel="noopener noreferrer" aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago"><img class="mc-logo" src="assets/transfint-logo.webp" alt="Transfint Cuba" width="270" height="63" loading="lazy"></a>
+   <a class="mc-brand" href="https://transfint.com/#calculadora" target="_blank" rel="noopener noreferrer" aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago"><img class="mc-logo" src="assets/transfint-logo-limpio.webp" alt="Transfint Cuba" width="270" height="63" loading="lazy"></a>
    <div class="mc-route mc-route-dual" aria-label="De Perú a Cuba y de Cuba a Perú"><span class="mc-flag">🇵🇪</span><span>De Perú a Cuba</span><span class="mc-arrow" aria-label="en ambos sentidos">⇄</span><span class="mc-flag">🇨🇺</span><span>De Cuba a Perú</span></div>
    <button type="button" class="mc-more" aria-expanded="false" aria-controls="mc-countries-transfint"><span>🌐</span>Más países <span class="mc-more-plus">+</span></button>
    <div class="mc-countries" hidden="" id="mc-countries-transfint"><div class="mc-flaglist"><a aria-label="Consultar rutas internacionales relacionadas con Estados Unidos en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Estados Unidos" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Estados%20Unidos.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Estados Unidos">🇺🇸</a><a aria-label="Consultar rutas internacionales relacionadas con España en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="España" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Espa%C3%B1a.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="España">🇪🇸</a><a aria-label="Consultar rutas internacionales relacionadas con Brasil en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Brasil" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Brasil.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Brasil">🇧🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Uruguay en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Uruguay" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Uruguay.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Uruguay">🇺🇾</a><a aria-label="Consultar rutas internacionales relacionadas con México en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="México" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20M%C3%A9xico.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="México">🇲🇽</a><a aria-label="Consultar rutas internacionales relacionadas con Chile en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Chile" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Chile.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Chile">🇨🇱</a><a aria-label="Consultar rutas internacionales relacionadas con Costa Rica en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Costa Rica" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Costa%20Rica.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Costa Rica">🇨🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Surinam en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Surinam" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Surinam.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Surinam">🇸🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Guyana en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Guyana" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Guyana.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Guyana">🇬🇾</a><a aria-label="Consultar rutas internacionales relacionadas con Rusia en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Rusia" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Rusia.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Rusia">🇷🇺</a></div></div>
    <div class="mc-prompt"><h3 class="mc-prompt-title">Cómo enviar dinero a Cuba</h3><div class="mc-actions"><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="efectivo" aria-label="efectivo · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="9" width="32" height="22" rx="4" fill="#13ae64"/><rect x="8" y="13" width="24" height="14" rx="2" fill="#64dba2"/><circle cx="20" cy="20" r="6" fill="#dbfff0"/><path d="M21.7 16.7c-2.4-1.4-5 1.4-2.3 2.5 3.5 1 3 3.6.6 4.1" fill="none" stroke="#0b8352" stroke-width="2" stroke-linecap="round"/><rect x="7" y="6" width="26" height="4" rx="2" fill="#0b9258"/></svg><span>Efectivo</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="tarjeta" aria-label="tarjeta · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="8" width="36" height="24" rx="5" fill="#0d91f5"/><path d="M2 15h36v6H2z" fill="#0956a9"/><rect x="7" y="25" width="10" height="3" rx="1" fill="#ffe474"/><rect x="23" y="25" width="9" height="3" rx="1" fill="#b6e8ff"/></svg><span>Tarjeta</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="transfint" data-mc-kind="recarga" aria-label="recarga · transfint"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="11" y="3" width="18" height="34" rx="4" fill="#17408a"/><rect x="14" y="7" width="12" height="24" rx="1" fill="#9de0ff"/><circle cx="20" cy="34" r="1.5" fill="#fff"/><path d="M32 13q6 7 0 14M35 9q10 11 0 22" fill="none" stroke="#147bec" stroke-width="2.3" stroke-linecap="round"/></svg><span>Recarga<br>ETECSA</span></a></div></div>
   </article>
+  <div class="mc-rate" aria-live="polite"><a class="mc-rate-title" href="https://www.remesasjj.com/tasas-de-cambio" target="_blank" rel="noopener noreferrer" title="Consultar la tasa con Peruven">Cambio aproximado</a><span class="mc-live is-offline" aria-label="Cotización no verificada"></span><span class="mc-rate-value" id="mc-rate-value" title="Valor referencial no verificado">1 PEN ≈ 0,86 CUP</span><small class="mc-rate-reference" id="mc-rate-reference">ref.</small></div>
   <article class="mc-agency mc-peruven" aria-label="Peruven">
-   <a class="mc-brand" href="https://remesasjj.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir página de Peruven"><span class="mc-peruven-mark" role="img" aria-label="Peruven"><span class="mc-pv-symbol" aria-hidden="true"></span><span class="mc-pv-word" aria-hidden="true"></span></span></a>
+   <a class="mc-brand" href="https://remesasjj.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir página de Peruven"><img class="mc-logo mc-peruven-logo" src="assets/peruven-logo-limpio.webp" alt="Peruven" width="505" height="161" loading="lazy"></a>
    <div class="mc-route"><span class="mc-flag">🇵🇪</span><span>Perú</span><span class="mc-arrow" aria-label="hacia">→</span><span class="mc-flag">🇨🇺</span><span>Cuba</span></div>
    <button type="button" class="mc-more" aria-expanded="false" aria-controls="mc-countries-peruven"><span>🌐</span>Más países <span class="mc-more-plus">+</span></button>
    <div class="mc-countries" id="mc-countries-peruven" hidden><div class="mc-flaglist"><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Brasil" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Brasil.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Brasil en Peruven" title="Brasil">🇧🇷</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Chile" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Chile.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Chile en Peruven" title="Chile">🇨🇱</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Colombia" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Colombia.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Colombia en Peruven" title="Colombia">🇨🇴</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Venezuela" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Venezuela.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Venezuela en Peruven" title="Venezuela">🇻🇪</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Ecuador" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Ecuador.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Ecuador en Peruven" title="Ecuador">🇪🇨</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Bolivia" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Bolivia.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Bolivia en Peruven" title="Bolivia">🇧🇴</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="México" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20M%C3%A9xico.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con México en Peruven" title="México">🇲🇽</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Uruguay" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Uruguay.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Uruguay en Peruven" title="Uruguay">🇺🇾</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="Estados Unidos" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Estados%20Unidos.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con Estados Unidos en Peruven" title="Estados Unidos">🇺🇸</a><a class="mc-country-flag" data-mc-agency="peruven" data-mc-country="España" href="https://wa.me/51908890523?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Peruven%20relacionado%20con%20Espa%C3%B1a.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" target="_blank" rel="noopener noreferrer" aria-label="Consultar rutas internacionales relacionadas con España en Peruven" title="España">🇪🇸</a></div></div>
    <div class="mc-prompt"><h3 class="mc-prompt-title">Cómo enviar dinero a Cuba</h3><div class="mc-actions"><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="paquetes" aria-label="paquetes · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 3 16 9v17L20 38 4 29V12Z" fill="#e9a746"/><path d="m4 12 16 9 16-9M20 21v17" fill="none" stroke="#a96e28" stroke-width="1.8"/><path d="m12 7 16 9v7l-5-2v-5L8 9" fill="#ffe6ac"/></svg><span>Envío de<br>paquetes</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="efectivo" aria-label="efectivo · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="9" width="32" height="22" rx="4" fill="#13ae64"/><rect x="8" y="13" width="24" height="14" rx="2" fill="#64dba2"/><circle cx="20" cy="20" r="6" fill="#dbfff0"/><path d="M21.7 16.7c-2.4-1.4-5 1.4-2.3 2.5 3.5 1 3 3.6.6 4.1" fill="none" stroke="#0b8352" stroke-width="2" stroke-linecap="round"/><rect x="7" y="6" width="26" height="4" rx="2" fill="#0b9258"/></svg><span>Efectivo</span></a><a class="mc-action" href="https://wa.me/" data-mc-agency="peruven" data-mc-kind="tarjeta" aria-label="tarjeta · peruven"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="8" width="36" height="24" rx="5" fill="#0d91f5"/><path d="M2 15h36v6H2z" fill="#0956a9"/><rect x="7" y="25" width="10" height="3" rx="1" fill="#ffe474"/><rect x="23" y="25" width="9" height="3" rx="1" fill="#b6e8ff"/></svg><span>Tarjeta</span></a></div></div>
-   <div class="mc-rate" aria-live="polite"><a class="mc-rate-title" href="https://www.remesasjj.com/tasas-de-cambio" target="_blank" rel="noopener noreferrer" title="Consultar la tasa con Peruven">Cambio aproximado</a><span class="mc-live is-offline" aria-label="Cotización no verificada"></span><span class="mc-rate-value" id="mc-rate-value" hidden></span></div>
   </article>
  </section>
 </div>
@@ -613,18 +662,18 @@
  window.ebcMoneyContacts={contacts:contacts,texts:texts};
  function queryRate(){
   if(rateQueried)return;rateQueried=true;
-  var node=document.getElementById('mc-rate-value');var indicator=overlay.querySelector('.mc-live');
+  var node=document.getElementById('mc-rate-value');var indicator=overlay.querySelector('.mc-live');var reference=document.getElementById('mc-rate-reference');
   var controller=new AbortController();var timeout=setTimeout(function(){controller.abort()},8500);
   fetch('/api/cambio-pen-cup',{signal:controller.signal,headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw Error('Sin dato');return r.json()}).then(function(data){
    if(!data.ok||!Number.isFinite(data.rate)||data.rate<=0)throw Error('Sin tasa verificable');
    node.textContent='1 PEN ≈ '+new Intl.NumberFormat('es-PE',{maximumFractionDigits:4}).format(data.rate)+' CUP';
-   node.hidden=false;
-   node.title='Tasa publicada por Remesas JJ; confirma condiciones y vigencia con la agencia.';
+   node.hidden=false;reference.hidden=true;
+   node.title='Dato publicado por Remesas JJ; confirma condiciones y vigencia con la agencia.';
    indicator.classList.remove('is-offline');
   }).catch(function(){
     // Sólo como ilustración, NO como cotización del día. Consultar el valor real con la agencia.
-    node.textContent='';node.hidden=true;
-    node.title='No hay un cambio PEN/CUP verificado ahora. Consulta la tasa real con la agencia.';
+    node.textContent='1 PEN ≈ 0,86 CUP';node.hidden=false;reference.hidden=false;
+    node.title='Valor únicamente referencial, no representa un cambio actual verificado. Confirma con la agencia.';
     indicator.classList.add('is-offline');
    }).finally(function(){clearTimeout(timeout)});
  }
