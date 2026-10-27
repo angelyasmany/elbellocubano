@@ -1,0 +1,18 @@
+EL BELLO CUBANO — Ventana de envíos a Cuba
+
+1. Publica todos los archivos de este ZIP respetando la estructura del proyecto.
+2. El index.html mantiene portada, carrusel, contadores y servicios ajenos intactos.
+3. Contactos configurados: Transfint Cuba +51 972 580 509; Peruven dinero +51 908 890 523 (CONFIRMADO); Peruven paquetes +51 970 342 941 (CONFIRMADO).
+4. Los botones de cada modalidad preparan textos de WhatsApp. En TikTok se copia el número y aparece el mensaje sugerido con opción de copiarlo.
+5. El cambio PEN→CUP se obtiene vía /api/cambio-pen-cup, SOLO si Remesas JJ publica la tasa exacta y verificable en su HTML. Si no aparece, el usuario verá «Consultar tasa».
+   IMPORTANTE: No se muestra 0.86 como tasa actual porque la página pública examinada no publica esa ruta.
+6. Transfint: clic sobre logotipo abre https://transfint.com/; la calculadora está en la página inicial. No se encontró ancla pública estable para el campo «Con qué moneda pagas tú».
+7. Peruven: clic sobre logotipo abre https://remesasjj.com/; países se obtuvieron de la oferta de cambio de divisas pública; consultar disponibilidad antes del envío.
+8. Este ZIP no cambia el código de contadores, SEO, ni promociones.html.
+
+9. El logo de Peruven en la web muestra exclusivamente el símbolo y la palabra «Peruven». «Remesas JJ» y el subtítulo se ocultan mediante CSS. Se conserva intacta la imagen original en assets.
+
+CAMBIOS RECIENTES (26-10-2026):
+- Transfint Cuba: «Más países» inicia con EE. UU., España y Brasil; después Perú, Uruguay y el resto de países anunciados por Transfint.
+- Recarga ETECSA: WhatsApp ahora empieza «Hola, vengo de la página del Bello Cubano y deseo hacer una recarga de ETECSA al Número de teléfono: ».
+- Sin cambios en los teléfonos, diseño o demás servicios.

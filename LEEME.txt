@@ -1,0 +1,21 @@
+EL BELLO CUBANO — PAQUETE PARA GITHUB / VERCEL
+
+Archivos de su proyecto: index.html, promociones.html, assets/ y api/.
+1. Suba el contenido de ESTA carpeta a la raíz de su repositorio GitHub.
+2. Vercel debe publicar la raíz del repositorio y permitir funciones Node en /api.
+3. El archivo TikTok pasó de api/followers.js a api/tiktok.js. Las dos páginas usan /api/tiktok.
+4. Los contadores muestran solo cifras numéricas verificadas. Orden de fuentes y alternativas del servidor:
+   - TikTok: TokCounter (/api/tiktok).
+   - Facebook: Graph API con credenciales opcionales; Livecounts página/embebido interpretados por el servidor; última cifra confirmada guardada.
+   - Instagram: Instagram Graph opcional; Livecounts API, página/embebido y Mixerno; última cifra confirmada guardada.
+   - YouTube: fuente ya existente (API propia).
+   Si ningún proveedor entrega una cifra y no existe una cifra válida guardada, se muestra un guion, no un número inventado.
+5. Al entrar desde el navegador interno de TikTok se muestra una ayuda con un botón para copiar la URL.
+   La detección depende del identificador del navegador y no es perfecta en todos los móviles.
+6. Conservamos los .webp originales del archivo adjunto: no se han convertido ni comprimido.
+7. La vista previa HTML local muestra el diseño; las cifras EN DIRECTO requieren las rutas /api funcionando en Vercel.
+8. En Vercel, opcionalmente, configure FACEBOOK_PAGE_ID + FACEBOOK_PAGE_ACCESS_TOKEN,
+   INSTAGRAM_ACCESS_TOKEN, YOUTUBE_API_KEY para fuentes autorizadas cuando apliquen.
+9. El enlace wa.me/elbellocubano y las URLs de grupos se han conservado conforme a los datos originales.
+   Compruebe que esos enlaces de WhatsApp funcionan como espera (wa.me suele necesitar número internacional).
+10. Las apps móviles y TikTok controlan si permiten abrir enlaces externos; ningún sitio web puede obligar a que se abra otra app.
