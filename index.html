@@ -731,18 +731,25 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
  overlay.querySelectorAll('.mc-action').forEach(function(link){
   var agency=link.dataset.mcAgency,kind=link.dataset.mcKind;
   var number=agency==='peruven'&&kind==='paquetes'?contacts.paquetes:contacts[agency];
-  // El importe se comunica únicamente cuando se escribe más de S/ 1.
-  // Al invertir la calculadora, el campo contiene CUP, no soles enviados.
+  // Con el valor inicial (1), conservar el mensaje original del servicio.
+  // Para importes superiores a 1, incluir SOLO el importe escrito, en soles o CUP,
+  // en la primera frase. Los asteriscos aplican negrita al enviar por WhatsApp.
   function messageForCurrentAmount(){
    var basic=texts[agency][kind];
    if(agency!=='transfint')return basic;
    var amount=document.getElementById('ebc-monto');
    var unit=document.getElementById('ebc-unit-a');
-   if(!amount||!unit||unit.textContent.trim()!=='S/')return basic;
+   if(!amount||!unit||!amount.value.trim())return basic;
    var value=Number(amount.value);
-   if(!amount.value.trim()||!Number.isFinite(value)||value<=1)return basic;
+   if(!Number.isFinite(value)||value<=1)return basic;
+   var currency=unit.textContent.trim()==='CUP'?'CUP':'S/';
    var formatted=new Intl.NumberFormat('es-PE',{maximumFractionDigits:2}).format(value);
-   return 'Monto que deseo enviar: S/ '+formatted+'\n'+basic;
+   var boldAmount='*'+currency+' '+formatted+'*';
+   if(kind==='recarga'){
+    return basic.replace('y deseo hacer una recarga de ETECSA',
+      'y deseo enviar '+boldAmount+' para hacer una recarga de ETECSA');
+   }
+   return basic.replace('y deseo enviar dinero','y deseo enviar '+boldAmount);
   }
   function refreshLink(){
    var message=messageForCurrentAmount();
