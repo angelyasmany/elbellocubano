@@ -1006,6 +1006,43 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     paquetes: 'Envío de paquetes'
   };
 
+  // Tarjeta principal «Envío de paquetes»: registrar una sola vez aunque el
+  // visitante toque la foto, el texto o «Consultar», también en el carrusel
+  // duplicado y en el navegador integrado de TikTok. La acción de WhatsApp
+  // existente (número terminado en 941) permanece completamente intacta.
+  function avisarPaquetePrincipal() {
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST',
+        mode: 'cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          agencia: AGENCIAS.peruven,
+          servicio: SERVICIOS.paquetes,
+          monto: null,
+          moneda: 'PEN'
+        })
+      }).catch(function () { /* La navegación a WhatsApp no depende del aviso. */ });
+    } catch (_) { /* Un error en Telegram no afecta al sitio. */ }
+  }
+
+  // Captura desde window para funcionar incluso donde TikTok intercepta el clic
+  // en document. Los clics sintéticos del carrusel no generan avisos duplicados.
+  window.addEventListener('click', function (evento) {
+    if (!evento.isTrusted || evento.button !== 0 || evento.ctrlKey || evento.metaKey || evento.altKey || evento.shiftKey) return;
+    if (!(evento.target instanceof Element)) return;
+    if (evento.target.closest('.service[data-kind="paquetes"]')) avisarPaquetePrincipal();
+  }, true);
+
+  // El contenedor también admite abrirse con Enter o Espacio (sin usar un enlace).
+  window.addEventListener('keydown', function (evento) {
+    if (!evento.isTrusted || (evento.key !== 'Enter' && evento.key !== ' ')) return;
+    if (!(evento.target instanceof Element)) return;
+    const tarjeta = evento.target.closest('.service[data-kind="paquetes"]');
+    if (tarjeta && evento.target === tarjeta && !evento.repeat) avisarPaquetePrincipal();
+  }, true);
+
   // Escuchar los seis botones de las agencias. Nunca impedir su acción original.
   document.addEventListener('click', function (evento) {
     if (evento.button !== 0 || evento.ctrlKey || evento.metaKey || evento.altKey || evento.shiftKey) return;
