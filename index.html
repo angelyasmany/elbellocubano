@@ -1003,7 +1003,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     efectivo: 'Envío en efectivo',
     tarjeta: 'Envío a tarjeta',
     recarga: 'Recarga ETECSA',
-    paquetes: 'Envío de paquetes'
+    paquetes: 'Envío de paquetes (dentro de Envío de dinero)',
+    paquetesPrincipal: 'Envío de paquetes (portada principal)'
   };
 
   // Tarjeta principal «Envío de paquetes»: registrar una sola vez aunque el
@@ -1019,7 +1020,7 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           agencia: AGENCIAS.peruven,
-          servicio: SERVICIOS.paquetes,
+          servicio: SERVICIOS.paquetesPrincipal,
           monto: null,
           moneda: 'PEN'
         })
