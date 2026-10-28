@@ -992,5 +992,56 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
  });update();
 })();
 </script>
+
+<!-- Alertas de consultas a Transfint y Peruven, sin alterar los controles existentes. -->
+<script>
+(function () {
+  'use strict';
+  const ENDPOINT = 'https://alertas-el-bello-cubano.angelyasmany.workers.dev/';
+  const AGENCIAS = { transfint: 'Transfint Cuba', peruven: 'Peruven' };
+  const SERVICIOS = {
+    efectivo: 'Envío en efectivo',
+    tarjeta: 'Envío a tarjeta',
+    recarga: 'Recarga ETECSA',
+    paquetes: 'Envío de paquetes'
+  };
+
+  // Escuchar los seis botones de las agencias. Nunca impedir su acción original.
+  document.addEventListener('click', function (evento) {
+    if (evento.button !== 0 || evento.ctrlKey || evento.metaKey || evento.altKey || evento.shiftKey) return;
+    if (!(evento.target instanceof Element)) return;
+    const boton = evento.target.closest('#money-choice .mc-action[data-mc-agency][data-mc-kind]');
+    if (!boton) return;
+
+    const agencia = AGENCIAS[boton.dataset.mcAgency];
+    const servicio = SERVICIOS[boton.dataset.mcKind];
+    if (!agencia || !servicio) return;
+
+    let monto = null;
+    let moneda = 'PEN';
+    // La calculadora pertenece a Transfint. El valor inicial 1 es solo de muestra.
+    if (boton.dataset.mcAgency === 'transfint') {
+      const campo = document.getElementById('ebc-monto');
+      const etiqueta = document.getElementById('ebc-unit-a');
+      const numero = Number(campo && campo.value);
+      if (campo && campo.value.trim() && Number.isFinite(numero) && numero > 1 && numero < 1e12) {
+        monto = numero;
+        moneda = etiqueta && etiqueta.textContent.trim() === 'CUP' ? 'CUP' : 'PEN';
+      }
+    }
+
+    // Envío independiente: aunque Telegram falle, WhatsApp sigue funcionando.
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST',
+        mode: 'cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agencia, servicio, monto, moneda })
+      }).catch(function () { /* Una alerta fallida no interrumpe al visitante. */ });
+    } catch (_) { /* Mantener la navegación normal ante fallos del navegador. */ }
+  }, true);
+})();
+</script>
 </body>
 </html>
