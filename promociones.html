@@ -513,11 +513,9 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 
 <!-- TikTok: contacto por número copiable, sin intentar salir del navegador integrado. -->
 <div class="wa-copy-overlay" id="wa-copy-overlay" hidden>
-  <section class="wa-copy-card" role="dialog" aria-modal="true" aria-labelledby="wa-copy-heading" aria-describedby="wa-copy-description">
-    <h2 id="wa-copy-heading">Comunícate por WhatsApp</h2>
-    <p id="wa-copy-description">Copia este número y búscalo en WhatsApp para solicitar tu promoción.</p>
+  <section class="wa-copy-card" role="dialog" aria-modal="true" aria-labelledby="wa-copy-heading">
+    <h2 id="wa-copy-heading">Escríbeme al WhatsApp</h2>
     <p id="wa-copy-plan" class="wa-copy-plan" hidden></p>
-    <label for="wa-copy-link" class="wa-copy-label">Número de WhatsApp (Perú)</label>
     <input id="wa-copy-link" class="wa-copy-url wa-copy-phone" type="text" readonly value="+51 964 912 979" aria-label="Número de WhatsApp de el Bello Cubano. Mantén pulsado para seleccionar y copiar" spellcheck="false" autocomplete="off">
     <div class="wa-copy-buttons">
       <button id="wa-copy-button" class="wa-copy-submit" type="button">Copiar número</button>
@@ -560,7 +558,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
     linkField.value=shownPhone;
     var card=link.closest('[id^="plan-"]');
     var name=card&&card.querySelector('h3');
-    plan.textContent=name?name.textContent.trim():'';
+    plan.textContent=name?'Comenta '+name.textContent.trim():'';
     plan.hidden=!name;
     overlay.hidden=false;
     document.body.style.overflow='hidden';
@@ -584,7 +582,7 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
       try{await navigator.clipboard.writeText('+'+phone);success=true;}catch(e){}
     }
     if(!success)success=legacyCopy();
-    if(success){button.textContent='¡Número copiado!';status.textContent='Abre WhatsApp y pega el número para escribirnos.';}
+    if(success){button.textContent='¡Número copiado!';status.textContent='¡Listo!';}
     else{status.textContent='Mantén pulsado el número para seleccionarlo y copiarlo.';linkField.focus();linkField.select();}
   });
 
