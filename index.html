@@ -503,6 +503,35 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   opacity:1;visibility:visible;transition:opacity .3s ease,visibility 0s linear 0s;
 }
 @media(prefers-reduced-motion:reduce){.ebc-cash-min-warning{transition:none!important}}
+
+/* Mantener el título siempre visible y dejar accesible Peruven en pantallas bajas. */
+.money-choice{padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));align-items:center}
+.money-choice-panel{max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px);scroll-padding-top:54px;overscroll-behavior:contain}
+.money-choice-heading{position:sticky;top:-1px;z-index:10;background:#fff;border-radius:15px;padding:6px 38px 9px;box-shadow:0 2px 7px #152e6012}
+.money-choice-close{z-index:2}
+.ebc-swap-grid .ebc-oneway-arrow{display:grid;place-items:center;align-self:end;width:36px;height:40px;margin-bottom:0;background:#e7f3ff;border:1px solid #a6c6ed;border-radius:50%;font-weight:900;font-size:26px;line-height:1;color:#1253a0;cursor:default;user-select:none}
+@media(max-width:400px){.ebc-swap-grid .ebc-oneway-arrow{width:30px;height:36px;font-size:23px}}
+@media(max-height:760px){
+ .money-choice-panel{gap:4px!important;padding:7px 9px 9px!important}
+ .money-choice-heading{padding:4px 36px 5px!important}
+ .money-choice-title{font-size:clamp(18px,4.5vw,23px)!important}
+ .mc-agency{padding-bottom:6px!important}
+ .mc-brand{min-height:42px!important;padding:3px 6px 0!important;margin-bottom:0!important}
+ .mc-brand .mc-logo{height:36px!important}
+ .mc-peruven .mc-logo{height:40px!important}
+ .mc-route{min-height:29px!important;margin-bottom:3px!important;padding:2px 5px!important}
+ .ebc-mini-calc{padding:5px 8px!important;margin:4px 6px!important}
+ .ebc-mini-calc h3{margin-bottom:3px!important}
+ .ebc-mini-inputbox{height:34px}
+ .ebc-mini-inputbox input{height:27px}
+ .ebc-mini-field output{min-height:34px;padding:5px}
+ .ebc-swap-grid .ebc-oneway-arrow{height:34px}
+ .ebc-mini-notice{margin-top:2px}
+ .mc-actions .mc-action{min-height:52px!important;padding:3px 2px!important}
+ .mc-actions .mc-action svg{height:22px;width:22px}
+ .ebc-cash-min-warning{margin-top:0;height:16px;line-height:16px}
+ .mc-more{margin-top:3px!important;margin-bottom:2px!important;padding:3px 9px!important}
+}
 </style>
 </head>
 <body>
@@ -706,7 +735,7 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 <a aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago" class="mc-brand" href="https://transfint.com/#calculadora" rel="noopener noreferrer" target="_blank"><img alt="Transfint Cuba" class="mc-logo" height="63" loading="lazy" src="assets/transfint-logo-limpio.webp" width="270"/></a>
 <section aria-label="Calculadora de Transfint Cuba" class="ebc-mini-calc">
 <h3>¿Cuánto deseas enviar?</h3>
-<div class="ebc-swap-grid"><label class="ebc-mini-field"><span id="ebc-label-a">Tú envías 🇵🇪</span><span class="ebc-mini-inputbox"><b id="ebc-unit-a">S/</b><input aria-label="Cantidad a convertir" id="ebc-monto" inputmode="decimal" min="0" step="any" type="number" value="1"/></span></label><button aria-label="Intercambiar soles y pesos cubanos" id="ebc-swap" title="Cambiar dirección" type="button">⇄</button><div class="ebc-mini-field"><span id="ebc-label-b">Reciben 🇨🇺</span><output id="ebc-recibe">13.750 CUP</output><small id="ebc-unit-b"></small></div></div>
+<div class="ebc-swap-grid"><label class="ebc-mini-field"><span id="ebc-label-a">Tú envías 🇵🇪</span><span class="ebc-mini-inputbox"><b id="ebc-unit-a">S/</b><input aria-label="Cantidad a convertir" id="ebc-monto" inputmode="decimal" min="0" step="any" type="number" value="1"/></span></label><span aria-label="Envío solamente de Perú hacia Cuba" class="ebc-oneway-arrow" id="ebc-swap" role="img" title="Envío de Perú hacia Cuba">→</span><div class="ebc-mini-field"><span id="ebc-label-b">Reciben 🇨🇺</span><output id="ebc-recibe">13.750 CUP</output><small id="ebc-unit-b"></small></div></div>
 <div class="ebc-mini-notice">Tasa de cambio actual</div>
 </section>
 <div class="mc-prompt">
@@ -1045,33 +1074,17 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 <script defer="" src="assets/social-counters.js"></script>
 
 <script>
-/* Calculadora orientativa: tasas predeterminadas del código de Transfint; no consulta datos en vivo. */
+/* Calculadora orientativa: envíos exclusivamente de Perú hacia Cuba. */
 (function(){
- const input=document.getElementById('ebc-monto'),out=document.getElementById('ebc-recibe'),swap=document.getElementById('ebc-swap');
- if(!input||!out||!swap)return;
- let inverse=false;
+ const input=document.getElementById('ebc-monto'),out=document.getElementById('ebc-recibe');
+ if(!input||!out)return;
  const fmt=new Intl.NumberFormat('es-PE',{maximumFractionDigits:2});
- function solesDesdeCup(cup){return cup>=28000?cup/280:cup<=27225?cup/275:null;}
  function update(){
-  const n=Number(input.value);if(!input.value.trim()||!Number.isFinite(n)||n<=0){out.textContent='—';return;}
-  if(!inverse){out.textContent=fmt.format(Math.round(n*(n>=100?280:275)))+' CUP';return;}
-  const soles=solesDesdeCup(n);
-  out.textContent=soles===null?'Consultar tasa':'S/ '+fmt.format(soles);
+  const n=Number(input.value);
+  out.textContent=(!input.value.trim()||!Number.isFinite(n)||n<=0)?'—':fmt.format(Math.round(n*(n>=100?280:275)))+' CUP';
  }
  input.addEventListener('input',update);
- swap.addEventListener('click',()=>{
-  const n=Number(input.value);let next='';
-  if(input.value.trim()&&Number.isFinite(n)&&n>0){
-   const v=inverse?solesDesdeCup(n):Math.round(n*(n>=100?280:275));
-   if(v!==null)next=String(Number(v.toFixed(2)));
-  }
-  inverse=!inverse;input.value=next;
-  document.getElementById('ebc-unit-a').textContent=inverse?'CUP':'S/';
-  document.getElementById('ebc-label-a').textContent=inverse?'Tú envías 🇨🇺':'Tú envías 🇵🇪';
-  document.getElementById('ebc-label-b').textContent=inverse?'Reciben 🇵🇪':'Reciben 🇨🇺';
-  update();
-  input.dispatchEvent(new Event('input',{bubbles:true}));
- });update();
+ update();
 })();
 </script>
 
