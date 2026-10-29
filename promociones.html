@@ -224,6 +224,13 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 .wa-copy-status{min-height:16px;font-size:11px;line-height:1.4;color:#166534;margin-top:9px;text-align:center}
 @media(max-width:370px){.wa-copy-card{padding:20px 15px}.wa-copy-buttons{gap:7px}}
 
+/* Contacto de promociones: número visible, seleccionable y botón de copia. */
+.wa-copy-label{display:block;margin:0 0 7px;font-size:12px;font-weight:750;color:#334155}
+.wa-copy-phone{font-size:clamp(20px,5vw,26px);font-weight:800;letter-spacing:.025em;text-align:center;color:#136b3f;background:#f0fdf4;border-color:#bbf7d0;user-select:text;-webkit-user-select:text}
+.wa-copy-plan{margin:0 0 10px!important;padding:7px 10px;background:#eff6ff;border-radius:9px;color:#155c9e!important;font-size:12px!important;font-weight:750;text-align:center}
+.wa-copy-help{margin:10px 0 0!important;text-align:center;font-size:11px!important;color:#64748b!important}
+@media(max-width:350px){.wa-copy-phone{font-size:19px}}
+
 </style>
 
 </head>
@@ -504,81 +511,92 @@ body{margin:0;background:#FFFEF9;color:#18181b;font-family:Inter,system-ui,sans-
 })();
 </script>
 
-<!-- TikTok: dar a copiar la URL de Promociones, nunca la portada ni un numero personal. -->
+<!-- TikTok: contacto por número copiable, sin intentar salir del navegador integrado. -->
 <div class="wa-copy-overlay" id="wa-copy-overlay" hidden>
   <section class="wa-copy-card" role="dialog" aria-modal="true" aria-labelledby="wa-copy-heading" aria-describedby="wa-copy-description">
-    <h2 id="wa-copy-heading">Copiar enlace al navegador</h2>
-    <p id="wa-copy-description">TikTok limita los enlaces de WhatsApp. Por favor, cópielo y péguelo en Chrome u otro navegador.</p>
-    <input id="wa-copy-link" class="wa-copy-url" type="text" readonly aria-label="Enlace de la página Promociónate con el Bello Cubano" spellcheck="false">
+    <h2 id="wa-copy-heading">Comunícate por WhatsApp</h2>
+    <p id="wa-copy-description">Copia este número y búscalo en WhatsApp para solicitar tu promoción.</p>
+    <p id="wa-copy-plan" class="wa-copy-plan" hidden></p>
+    <label for="wa-copy-link" class="wa-copy-label">Número de WhatsApp (Perú)</label>
+    <input id="wa-copy-link" class="wa-copy-url wa-copy-phone" type="text" readonly value="+51 964 912 979" aria-label="Número de WhatsApp de el Bello Cubano. Mantén pulsado para seleccionar y copiar" spellcheck="false" autocomplete="off">
     <div class="wa-copy-buttons">
-      <button id="wa-copy-button" class="wa-copy-submit" type="button">Copiar enlace</button>
+      <button id="wa-copy-button" class="wa-copy-submit" type="button">Copiar número</button>
       <button id="wa-copy-close" class="wa-copy-dismiss" type="button">Cerrar</button>
     </div>
     <div id="wa-copy-status" class="wa-copy-status" role="status" aria-live="polite"></div>
+    <p class="wa-copy-help">También puedes mantener pulsado el número para seleccionarlo y copiarlo.</p>
   </section>
 </div>
 
 <script>
-/* El Bello Cubano: desde TikTok se copia el enlace de Promociones; desde otros
-   navegadores se abre el usuario de WhatsApp. No se publica numero telefonico. */
+/* WhatsApp: fuera de TikTok, abrir chat con el plan elegido;
+   dentro de TikTok, mostrar un número fácil de copiar o seleccionar. */
 (function(){
   'use strict';
-  var username='elbellocubano';
+  var phone='51964912979';
+  var shownPhone='+51 964 912 979';
   var ua=navigator.userAgent||'';
   var isMobile=/android|iphone|ipad|ipod/i.test(ua);
   var isTikTok=isMobile&&/tiktok|musical_ly|musically|bytedance|trill|aweme|ttwebview|musicalite/i.test(ua);
-
   var overlay=document.getElementById('wa-copy-overlay');
   var linkField=document.getElementById('wa-copy-link');
   var button=document.getElementById('wa-copy-button');
   var close=document.getElementById('wa-copy-close');
   var status=document.getElementById('wa-copy-status');
+  var plan=document.getElementById('wa-copy-plan');
   var previousFocus=null;
+  linkField.value=shownPhone;
 
-  // La URL copiada siempre es la pagina de promociones en el dominio publicado.
-  // No copiamos wa.me ni la portada index.html.
-  var promotionsUrl=new URL(window.location.href);
-  promotionsUrl.hash='';
-  promotionsUrl.search='';
-  linkField.value=promotionsUrl.href;
-
-  function hide(){overlay.hidden=true;status.textContent='';if(previousFocus&&previousFocus.focus)previousFocus.focus();}
-  function show(){
-    previousFocus=document.activeElement;
-    button.textContent='Copiar enlace';
+  function hide(){
+    overlay.hidden=true;
     status.textContent='';
-    linkField.value=promotionsUrl.href;
+    document.body.style.overflow='';
+    if(previousFocus&&previousFocus.focus)previousFocus.focus({preventScroll:true});
+  }
+  function show(link){
+    previousFocus=document.activeElement;
+    button.textContent='Copiar número';
+    status.textContent='';
+    linkField.value=shownPhone;
+    var card=link.closest('[id^="plan-"]');
+    var name=card&&card.querySelector('h3');
+    plan.textContent=name?name.textContent.trim():'';
+    plan.hidden=!name;
     overlay.hidden=false;
+    document.body.style.overflow='hidden';
     button.focus();
   }
   close.addEventListener('click',hide);
   overlay.addEventListener('click',function(e){if(e.target===overlay)hide();});
   document.addEventListener('keydown',function(e){if(!overlay.hidden&&e.key==='Escape')hide();});
-  linkField.addEventListener('click',function(){linkField.select();});
+  linkField.addEventListener('click',function(){linkField.focus();linkField.select();});
 
   function legacyCopy(){
-    linkField.focus();linkField.select();linkField.setSelectionRange(0,linkField.value.length);
+    linkField.focus();
+    linkField.select();
+    linkField.setSelectionRange(0,linkField.value.length);
     try{return document.execCommand('copy');}catch(e){return false;}
   }
   button.addEventListener('click',async function(){
     var success=false;
+    // Copiar el número con prefijo internacional, sin espacios.
     if(navigator.clipboard&&navigator.clipboard.writeText){
-      try{await navigator.clipboard.writeText(linkField.value);success=true;}catch(e){}
+      try{await navigator.clipboard.writeText('+'+phone);success=true;}catch(e){}
     }
     if(!success)success=legacyCopy();
-    if(success){button.textContent='¡Copiado!';status.textContent='Listo, asere, pégalo en tu navegador favorito';}
-    else{status.textContent='Mantén pulsado el enlace para seleccionarlo y copiarlo.';linkField.focus();linkField.select();}
+    if(success){button.textContent='¡Número copiado!';status.textContent='Abre WhatsApp y pega el número para escribirnos.';}
+    else{status.textContent='Mantén pulsado el número para seleccionarlo y copiarlo.';linkField.focus();linkField.select();}
   });
 
   document.querySelectorAll('a[data-whatsapp-message]').forEach(function(a){
     var message=a.getAttribute('data-whatsapp-message')||'';
-    var url='https://wa.me/'+username+'?text='+encodeURIComponent(message);
-    a.href=url;
-    a.removeAttribute('target');
+    a.href='https://wa.me/'+phone+'?text='+encodeURIComponent(message);
+    a.target='_blank';
+    a.rel='noopener noreferrer';
     if(isTikTok){
       a.addEventListener('click',function(e){
         if(e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
-        e.preventDefault();show();
+        e.preventDefault();show(a);
       });
     }
   });
