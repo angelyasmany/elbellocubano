@@ -1,9 +1,11 @@
-/* el Bello Cubano — contadores numéricos sin iframes de terceros.
+/* el Bello Cubano — contadores animados con iframe visual solo de respaldo.
    No se confunden seguidores acumulados con espectadores únicos. */
 (()=>{'use strict';
  const fmt=new Intl.NumberFormat('es-PE');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
  const VALID_FOR=30*24*60*60*1000;
+ const REFRESH_MS=150000; // menos peticiones a Vercel que la actualización cada minuto
+ const MIN_REFRESH_MS=90000; // no repetir al cambiar de pestaña o recuperar Internet
  const networks=[
   {name:'TikTok',id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
   {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano'},
@@ -13,16 +15,25 @@
  const sources=networks.map(item=>({...item,
   node:document.getElementById(item.id),
   link:document.querySelector('[data-social="'+item.name+'"]'),
-  value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,state:'unavailable',finishedFirstRequest:false
+  value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,state:'unavailable',finishedFirstRequest:false,lastAttempt:0
  })).filter(s=>s.node);
  // Widget oficial del proveedor como respaldo VISUAL de Facebook.
  // No intentamos leer el iframe (es de otro dominio) ni lo sumamos al total.
  const facebookVisual=document.querySelector('.facebook-counter');
- function fallbackFacebook(s){
-  if(s.name!=='Facebook'||!facebookVisual)return;
-  const show=!valid(s.value)&&s.finishedFirstRequest;
-  facebookVisual.hidden=!show;
-  s.node.hidden=show;
+ const instagramVisual=document.querySelector('.instagram-counter:not(.facebook-counter)');
+ function fallbackVisual(s){
+  if(s.name==='Facebook'&&facebookVisual){
+   const show=!valid(s.value)&&s.finishedFirstRequest;
+   facebookVisual.hidden=!show;
+   s.node.hidden=show;
+  }
+  if(s.name==='Instagram'&&instagramVisual){
+   // Únicamente el número verificable de /api/instagram se anima desde 0.
+   // Si no hay número, conservamos el widget del proveedor sin leer su iframe.
+   const numeric=valid(s.value);
+   instagramVisual.hidden=numeric;
+   s.node.hidden=!numeric;
+  }
  }
  const totalNode=document.getElementById('reach-total');
  const reach=document.getElementById('reach');
@@ -79,8 +90,11 @@
   totalMotion?.cancel();const old=totalShown;totalShown=sum;
   totalMotion=animate(totalNode,old,sum,old===null?1400:650);
  }
- async function update(s){
+ async function update(s,force=false){
   if(s.busy||document.hidden)return;
+  const now=Date.now();
+  if(!force&&s.lastAttempt&&now-s.lastAttempt<MIN_REFRESH_MS)return;
+  s.lastAttempt=now;
   s.busy=true;
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);
   try{
@@ -93,10 +107,14 @@
    const now=Date.now();
    // No renovar el plazo de la cifra antigua con una fecha de consulta reciente.
    const checked=incomingStale?(Number.isFinite(when)&&when<=now+60000?when:null):now;
-   if(incomingStale&&checked===null&&valid(s.value)){
+   if(incomingStale&&checked===null){
+    // Sin fecha no sustituimos una lectura previa ni mostramos una cifra antigua
+    // de procedencia desconocida como si estuviera recién verificada.
+    if(!valid(s.value))throw Error('El proveedor no indicó fecha de la cifra antigua');
     s.state='stale';label(s);display(s);return;
    }
-   if(incomingStale&&checked!==null&&now-checked>VALID_FOR&&valid(s.value)){
+   if(incomingStale&&checked!==null&&now-checked>VALID_FOR){
+    if(!valid(s.value))throw Error('La cifra verificada tiene más de 30 días');
     s.state='stale';label(s);display(s);return;
    }
    s.value=value;s.updated=data.updated_at||null;
@@ -108,18 +126,28 @@
    if(valid(s.value)){s.state='stale';display(s);}
    else{s.state='unavailable';s.node.textContent='—';}
    label(s);
-  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;fallbackFacebook(s);total();}
+  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;fallbackVisual(s);total();}
  }
+ const watched=new Map();
  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
-  for(const e of entries){const s=sources.find(s=>s.node===e.target);if(s&&e.isIntersecting){s.visible=true;display(s);observer.unobserve(e.target);}}
+  for(const e of entries){
+   const s=watched.get(e.target);
+   if(s&&e.isIntersecting){s.visible=true;display(s);observer.unobserve(e.target);}
+  }
  },{threshold:0.05}):null;
- for(const s of sources){restore(s);label(s);if(observer)observer.observe(s.node);else s.visible=true;}
+ for(const s of sources){
+  restore(s);label(s);fallbackVisual(s);
+  // El nodo numérico de Instagram empieza oculto. Observar su contenedor visible
+  // evita que IntersectionObserver deje el número permanentemente en «—».
+  const target=s.name==='Instagram'?(s.node.closest('.instagram-social')||s.node):s.node;
+  if(observer){watched.set(target,s);observer.observe(target);}else s.visible=true;
+ }
  total();
- const first=sources.map(update);
+ const first=sources.map(s=>update(s));
  const show=()=>document.documentElement.classList.add('counters-ready');
  const timeout=setTimeout(show,1800);
  Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
- setInterval(()=>sources.forEach(update),60000);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)sources.forEach(update);});
- window.addEventListener('online',()=>sources.forEach(update));
+ setInterval(()=>sources.forEach(s=>update(s)),REFRESH_MS);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)sources.forEach(s=>update(s));});
+ window.addEventListener('online',()=>sources.forEach(s=>update(s)));
 })();
