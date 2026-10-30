@@ -535,8 +535,16 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
  .ebc-cash-min-warning{margin-top:0;height:16px;line-height:16px}
  .mc-more{margin-top:3px!important;margin-bottom:2px!important;padding:3px 9px!important}
 }
-.transfint-calc{display:block;width:calc(100% - 20px);height:128px;margin:12px 10px;border:0;background:transparent}
-@media(max-height:760px){.transfint-calc{width:calc(100% - 12px);margin:4px 6px}}
+/* Transfint: presentación visual local. Sin intervenir en cálculos ni en la web externa.
+   Cubre solamente la franja inferior del iframe; la leyenda queda centrada bajo las flechas.
+   Ajuste reversible: retirar .ebc-transfint-rate-band y estas reglas para recuperar el aspecto original. */
+.ebc-transfint-frame{position:relative;width:calc(100% - 20px);height:128px;margin:12px 10px;isolation:isolate}
+.ebc-transfint-frame .transfint-calc{display:block;width:100%;height:128px;margin:0;border:0;background:transparent}
+.ebc-transfint-rate-band{position:absolute;left:0;right:0;bottom:0;height:36px;display:flex;align-items:center;justify-content:center;
+ background:#fff;z-index:2;pointer-events:none;text-align:center}
+.ebc-transfint-rate-band span{display:block;color:#25496c;font:700 12px/1.25 Arial,Helvetica,sans-serif;letter-spacing:.01em}
+@media(max-height:760px){.ebc-transfint-frame{width:calc(100% - 12px);margin:4px 6px}}
+@media(max-width:380px){.ebc-transfint-rate-band{height:36px}.ebc-transfint-rate-band span{font-size:11px}}
 </style>
 </head>
 <body>
@@ -738,7 +746,10 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   </header>
   <article aria-label="Transfint Cuba" class="mc-agency mc-transfint">
 <a aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago" class="mc-brand" href="https://transfint.com/#calculadora" rel="noopener noreferrer" target="_blank"><img alt="Transfint Cuba" class="mc-logo" height="63" loading="lazy" src="assets/transfint-logo-limpio.webp" width="270"/></a>
-<iframe id="transfint-calc" class="transfint-calc" src="https://transfint.com/calculadora-mini.html" title="Calculadora de Transfint Cuba" scrolling="no"></iframe>
+<div class="ebc-transfint-frame">
+  <iframe id="transfint-calc" class="transfint-calc" src="https://transfint.com/calculadora-mini.html" title="Calculadora de Transfint Cuba" scrolling="no"></iframe>
+  <div class="ebc-transfint-rate-band" aria-hidden="true"><span>Tasa de cambio actual</span></div>
+ </div>
 <input type="hidden" id="ebc-monto" value="1"><span id="ebc-unit-a" hidden>S/</span>
 <div class="mc-prompt">
 
