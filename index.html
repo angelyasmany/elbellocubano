@@ -532,6 +532,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
  .ebc-cash-min-warning{margin-top:0;height:16px;line-height:16px}
  .mc-more{margin-top:3px!important;margin-bottom:2px!important;padding:3px 9px!important}
 }
+.transfint-calc{display:block;width:calc(100% - 20px);height:128px;margin:12px 10px;border:0;background:transparent}
+@media(max-height:760px){.transfint-calc{width:calc(100% - 12px);margin:4px 6px}}
 </style>
 </head>
 <body>
@@ -733,11 +735,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   </header>
   <article aria-label="Transfint Cuba" class="mc-agency mc-transfint">
 <a aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago" class="mc-brand" href="https://transfint.com/#calculadora" rel="noopener noreferrer" target="_blank"><img alt="Transfint Cuba" class="mc-logo" height="63" loading="lazy" src="assets/transfint-logo-limpio.webp" width="270"/></a>
-<section aria-label="Calculadora de Transfint Cuba" class="ebc-mini-calc">
-<h3>¿Cuánto deseas enviar?</h3>
-<div class="ebc-swap-grid"><label class="ebc-mini-field"><span id="ebc-label-a">Tú envías 🇵🇪</span><span class="ebc-mini-inputbox"><b id="ebc-unit-a">S/</b><input aria-label="Cantidad a convertir" id="ebc-monto" inputmode="decimal" min="0" step="any" type="number" value="1"/></span></label><span aria-label="Envío solamente de Perú hacia Cuba" class="ebc-oneway-arrow" id="ebc-swap" role="img" title="Envío de Perú hacia Cuba">→</span><div class="ebc-mini-field"><span id="ebc-label-b">Reciben 🇨🇺</span><output id="ebc-recibe">13.750 CUP</output><small id="ebc-unit-b"></small></div></div>
-<div class="ebc-mini-notice">Tasa de cambio actual</div>
-</section>
+<iframe id="transfint-calc" class="transfint-calc" src="https://transfint.com/calculadora-mini.html" title="Calculadora de Transfint Cuba" scrolling="no"></iframe>
+<input type="hidden" id="ebc-monto" value="1"><span id="ebc-unit-a" hidden>S/</span>
 <div class="mc-prompt">
 
 <div class="mc-actions"><a aria-label="tarjeta · transfint" class="mc-action" data-mc-agency="transfint" data-mc-kind="tarjeta" href="https://wa.me/"><svg aria-hidden="true" viewbox="0 0 40 40"><rect fill="#0d91f5" height="24" rx="5" width="36" x="2" y="8"></rect><path d="M2 15h36v6H2z" fill="#0956a9"></path><rect fill="#ffe474" height="3" rx="1" width="10" x="7" y="25"></rect><rect fill="#b6e8ff" height="3" rx="1" width="9" x="23" y="25"></rect></svg><span>Tarjeta</span></a><a aria-label="efectivo · transfint" class="mc-action" data-mc-agency="transfint" data-mc-kind="efectivo" href="https://wa.me/"><svg aria-hidden="true" viewbox="0 0 40 40"><rect fill="#13ae64" height="22" rx="4" width="32" x="4" y="9"></rect><rect fill="#64dba2" height="14" rx="2" width="24" x="8" y="13"></rect><circle cx="20" cy="20" fill="#dbfff0" r="6"></circle><path d="M21.7 16.7c-2.4-1.4-5 1.4-2.3 2.5 3.5 1 3 3.6.6 4.1" fill="none" stroke="#0b8352" stroke-linecap="round" stroke-width="2"></path><rect fill="#0b9258" height="4" rx="2" width="26" x="7" y="6"></rect></svg><span>Efectivo</span></a><a aria-label="recarga · transfint" class="mc-action" data-mc-agency="transfint" data-mc-kind="recarga" href="https://wa.me/"><svg aria-hidden="true" viewbox="0 0 40 40"><rect fill="#17408a" height="34" rx="4" width="18" x="11" y="3"></rect><rect fill="#9de0ff" height="24" rx="1" width="12" x="14" y="7"></rect><circle cx="20" cy="34" fill="#fff" r="1.5"></circle><path d="M32 13q6 7 0 14M35 9q10 11 0 22" fill="none" stroke="#147bec" stroke-linecap="round" stroke-width="2.3"></path></svg><span>Recarga<br/>ETECSA</span></a></div><p id="ebc-cash-min-warning" class="ebc-cash-min-warning" role="status" aria-live="polite">Mínimo para efectivo: S/ 170</p><button aria-controls="mc-countries-transfint" aria-expanded="false" class="mc-more" type="button"><span>🌐</span>Más países <span class="mc-more-plus">+</span></button><div class="mc-countries" hidden="" id="mc-countries-transfint"><div class="mc-flaglist"><a aria-label="Consultar rutas internacionales relacionadas con Estados Unidos en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Estados Unidos" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Estados%20Unidos.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Estados Unidos">🇺🇸</a><a aria-label="Consultar rutas internacionales relacionadas con España en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="España" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Espa%C3%B1a.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="España">🇪🇸</a><a aria-label="Consultar rutas internacionales relacionadas con Brasil en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Brasil" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Brasil.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Brasil">🇧🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Uruguay en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Uruguay" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Uruguay.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Uruguay">🇺🇾</a><a aria-label="Consultar rutas internacionales relacionadas con México en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="México" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20M%C3%A9xico.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="México">🇲🇽</a><a aria-label="Consultar rutas internacionales relacionadas con Chile en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Chile" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Chile.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Chile">🇨🇱</a><a aria-label="Consultar rutas internacionales relacionadas con Costa Rica en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Costa Rica" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Costa%20Rica.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Costa Rica">🇨🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Surinam en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Surinam" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Surinam.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Surinam">🇸🇷</a><a aria-label="Consultar rutas internacionales relacionadas con Guyana en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Guyana" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Guyana.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Guyana">🇬🇾</a><a aria-label="Consultar rutas internacionales relacionadas con Rusia en Transfint Cuba" class="mc-country-flag" data-mc-agency="transfint" data-mc-country="Rusia" href="https://wa.me/51972580509?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20del%20Bello%20Cubano%20y%20deseo%20consultar%20un%20env%C3%ADo%20internacional%20con%20Transfint%20Cuba%20relacionado%20con%20Rusia.%0APa%C3%ADs%20de%20origen%3A%20%0APa%C3%ADs%20de%20destino%3A%20" rel="noopener noreferrer" target="_blank" title="Rusia">🇷🇺</a></div></div></div>
@@ -801,10 +800,6 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   if(!ebcCashInput||!ebcCashInput.value.trim())return NaN;
   var n=Number(ebcCashInput.value);
   if(!Number.isFinite(n)||n<=0)return NaN;
-  if(ebcCashUnit&&ebcCashUnit.textContent.trim()==='CUP'){
-   // Mismas tasas orientativas que la calculadora presente, no una API en vivo.
-   return n>=28000?n/280:n<=27225?n/275:NaN;
-  }
   return n;
  }
  var ebcWarningTimer=null;
@@ -823,7 +818,7 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   },4000);
  }
  function ebcCheckCash(showWarning){
-  var invalid=!(ebcCashSoles()>=170);
+  var minimo=window.transfintMinimoEfectivo;var invalid=minimo?!(ebcCashSoles()>=minimo):false;
   if(invalid&&showWarning)ebcShowWarning();
   else if(!invalid)ebcHideWarning();
   return !invalid;
@@ -841,7 +836,7 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
  },true);
  overlay.querySelectorAll('.mc-action').forEach(function(link){
   var agency=link.dataset.mcAgency,kind=link.dataset.mcKind;
-  var number=agency==='peruven'&&kind==='paquetes'?contacts.paquetes:contacts[agency];
+  var number=agency==='peruven'&&kind==='paquetes'?contacts.paquetes:(agency==='transfint'&&kind==='tarjeta'?'51916919318':contacts[agency]);
   // Con el valor inicial (1), conservar el mensaje original del servicio.
   // Para importes superiores a 1, incluir SOLO el importe escrito, en soles o CUP,
   // en la primera frase. Los asteriscos aplican negrita al enviar por WhatsApp.
@@ -1073,21 +1068,6 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 
 <script defer="" src="assets/social-counters.js"></script>
 
-<script>
-/* Calculadora orientativa: envíos exclusivamente de Perú hacia Cuba. */
-(function(){
- const input=document.getElementById('ebc-monto'),out=document.getElementById('ebc-recibe');
- if(!input||!out)return;
- const fmt=new Intl.NumberFormat('es-PE',{maximumFractionDigits:2});
- function update(){
-  const n=Number(input.value);
-  out.textContent=(!input.value.trim()||!Number.isFinite(n)||n<=0)?'—':fmt.format(Math.round(n*(n>=100?280:275)))+' CUP';
- }
- input.addEventListener('input',update);
- update();
-})();
-</script>
-
 <!-- Alertas de consultas a Transfint y Peruven, sin alterar los controles existentes. -->
 <script>
 (function () {
@@ -1174,6 +1154,26 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
       }).catch(function () { /* Una alerta fallida no interrumpe al visitante. */ });
     } catch (_) { /* Mantener la navegación normal ante fallos del navegador. */ }
   }, true);
+})();
+</script>
+<script>
+/* Calculadora de Transfint Cuba: sincronización de monto y mínimo en efectivo. */
+(function () {
+  var TRANSFINT = 'https://transfint.com';
+  var marco = document.getElementById('transfint-calc');
+  var monto = document.getElementById('ebc-monto');
+  var aviso = document.getElementById('ebc-cash-min-warning');
+  if (!marco || !monto) return;
+  window.addEventListener('message', function (e) {
+    if (e.origin !== TRANSFINT || e.source !== marco.contentWindow) return;
+    var d = e.data;
+    if (!d || d.fuente !== 'transfint-calculadora') return;
+    if (typeof d.alto === 'number' && d.alto > 0 && d.alto < 400) marco.style.height = Math.ceil(d.alto) + 'px';
+    var valor = typeof d.soles === 'number' && Number.isFinite(d.soles) && d.soles > 0 ? String(d.soles) : '';
+    if (monto.value !== valor) { monto.value = valor; monto.dispatchEvent(new Event('input')); }
+    if (typeof d.minimoEfectivoSoles === 'number' && Number.isFinite(d.minimoEfectivoSoles) && d.minimoEfectivoSoles > 0) window.transfintMinimoEfectivo = d.minimoEfectivoSoles;
+    if (aviso && typeof d.textoMinimoEfectivo === 'string' && d.textoMinimoEfectivo) aviso.textContent = d.textoMinimoEfectivo;
+  });
 })();
 </script>
 </body>
