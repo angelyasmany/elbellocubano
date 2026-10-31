@@ -28,11 +28,18 @@
    s.node.hidden=show;
   }
   if(s.name==='Instagram'&&instagramVisual){
-   // Únicamente el número verificable de /api/instagram se anima desde 0.
-   // Si no hay número, conservamos el widget del proveedor sin leer su iframe.
-   const numeric=valid(s.value);
+   // Se ve un 0 provisional mientras llega la primera cifra verificable.
+   // Si ya teníamos una cifra comprobada, podemos animarla mientras consultamos.
+   // El cero NO se incluye en el alcance total como si fueran cero seguidores.
+   const loading=!valid(s.value)&&!s.finishedFirstRequest;
+   const numeric=valid(s.value)||loading;
    instagramVisual.hidden=numeric;
    s.node.hidden=!numeric;
+   if(loading){
+    s.node.textContent='0';
+    s.node.dataset.state='loading';
+    s.node.title='Consultando el número real de seguidores de Instagram…';
+   }
   }
  }
  const totalNode=document.getElementById('reach-total');
@@ -40,11 +47,12 @@
  let totalMotion=null,totalShown=null;
  const valid=v=>Number.isSafeInteger(v)&&v>=0;
  function animate(node,from,to,duration){
-  const motion={frame:0,cancel(){if(this.frame)cancelAnimationFrame(this.frame);this.frame=0;}};
-  if(reduced.matches||document.hidden||from===to){node.textContent=fmt.format(to);return motion;}
+  const motion={frame:0,current:from??0,cancel(){if(this.frame)cancelAnimationFrame(this.frame);this.frame=0;}};
+  if(reduced.matches||document.hidden||from===to){motion.current=to;node.textContent=fmt.format(to);return motion;}
   const started=performance.now(),start=from??0;
   function step(now){const t=Math.min(1,(now-started)/duration),eased=1-Math.pow(1-t,3);
-   node.textContent=fmt.format(Math.round(start+(to-start)*eased));
+   motion.current=Math.round(start+(to-start)*eased);
+   node.textContent=fmt.format(motion.current);
    if(t<1)motion.frame=requestAnimationFrame(step);else motion.frame=0;
   }
   motion.frame=requestAnimationFrame(step);return motion;
@@ -56,9 +64,34 @@
   s.node.title=valid(s.value)?fmt.format(s.value)+' '+suffix+' · '+s.name+old:'Sin lectura verificable por ahora';
   if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+suffix+old:''));
   s.node.dataset.state=s.state;
+  if(s.name==='Instagram'){
+   const waiting=!valid(s.value)&&!s.finishedFirstRequest;
+   s.node.setAttribute('aria-busy',waiting?'true':'false');
+   if(waiting)s.node.title='Consultando el número real de seguidores de Instagram…';
+  }
+ }
+ function igDuration(from,to,first){
+  // Pocos seguidores: se aprecia cada número. Miles: el avance es ágil.
+  // Con cifra anterior en caché dejamos tiempo para recibir la consulta nueva.
+  const diff=Math.abs(to-from);
+  const basic=diff<=5?1500:diff<=50?1600:diff<=1000?1900:diff<10000?2300:2600;
+  return first&&to>0?Math.max(3600,basic):first?basic:Math.min(1100,Math.max(400,Math.round(basic*.43)));
  }
  function display(s){
   if(!valid(s.value)||!s.visible)return;
+  if(s.name==='Instagram'){
+   if(s.shown===s.value&&s.node.textContent!=='—')return;
+   // Si la API responde a mitad de la animación, continuar desde el dígito
+   // realmente visible (no desde el destino que todavía no se ha alcanzado).
+   const first=s.shown===null;
+   const from=s.motion?s.motion.current:(first?0:s.shown);
+   s.motion?.cancel();
+   // Que el primer fotograma ya sea cero, no una raya («—»).
+   if(first)s.node.textContent='0';
+   s.shown=s.value;
+   s.motion=animate(s.node,from,s.value,igDuration(from,s.value,first));
+   return;
+  }
   if(s.shown===s.value&&s.node.textContent!=='—')return;
   s.motion?.cancel();const from=s.shown;s.shown=s.value;
   s.motion=animate(s.node,from,s.value,from===null?1400:650);
@@ -126,7 +159,11 @@
    if(valid(s.value)){s.state='stale';display(s);}
    else{s.state='unavailable';s.node.textContent='—';}
    label(s);
-  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;fallbackVisual(s);total();}
+  }finally{
+   clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;
+   if(s.name==='Instagram')label(s);
+   fallbackVisual(s);total();
+  }
  }
  const watched=new Map();
  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
@@ -140,7 +177,8 @@
   // El nodo numérico de Instagram empieza oculto. Observar su contenedor visible
   // evita que IntersectionObserver deje el número permanentemente en «—».
   const target=s.name==='Instagram'?(s.node.closest('.instagram-social')||s.node):s.node;
-  if(observer){watched.set(target,s);observer.observe(target);}else s.visible=true;
+  if(observer){watched.set(target,s);observer.observe(target);}
+  else{s.visible=true;display(s);}
  }
  total();
  const first=sources.map(s=>update(s));
