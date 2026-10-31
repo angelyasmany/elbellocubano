@@ -1,153 +1,125 @@
-/* el Bello Cubano — contadores animados con iframe visual solo de respaldo.
-   No se confunden seguidores acumulados con espectadores únicos. */
+/* el Bello Cubano — prueba de contadores en index: exclusivamente API.
+ * Facebook e Instagram: solo respuestas autentificadas de Meta Graph API.
+ * TikTok y YouTube: sus propias APIs, sin datos de respaldo o almacenamiento.
+ * Nunca utiliza Livecounts ni localStorage; un error muestra «—».
+ * Este archivo SOLO se incluye en index.html; promociones conserva su lógica.
+ */
 (()=>{'use strict';
  const fmt=new Intl.NumberFormat('es-PE');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
- const VALID_FOR=30*24*60*60*1000;
- const REFRESH_MS=150000; // menos peticiones a Vercel que la actualización cada minuto
- const MIN_REFRESH_MS=90000; // no repetir al cambiar de pestaña o recuperar Internet
  const networks=[
   {name:'TikTok',id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
-  {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano'},
-  {name:'Instagram',id:'ig-followers',url:'/api/instagram',field:'count',account:'elbellocubano'},
+  {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano',meta:true},
+  {name:'Instagram',id:'ig-followers',url:'/api/instagram',field:'count',account:'elbellocubano',meta:true},
   {name:'YouTube',id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ'}
  ];
  const sources=networks.map(item=>({...item,
   node:document.getElementById(item.id),
   link:document.querySelector('[data-social="'+item.name+'"]'),
-  value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,state:'unavailable',finishedFirstRequest:false,lastAttempt:0
+  value:null,shown:null,motion:null,busy:false,lastAttempt:0,state:'unavailable'
  })).filter(s=>s.node);
- // Widget oficial del proveedor como respaldo VISUAL de Facebook.
- // No intentamos leer el iframe (es de otro dominio) ni lo sumamos al total.
- const facebookVisual=document.querySelector('.facebook-counter');
- const instagramVisual=document.querySelector('.instagram-counter:not(.facebook-counter)');
- function fallbackVisual(s){
-  if(s.name==='Facebook'&&facebookVisual){
-   const show=!valid(s.value)&&s.finishedFirstRequest;
-   facebookVisual.hidden=!show;
-   s.node.hidden=show;
-  }
-  if(s.name==='Instagram'&&instagramVisual){
-   // Únicamente el número verificable de /api/instagram se anima desde 0.
-   // Si no hay número, conservamos el widget del proveedor sin leer su iframe.
-   const numeric=valid(s.value);
-   instagramVisual.hidden=numeric;
-   s.node.hidden=!numeric;
-  }
- }
  const totalNode=document.getElementById('reach-total');
  const reach=document.getElementById('reach');
- let totalMotion=null,totalShown=null;
  const valid=v=>Number.isSafeInteger(v)&&v>=0;
+ const DURATION=1600;
+ let totalMotion=null,totalShown=null,hasAnimated=false;
  function animate(node,from,to,duration){
-  const motion={frame:0,cancel(){if(this.frame)cancelAnimationFrame(this.frame);this.frame=0;}};
-  if(reduced.matches||document.hidden||from===to){node.textContent=fmt.format(to);return motion;}
-  const started=performance.now(),start=from??0;
-  function step(now){const t=Math.min(1,(now-started)/duration),eased=1-Math.pow(1-t,3);
+  let frame=0;
+  const motion={cancel(){if(frame)cancelAnimationFrame(frame);frame=0;}};
+  const start=from??0;
+  if(reduced.matches||document.hidden||start===to){node.textContent=fmt.format(to);return motion;}
+  const begun=performance.now();
+  function step(time){
+   const t=Math.min(1,(time-begun)/duration);
+   const eased=1-Math.pow(1-t,3);
    node.textContent=fmt.format(Math.round(start+(to-start)*eased));
-   if(t<1)motion.frame=requestAnimationFrame(step);else motion.frame=0;
+   if(t<1)frame=requestAnimationFrame(step);else frame=0;
   }
-  motion.frame=requestAnimationFrame(step);return motion;
+  node.textContent=fmt.format(start);
+  frame=requestAnimationFrame(step);return motion;
  }
  function label(s){
-  const suffix=s.name==='YouTube'?'suscriptores':'seguidores';
-  const age=s.state==='stale'&&s.checked?new Date(s.checked).toLocaleDateString('es-PE'):'';
-  const old=s.state==='stale'?' (última cifra comprobada'+(age?' el '+age:'')+'; puede haber cambiado)':'';
-  s.node.title=valid(s.value)?fmt.format(s.value)+' '+suffix+' · '+s.name+old:'Sin lectura verificable por ahora';
-  if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+suffix+old:''));
+  const type=s.name==='YouTube'?'suscriptores':'seguidores';
   s.node.dataset.state=s.state;
+  s.node.title=valid(s.value)?fmt.format(s.value)+' '+type+' · '+s.name+' (API)':'Sin lectura válida de la API';
+  if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+type:''));
  }
- function display(s){
-  if(!valid(s.value)||!s.visible)return;
-  if(s.shown===s.value&&s.node.textContent!=='—')return;
-  s.motion?.cancel();const from=s.shown;s.shown=s.value;
-  s.motion=animate(s.node,from,s.value,from===null?1400:650);
+ function clear(s){
+  s.motion?.cancel();s.motion=null;s.value=null;s.shown=null;s.state='unavailable';
+  s.node.textContent='—';s.node.hidden=false;label(s);
  }
- function restore(s){
-  try{
-   const item=JSON.parse(localStorage.getItem('ebc-verified-v2:'+s.name+':'+s.account));
-   if(!item||!valid(item.value)||!Number.isFinite(item.checked)||item.checked>Date.now()+60000||Date.now()-item.checked>VALID_FOR)return;
-   s.value=item.value;s.checked=item.checked;s.updated=item.updated||null;s.state='stale';label(s);
-  }catch{/* Almacenamiento deshabilitado. */}
+ function display(s,first=false){
+  if(!valid(s.value))return;
+  if(s.shown===s.value)return;
+  s.motion?.cancel();
+  const old=first?0:s.shown;
+  s.shown=s.value;
+  s.node.hidden=false;
+  s.motion=animate(s.node,old,s.value,first?DURATION:650);
  }
- function save(s){
-  try{localStorage.setItem('ebc-verified-v2:'+s.name+':'+s.account,
-   JSON.stringify({value:s.value,checked:s.checked,updated:s.updated}));}catch{}
- }
- function total(){
+ function total(first=false){
   if(!totalNode)return;
   const known=sources.filter(s=>valid(s.value));
-  if(!known.length){totalMotion?.cancel();totalShown=null;totalNode.textContent='—';if(reach)reach.dataset.state='waiting';return;}
-  const sum=known.reduce((n,s)=>n+s.value,0);
+  if(!known.length){totalMotion?.cancel();totalMotion=null;totalShown=null;totalNode.textContent='—';if(reach)reach.dataset.state='waiting';return;}
+  const sum=known.reduce((acc,s)=>acc+s.value,0);
   if(!Number.isSafeInteger(sum))return;
   if(reach){
    reach.dataset.state=known.length===sources.length?'ready':'partial';
    reach.title='Suma de '+known.map(s=>s.name).join(', ')+'. '+(known.length<sources.length?'Total parcial. ':'')+
-    (known.some(s=>s.state==='stale')?'Incluye una o más cifras antiguas. ':'')+
-    'Una persona puede seguir varias cuentas: no representa espectadores únicos.';
+    'Las audiencias pueden repetirse: no representa espectadores únicos.';
   }
   if(totalShown===sum)return;
-  totalMotion?.cancel();const old=totalShown;totalShown=sum;
-  totalMotion=animate(totalNode,old,sum,old===null?1400:650);
+  totalMotion?.cancel();
+  const from=first?0:totalShown;
+  totalShown=sum;
+  totalMotion=animate(totalNode,from,sum,first?DURATION:650);
+ }
+ function isMetaResponse(data){
+  // Las APIs anteriores podían devolver Livecounts como respaldo con consulta_ok=true.
+  // Solo admitimos cifras que el servidor identifique expresamente como Meta/Graph.
+  const source=[data.fuente,data.source,data.provider,data.origen].filter(x=>typeof x==='string').join(' ');
+  return /\bmeta\b|\bgraph\s*api\b|\bgraph\.facebook\b|\bgraph\.instagram\b/i.test(source);
  }
  async function update(s,force=false){
   if(s.busy||document.hidden)return;
   const now=Date.now();
-  if(!force&&s.lastAttempt&&now-s.lastAttempt<MIN_REFRESH_MS)return;
-  s.lastAttempt=now;
-  s.busy=true;
-  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),12000);
+  if(!force&&s.lastAttempt&&now-s.lastAttempt<90000)return;
+  s.lastAttempt=now;s.busy=true;
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),12000);
   try{
    const response=await fetch(s.url,{signal:controller.signal,cache:'no-store',headers:{Accept:'application/json'}});
-   if(!response.ok)throw Error('Error HTTP '+response.status);
-   const data=await response.json(),value=data[s.field];
-   if(data.consulta_ok!==true||data.cuenta!==s.account||data.estimated===true||!valid(value))throw Error('Respuesta no verificable');
-   const when=data.updated_at?Date.parse(data.updated_at):NaN;
-   const incomingStale=data.source_stale===true;
-   const now=Date.now();
-   // No renovar el plazo de la cifra antigua con una fecha de consulta reciente.
-   const checked=incomingStale?(Number.isFinite(when)&&when<=now+60000?when:null):now;
-   if(incomingStale&&checked===null){
-    // Sin fecha no sustituimos una lectura previa ni mostramos una cifra antigua
-    // de procedencia desconocida como si estuviera recién verificada.
-    if(!valid(s.value))throw Error('El proveedor no indicó fecha de la cifra antigua');
-    s.state='stale';label(s);display(s);return;
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const data=await response.json();
+   const value=data[s.field];
+   if(data.consulta_ok!==true||data.cuenta!==s.account||!valid(value)||data.estimated===true||data.source_stale===true){
+    throw Error('La API no devolvió una cifra actual y verificable');
    }
-   if(incomingStale&&checked!==null&&now-checked>VALID_FOR){
-    if(!valid(s.value))throw Error('La cifra verificada tiene más de 30 días');
-    s.state='stale';label(s);display(s);return;
-   }
-   s.value=value;s.updated=data.updated_at||null;
-   s.state=incomingStale?'stale':'ready';
-   if(checked!==null)s.checked=checked;
-   if(s.checked&&now-s.checked<=VALID_FOR)save(s);
-   label(s);display(s);
-  }catch{
-   if(valid(s.value)){s.state='stale';display(s);}
-   else{s.state='unavailable';s.node.textContent='—';}
-   label(s);
-  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;fallbackVisual(s);total();}
+   if(s.meta&&!isMetaResponse(data))throw Error('El proveedor no es Meta');
+   s.value=value;s.state='ready';label(s);
+   if(hasAnimated){display(s);total();}
+  }catch(error){
+   // Si falla la consulta, nunca conservamos una cifra anterior.
+   clear(s);
+   if(hasAnimated)total();
+   if(s.meta)console.info('[elBelloCubano] Meta '+s.name+': '+String(error.message||error));
+  }finally{clearTimeout(timeout);s.busy=false;}
  }
- const watched=new Map();
- const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
-  for(const e of entries){
-   const s=watched.get(e.target);
-   if(s&&e.isIntersecting){s.visible=true;display(s);observer.unobserve(e.target);}
-  }
- },{threshold:0.05}):null;
- for(const s of sources){
-  restore(s);label(s);fallbackVisual(s);
-  // El nodo numérico de Instagram empieza oculto. Observar su contenedor visible
-  // evita que IntersectionObserver deje el número permanentemente en «—».
-  const target=s.name==='Instagram'?(s.node.closest('.instagram-social')||s.node):s.node;
-  if(observer){watched.set(target,s);observer.observe(target);}else s.visible=true;
- }
- total();
- const first=sources.map(s=>update(s));
- const show=()=>document.documentElement.classList.add('counters-ready');
- const timeout=setTimeout(show,1800);
- Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
- setInterval(()=>sources.forEach(s=>update(s)),REFRESH_MS);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)sources.forEach(s=>update(s));});
+ for(const s of sources)clear(s);
+ if(totalNode)totalNode.textContent='—';
+ const first=sources.map(s=>update(s,true));
+ // Cuando están todas listas, la animación empieza a la vez.
+ // Para evitar que una API caída bloquee a las demás, tope de espera: 4,8s.
+ const deadline=new Promise(resolve=>setTimeout(resolve,4800));
+ Promise.race([Promise.allSettled(first),deadline]).then(()=>{
+  hasAnimated=true;
+  for(const s of sources)display(s,true);
+  total(true);
+  document.documentElement.classList.add('counters-ready');
+ });
+ setInterval(()=>sources.forEach(s=>update(s)),150000);
+ document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden)sources.forEach(s=>update(s));
+ });
  window.addEventListener('online',()=>sources.forEach(s=>update(s)));
 })();
