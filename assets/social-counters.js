@@ -38,8 +38,19 @@
    // El cero NO se incluye en el alcance total como si fueran cero seguidores.
    const loading=!valid(s.value)&&!s.finishedFirstRequest;
    const numeric=valid(s.value)||loading;
-   instagramVisual.hidden=numeric;
-   s.node.hidden=!numeric;
+   // Esperar al inicio del primer conteo para que el respaldo no aparezca
+   // antes de Facebook y TikTok. No podemos leer ni animar cifras dentro
+   // de un iframe de otro dominio, pero sí revelar el respaldo suavemente.
+   const showFallback=!numeric&&firstWaveStarted;
+   const wasHidden=instagramVisual.hidden;
+   instagramVisual.hidden=!showFallback;
+   s.node.hidden=showFallback;
+   if(showFallback&&wasHidden){
+    instagramVisual.classList.remove('ig-fallback-visible');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+     if(!instagramVisual.hidden)instagramVisual.classList.add('ig-fallback-visible');
+    }));
+   } else if(!showFallback) instagramVisual.classList.remove('ig-fallback-visible');
    if(loading){
     s.node.textContent='0';
     s.node.dataset.state='loading';
@@ -116,7 +127,12 @@
   firstWaveStarted=true;
   firstWaveEndsAt=performance.now()+FIRST_COUNT_MS;
   // Esta misma hora de finalización se usa en Instagram, Facebook, TikTok y YouTube.
-  for(const s of sources)display(s);
+  for(const s of sources){
+   // Si Instagram falló, hacer aparecer su respaldo al comienzo de
+   // la misma ola de 1,65 s que anima los demás contadores.
+   if(s.name==='Instagram')fallbackVisual(s);
+   display(s);
+  }
   showCounters();
  }
  function restore(s){
@@ -185,7 +201,12 @@
    label(s);if(s.name==='Instagram')fallbackVisual(s);display(s);
   }catch{
    if(valid(s.value)){s.state='stale';display(s);}
-   else{s.state='unavailable';s.node.textContent='—';}
+   else{
+    s.state='unavailable';
+    // Durante la primera sincronización, conservar el 0 provisional.
+    // Al arrancar la ola, se reemplazará por el respaldo (sin cifra ficticia).
+    s.node.textContent=s.name==='Instagram'&&!firstWaveStarted?'0':'—';
+   }
    label(s);
   }finally{
    clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;
