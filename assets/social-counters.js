@@ -15,7 +15,7 @@
  const sources=networks.map(item=>({...item,
   node:document.getElementById(item.id),
   link:document.querySelector('[data-social="'+item.name+'"]'),
-  value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,state:'unavailable',finishedFirstRequest:false,lastAttempt:0
+  value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,unknownAge:false,state:'unavailable',finishedFirstRequest:false,lastAttempt:0
  })).filter(s=>s.node);
  // Widget oficial del proveedor como respaldo VISUAL de Facebook.
  // No intentamos leer el iframe (es de otro dominio) ni lo sumamos al total.
@@ -60,7 +60,7 @@
  function label(s){
   const suffix=s.name==='YouTube'?'suscriptores':'seguidores';
   const age=s.state==='stale'&&s.checked?new Date(s.checked).toLocaleDateString('es-PE'):'';
-  const old=s.state==='stale'?' (última cifra comprobada'+(age?' el '+age:'')+'; puede haber cambiado)':'';
+  const old=s.state==='stale'?(s.unknownAge?' (cifra publicada por el proveedor; fecha de actualización desconocida)':' (última cifra comprobada'+(age?' el '+age:'')+'; puede haber cambiado)'):'';
   s.node.title=valid(s.value)?fmt.format(s.value)+' '+suffix+' · '+s.name+old:'Sin lectura verificable por ahora';
   if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+suffix+old:''));
   s.node.dataset.state=s.state;
@@ -71,11 +71,27 @@
   }
  }
  function igDuration(from,to,first){
-  // Pocos seguidores: se aprecia cada número. Miles: el avance es ágil.
-  // Con cifra anterior en caché dejamos tiempo para recibir la consulta nueva.
+  // El primer conteo debe ser apreciable, pero no tarda diez segundos con miles.
   const diff=Math.abs(to-from);
-  const basic=diff<=5?1500:diff<=50?1600:diff<=1000?1900:diff<10000?2300:2600;
-  return first&&to>0?Math.max(3600,basic):first?basic:Math.min(1100,Math.max(400,Math.round(basic*.43)));
+  const basic=diff<=5?1700:diff<=50?2000:diff<=1000?2400:diff<10000?2900:3400;
+  return first?basic:Math.min(1600,Math.max(650,Math.round(basic*.55)));
+ }
+ function animateInstagram(node,from,to,duration){
+  const motion={frame:0,current:from,cancel(){if(this.frame)cancelAnimationFrame(this.frame);this.frame=0;}};
+  if(reduced.matches||document.hidden||from===to){
+   motion.current=to;node.textContent=fmt.format(to);return motion;
+  }
+  node.textContent=fmt.format(from); // Siempre comienza visualmente en 0 al cargar por primera vez.
+  const start=performance.now();
+  function step(now){
+   const t=Math.min(1,(now-start)/duration);
+   const smooth=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+   const n=Math.round(from+(to-from)*smooth);
+   motion.current=n;node.textContent=fmt.format(n);
+   if(t<1)motion.frame=requestAnimationFrame(step);else motion.frame=0;
+  }
+  motion.frame=requestAnimationFrame(step);
+  return motion;
  }
  function display(s){
   if(!valid(s.value)||!s.visible)return;
@@ -89,7 +105,7 @@
    // Que el primer fotograma ya sea cero, no una raya («—»).
    if(first)s.node.textContent='0';
    s.shown=s.value;
-   s.motion=animate(s.node,from,s.value,igDuration(from,s.value,first));
+   s.motion=animateInstagram(s.node,from,s.value,igDuration(from,s.value,first));
    return;
   }
   if(s.shown===s.value&&s.node.textContent!=='—')return;
@@ -109,7 +125,7 @@
  }
  function total(){
   if(!totalNode)return;
-  const known=sources.filter(s=>valid(s.value));
+  const known=sources.filter(s=>valid(s.value)&&!s.unknownAge);
   if(!known.length){totalMotion?.cancel();totalShown=null;totalNode.textContent='—';if(reach)reach.dataset.state='waiting';return;}
   const sum=known.reduce((n,s)=>n+s.value,0);
   if(!Number.isSafeInteger(sum))return;
@@ -141,8 +157,13 @@
    // No renovar el plazo de la cifra antigua con una fecha de consulta reciente.
    const checked=incomingStale?(Number.isFinite(when)&&when<=now+60000?when:null):now;
    if(incomingStale&&checked===null){
-    // Sin fecha no sustituimos una lectura previa ni mostramos una cifra antigua
-    // de procedencia desconocida como si estuviera recién verificada.
+    if(s.name==='Instagram'){
+     // La cifra ha sido validada por el backend para @elbellocubano,
+     // pero el proveedor no indica de cuándo es. Animarla como dato histórico,
+     // SIN guardarla como cifra actual ni sumarla como dato fresco.
+     if(!valid(s.value)){s.value=value;s.checked=0;s.updated=null;s.unknownAge=true;}
+     s.state='stale';label(s);fallbackVisual(s);display(s);return;
+    }
     if(!valid(s.value))throw Error('El proveedor no indicó fecha de la cifra antigua');
     s.state='stale';label(s);display(s);return;
    }
@@ -150,11 +171,11 @@
     if(!valid(s.value))throw Error('La cifra verificada tiene más de 30 días');
     s.state='stale';label(s);display(s);return;
    }
-   s.value=value;s.updated=data.updated_at||null;
+   s.value=value;s.updated=data.updated_at||null;s.unknownAge=false;
    s.state=incomingStale?'stale':'ready';
    if(checked!==null)s.checked=checked;
    if(s.checked&&now-s.checked<=VALID_FOR)save(s);
-   label(s);display(s);
+   label(s);if(s.name==='Instagram')fallbackVisual(s);display(s);
   }catch{
    if(valid(s.value)){s.state='stale';display(s);}
    else{s.state='unavailable';s.node.textContent='—';}
