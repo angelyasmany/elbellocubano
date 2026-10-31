@@ -6,6 +6,11 @@
  const VALID_FOR=30*24*60*60*1000;
  const REFRESH_MS=150000; // menos peticiones a Vercel que la actualización cada minuto
  const MIN_REFRESH_MS=90000; // no repetir al cambiar de pestaña o recuperar Internet
+ // Primera animación coordinada: las cuatro redes comparten tiempo de finalización.
+ // Esperamos brevemente a Instagram, pero nunca bloqueamos indefinidamente a las demás.
+ const FIRST_WAIT_MS=4800;
+ const FIRST_COUNT_MS=1650;
+ let firstWaveStarted=false,firstWaveEndsAt=0;
  const networks=[
   {name:'TikTok',id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
   {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano'},
@@ -70,11 +75,10 @@
    if(waiting)s.node.title='Consultando el número real de seguidores de Instagram…';
   }
  }
- function igDuration(from,to,first){
-  // El primer conteo debe ser apreciable, pero no tarda diez segundos con miles.
-  const diff=Math.abs(to-from);
-  const basic=diff<=5?1700:diff<=50?2000:diff<=1000?2400:diff<10000?2900:3400;
-  return first?basic:Math.min(1600,Math.max(650,Math.round(basic*.55)));
+ function initialAnimationMs(){
+  // Si el dato llega durante el conteo, animar solo hasta la hora común de cierre.
+  // Si llega demasiado tarde, mostrarlo rápidamente sin fingir un número no recibido.
+  return Math.max(240,Math.round(firstWaveEndsAt-performance.now()));
  }
  function animateInstagram(node,from,to,duration){
   const motion={frame:0,current:from,cancel(){if(this.frame)cancelAnimationFrame(this.frame);this.frame=0;}};
@@ -95,22 +99,25 @@
  }
  function display(s){
   if(!valid(s.value)||!s.visible)return;
-  if(s.name==='Instagram'){
-   if(s.shown===s.value&&s.node.textContent!=='—')return;
-   // Si la API responde a mitad de la animación, continuar desde el dígito
-   // realmente visible (no desde el destino que todavía no se ha alcanzado).
-   const first=s.shown===null;
-   const from=s.motion?s.motion.current:(first?0:s.shown);
-   s.motion?.cancel();
-   // Que el primer fotograma ya sea cero, no una raya («—»).
-   if(first)s.node.textContent='0';
-   s.shown=s.value;
-   s.motion=animateInstagram(s.node,from,s.value,igDuration(from,s.value,first));
-   return;
-  }
+  // Mantener todos los números en 0 hasta que comience el conteo conjunto.
+  if(!firstWaveStarted&&s.shown===null)return;
   if(s.shown===s.value&&s.node.textContent!=='—')return;
-  s.motion?.cancel();const from=s.shown;s.shown=s.value;
-  s.motion=animate(s.node,from,s.value,from===null?1400:650);
+  const first=s.shown===null;
+  const from=s.motion?s.motion.current:(first?0:s.shown);
+  s.motion?.cancel();
+  s.shown=s.value;
+  const duration=(first||performance.now()<firstWaveEndsAt)?initialAnimationMs():650;
+  s.motion=s.name==='Instagram'
+   ?animateInstagram(s.node,from,s.value,duration)
+   :animate(s.node,from,s.value,duration);
+ }
+ function startFirstWave(){
+  if(firstWaveStarted)return;
+  firstWaveStarted=true;
+  firstWaveEndsAt=performance.now()+FIRST_COUNT_MS;
+  // Esta misma hora de finalización se usa en Instagram, Facebook, TikTok y YouTube.
+  for(const s of sources)display(s);
+  showCounters();
  }
  function restore(s){
   try{
@@ -195,6 +202,8 @@
  },{threshold:0.05}):null;
  for(const s of sources){
   restore(s);label(s);fallbackVisual(s);
+  // Mostrar 0 de forma provisional (no se suma al total ni se presenta como dato real).
+  if(!s.node.hidden)s.node.textContent='0';
   // El nodo numérico de Instagram empieza oculto. Observar su contenedor visible
   // evita que IntersectionObserver deje el número permanentemente en «—».
   const target=s.name==='Instagram'?(s.node.closest('.instagram-social')||s.node):s.node;
@@ -202,10 +211,16 @@
   else{s.visible=true;display(s);}
  }
  total();
+ let showTimer=null;
+ function showCounters(){
+  if(showTimer!==null){clearTimeout(showTimer);showTimer=null;}
+  document.documentElement.classList.add('counters-ready');
+ }
+ // Mostrar los iconos inmediatamente, aunque los valores sigan esperando la API.
+ showTimer=setTimeout(showCounters,350);
  const first=sources.map(s=>update(s));
- const show=()=>document.documentElement.classList.add('counters-ready');
- const timeout=setTimeout(show,1800);
- Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
+ const waitTimer=setTimeout(startFirstWave,FIRST_WAIT_MS);
+ Promise.allSettled(first).then(()=>{clearTimeout(waitTimer);startFirstWave();});
  setInterval(()=>sources.forEach(s=>update(s)),REFRESH_MS);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sources.forEach(s=>update(s));});
  window.addEventListener('online',()=>sources.forEach(s=>update(s)));
