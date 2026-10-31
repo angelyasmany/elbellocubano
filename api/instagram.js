@@ -107,7 +107,12 @@ async function textResponse(url, ms = LIVE_FETCH_MS) {
 async function officialCount() {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
   if (!token) return null;
-  const url = 'https://graph.instagram.com/v24.0/me?fields=id,username,followers_count';
+  // Meta Unified Login emite un token de usuario del sistema para el activo IG.
+  // Esta ruta debe consultar el IG User, no /me (que sería el usuario del sistema).
+  // ID comprobado en Meta Developers para la cuenta @elbellocubano.
+  const igUserId = String(process.env.INSTAGRAM_USER_ID || '17841405500604008').trim();
+  if (!/^\d{10,25}$/.test(igUserId)) throw new Error('ID de cuenta de Instagram no válido');
+  const url = `https://graph.facebook.com/v26.0/${igUserId}?fields=id,username,followers_count`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), OFFICIAL_FETCH_MS);
   try {
@@ -120,7 +125,7 @@ async function officialCount() {
     if (String(data.username || '').replace(/^@/, '').toLowerCase() !== HANDLE) {
       throw new Error('La autorización corresponde a otra cuenta');
     }
-    return { count: validCount(data.followers_count), fuente: 'Instagram Graph API', source_stale: false };
+    return { count: validCount(data.followers_count), fuente: 'Instagram Graph API · Unified Login', source_stale: false };
   } finally { clearTimeout(timeout); }
 }
 function parseLivecountsJSON(data) {
