@@ -1,0 +1,54 @@
+EL BELLO CUBANO — PROYECTO WEB COMPLETO
+=====================================
+
+Archivo preparado para subir el contenido a la RAÍZ de tu repositorio GitHub.
+No subas una carpeta extra que contenga index.html; index.html debe quedar en la raíz.
+
+ARCHIVOS
+- index.html                 : página principal, diseño y servicios
+- promociones.html           : sección de publicidad y promociones
+- assets/*.webp              : TODAS las imágenes usadas por la web
+- assets/social-counters.js  : contadores animados, sin Livecounts
+- api/facebook.js            : Meta Graph API para Facebook
+- api/instagram.js           : Meta API para Instagram
+- api/followers.js           : TikTok por TokCounter
+- api/youtube.js             : YouTube Data API o fuente alternativa
+- google11f74b66cc7fbea5.html y sitemap.xml: SEO existente
+
+ENVIRONMENT VARIABLES (Vercel > Project > Settings > Environment Variables)
+Facebook (necesarias para ese contador):
+    FACEBOOK_PAGE_ID
+    FACEBOOK_PAGE_ACCESS_TOKEN
+
+Instagram — ELEGIR UNA OPCIÓN:
+    Opción A: INSTAGRAM_ACCESS_TOKEN, token de Instagram Login para cuenta profesional.
+    Opción B: FACEBOOK_PAGE_ACCESS_TOKEN y FACEBOOK_PAGE_ID con Instagram profesional vinculado.
+    Opción C: FACEBOOK_PAGE_ACCESS_TOKEN e INSTAGRAM_BUSINESS_ACCOUNT_ID (o INSTAGRAM_USER_ID).
+    La cuenta debe ser la profesional @elbellocubano.
+    Los permisos de Meta dependen del tipo de acceso y de la configuración de la app.
+
+Opcional:
+    META_GRAPH_VERSION=v25.0
+    YOUTUBE_API_KEY   (si falta o falla, YouTube usa Mixerno.Space)
+
+NO INCLUYAS nunca los tokens secretos en GitHub ni en los archivos HTML.
+Variables del entorno únicamente en la configuración de Vercel.
+Si una credencial Meta falta o no permite obtener los seguidores, se verá —.
+Se preservan enlaces, diseño, imágenes y funciones de la versión base recuperada.
+
+PARA PUBLICAR
+1. Descarga y descomprime el ZIP.
+2. En GitHub, sustituye/sube archivos del contenido a la raíz de tu repositorio.
+3. Configura variables en Vercel para Production; aplica redeploy si cambias variables.
+4. Verifica estas rutas con tu dominio activo:
+   /api/facebook
+   /api/instagram
+   /api/followers
+   /api/youtube
+
+Respuestas exitosas incluyen consulta_ok:true y la cuenta esperada.
+Las llamadas Meta son EXCLUSIVAMENTE a las APIs de Meta. No hay respaldo Livecounts.
+Las pruebas locales incluidas en el proceso no garantizan que tu token Meta real funcione.
+
+Origen del diseño: copia del proyecto El_Bello_Cubano_Prueba_WhatsApp_Directo_Usuario.zip
+(versión recuperada del 22 de octubre de 2026), con correcciones a contadores.
