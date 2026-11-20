@@ -559,65 +559,78 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     .hero .intro { top: 6.4cqw; }
   }
   #services .service h2 { color: var(--oliva, #405d39); }
-  .businesses {
-    padding: clamp(12px, 2.2cqw, 23px);
-    border: 1px solid #d7e2d2;
-    border-radius: clamp(10px, 2.1cqw, 20px);
-    background: #f4f7f0;
-    text-align: center;
-  }
+  .businesses { text-align: center; }
   .businesses h2 {
     color: var(--oliva, #405d39);
-    font-size: clamp(18px, 3.05cqw, 30px);
-    margin-bottom: clamp(5px, 1cqw, 10px);
+    font-size: clamp(17px, 3.05cqw, 30px);
+    margin-bottom: clamp(7px, 1.4cqw, 14px);
     line-height: 1.12;
   }
-  .business-grid {
-    --advertiser-gap: clamp(6px, 1.2cqw, 12px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--advertiser-gap);
-    margin: clamp(9px, 1.6cqw, 16px) auto;
+  .business-grid { gap: clamp(5px, 1.2cqw, 12px); }
+  .business-slot { display: grid; min-width: 0; }
+  .business-grid .business[hidden] { display: none; }
+  .business-grid .business img {
+    height: auto;
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    object-position: center;
   }
-  .business-grid .business { flex: 0 0 calc((100% - 2 * var(--advertiser-gap)) / 3); }
-  .has-single-ad .business-grid .business { flex-basis: min(100%, clamp(150px, 39cqw, 280px)); }
-  .business-grid[hidden], .business[hidden] { display: none; }
-  .business img { object-position: center; }
-  .business figcaption { color: var(--oliva, #405d39); }
-  .advertise {
+  .business figcaption {
+    color: var(--oliva, #405d39);
+    font-size: clamp(10px, 1.7cqw, 17px);
+  }
+  .business-offer {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: clamp(6px, 1.35cqw, 14px);
+    gap: clamp(4px, 1cqw, 10px);
+    padding: clamp(4px, 1.3cqw, 14px);
+    background: #f4f7f0;
+    border: 1px dashed #a7ba9c;
   }
-  .advertise p {
+  .business-offer h3 {
+    margin: 0;
+    color: var(--oliva, #405d39);
+    font-size: clamp(12px, 2.1cqw, 21px);
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .advertise-price {
     margin: 0;
     color: #354831;
-    font-size: clamp(12px, 1.8cqw, 17px);
-    line-height: 1.3;
+    font-size: clamp(10px, 1.57cqw, 16px);
+    line-height: 1.18;
   }
-  .advertise-price { white-space: nowrap; }
   .advertise-price strong {
     color: var(--verde-texto, #304c30);
-    font-size: 1.4em;
+    font-size: 1.34em;
     font-weight: 850;
+    white-space: nowrap;
   }
   .advertise-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 38px;
-    padding: .45em 1em;
+    min-height: 36px;
+    max-width: 100%;
+    padding: .35em .65em;
     border-radius: 999px;
     background: var(--oliva, #405d39);
     color: #fff;
-    font-size: clamp(12px, 1.65cqw, 16px);
+    font-size: clamp(10px, 1.55cqw, 16px);
     font-weight: 750;
+    line-height: 1.1;
     text-decoration: none;
   }
   .advertise-cta:hover { background: #30492c; }
+  .business-photo-service {
+    margin: .55em auto 0;
+    color: #354831;
+    font-size: clamp(11px, 1.55cqw, 15px);
+    line-height: 1.25;
+    text-wrap: pretty;
+  }
   .reach {
     display: grid;
     justify-items: center;
@@ -632,15 +645,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     letter-spacing: normal;
   }
   @media (max-width: 600px) {
-    .has-single-ad .advertise { flex-direction: column; }
-    .has-single-ad {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: center;
-      gap: 8px;
-    }
-    .has-single-ad h2 { grid-column: 1 / -1; margin: 0; }
-    .has-single-ad .business-grid { margin: 0; }
+    .business-offer { border-radius: 8px; }
+    .business-photo-service { max-width: 34em; }
     .reach { margin-top: 11px; }
   }
 </style>
@@ -670,19 +676,36 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 </div>
 </section>
 <section aria-labelledby="businesses-title" class="businesses">
-  <h2 id="businesses-title">Muestra tu negocio aquí</h2>
-  <div class="business-grid" hidden>
-    <!-- Cada anuncio se publica como un article con class="business" y data-advertiser,
-         una imagen real en img[src][alt] y el nombre del negocio en figcaption. -->
+  <h2 id="businesses-title">Negocios del mes</h2>
+  <div class="business-grid">
+    <div class="business-slot">
+      <article class="business" data-example>
+        <figure>
+          <img src="assets/tienda.webp" srcset="assets/tienda-360w.webp 360w, assets/tienda-720w.webp 720w" sizes="(max-width: 940px) 32vw, 290px" alt="Ejemplo de una tienda de ropa" decoding="async">
+          <figcaption>Tu tienda aquí</figcaption>
+        </figure>
+      </article>
+      <!-- Para publicar un anuncio en esta tarjeta, añade un article.business[data-advertiser]
+           con una foto horizontal y un figcaption con el nombre del negocio. -->
+    </div>
+    <div class="business-slot">
+      <article class="business" data-example>
+        <figure>
+          <img src="assets/restaurante.webp" srcset="assets/restaurante-360w.webp 360w, assets/restaurante-720w.webp 720w" sizes="(max-width: 940px) 32vw, 290px" alt="Ejemplo de un plato de restaurante" decoding="async">
+          <figcaption>Tu restaurante aquí</figcaption>
+        </figure>
+      </article>
+    </div>
+    <article class="business business-offer">
+      <h3>Muestra tu negocio aquí</h3>
+      <p class="advertise-price">Por solo <strong>S/ 20</strong> al mes</p>
+      <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Quiero anunciarme</a>
+    </article>
   </div>
-  <div class="advertise">
-    <p id="advertise-copy" hidden>El próximo anuncio puede ser el tuyo.</p>
-    <p class="advertise-price">Por solo <strong>S/ 20</strong> al mes</p>
-    <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Quiero anunciarme</a>
-  </div>
+  <p class="business-photo-service">¿Te faltan fotos horizontales? Nuestro equipo puede ir a fotografiar tu negocio.</p>
 </section>
 <p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong>
-  <span>Nuestra comunidad</span>
+  <span>Seguidores en redes</span>
 </p>
 <nav aria-label="Redes sociales y contadores" class="social">
 <a aria-label="Abrir TikTok de el Bello Cubano" data-social="TikTok" href="https://www.tiktok.com/@elbellocubano7?lang=es" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="tt-followers">—</span></a>
@@ -697,36 +720,26 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 </main>
 
 <script>
-(() => {
-  const section = document.querySelector('.businesses');
-  const grid = section.querySelector('.business-grid');
-  const title = section.querySelector('#businesses-title');
-  const invitation = section.querySelector('#advertise-copy');
-  const ads = [...grid.querySelectorAll('[data-advertiser]')];
+for (const slot of document.querySelectorAll('.business-slot')) {
+  const advertiser = slot.querySelector('[data-advertiser]');
+  if (!advertiser) continue;
 
-  function updateAdvertisers() {
-    let active = 0;
-    for (const card of ads) {
-      const image = card.querySelector('img[src]');
-      const visible = Boolean(image && image.complete && image.naturalWidth > 0);
-      card.hidden = !visible;
-      if (visible) active += 1;
-    }
-    grid.hidden = active === 0;
-    section.classList.toggle('has-single-ad', active === 1);
-    title.textContent = active ? 'Negocios del mes' : 'Muestra tu negocio aquí';
-    invitation.hidden = active === 0;
+  const example = slot.querySelector('[data-example]');
+  const image = advertiser.querySelector('img[src]');
+  advertiser.hidden = true;
+  if (!image) continue;
+
+  function showAdvertiser() {
+    const ready = image.complete && image.naturalWidth > 0;
+    advertiser.hidden = !ready;
+    example.hidden = ready;
   }
 
-  for (const card of ads) {
-    const image = card.querySelector('img[src]');
-    if (!image) continue;
-    image.addEventListener('load', updateAdvertisers);
-    image.addEventListener('error', updateAdvertisers);
-    image.loading = 'eager';
-  }
-  updateAdvertisers();
-})();
+  image.addEventListener('load', showAdvertiser);
+  image.addEventListener('error', showAdvertiser);
+  image.loading = 'eager';
+  showAdvertiser();
+}
 </script>
 <script>
 (() => {
