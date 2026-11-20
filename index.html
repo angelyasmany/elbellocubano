@@ -502,12 +502,29 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 </style>
 <link rel="stylesheet" href="assets/portada.css">
 <style>
-  .intro h1 { margin-bottom: .16em; }
+  .intro h1 {
+    --greeting-width: min(90%, 485px);
+    position: relative;
+    isolation: isolate;
+    margin-bottom: .16em;
+  }
+  .intro h1::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -2px;
+    bottom: -2px;
+    left: -4px;
+    width: calc(var(--greeting-width) + 12px);
+    border-radius: .24em;
+    background: linear-gradient(90deg, #100e0bd9 0%, #100e0bc2 82%, #100e0b6b 100%);
+    pointer-events: none;
+  }
   .greeting-lettering {
     display: block;
-    width: min(90%, 485px);
+    width: var(--greeting-width);
     height: auto;
-    filter: drop-shadow(0 1px 3px #24201a85);
+    filter: drop-shadow(0 1px 2px #000c);
   }
   .community-menu summary { color: #233f23; }
   .community-menu summary:hover, .community-menu[open] summary { opacity: 1; }
@@ -528,7 +545,25 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     white-space: nowrap;
   }
   @media (max-width: 600px) {
-    .greeting-lettering { width: 86%; }
+    .intro h1 { --greeting-width: 86%; }
+  }
+  @media (max-width: 600px) {
+    .site > .hero {
+      height: clamp(180px, 94.15cqw, 390px);
+      height: clamp(174px, var(--mobile-hero-height, calc(100svh - 56cqw - 134px)), 94.15cqw);
+      aspect-ratio: auto;
+      background-position: center 61%;
+    }
+    .hero .intro { top: clamp(8px, 2.7cqw, 16px); }
+    .hero .community-menu { display: none; }
+  }
+  @media (max-width: 600px) and (max-height: 620px) {
+    .services .service .service-photo { aspect-ratio: 1.4; }
+    .services .service .service-body { gap: 3px; }
+    .businesses { margin-top: 6px; }
+    .businesses h2 { margin-bottom: 6px; }
+    .business img, .business-placeholder { aspect-ratio: 1.65; }
+    .reach { margin-block: 9px 5px; }
   }
 </style>
 </head>
@@ -573,6 +608,57 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   <span class="copyright-keywords">Cubanos en Perú · elBelloCubano · Cubanos · Peruanos</span>
 </footer>
 </main>
+<script>
+(() => {
+  const site = document.querySelector('.site');
+  const hero = site.querySelector('.hero');
+  const intro = hero.querySelector('.intro');
+  const services = site.querySelector('.services');
+  const businesses = site.querySelector('.businesses');
+  const reach = site.querySelector('.reach');
+  const social = site.querySelector('.social');
+  const mobile = window.matchMedia('(max-width: 600px)');
+  const viewport = window.visualViewport;
+  let scheduled = false;
+
+  function fitMobileCover() {
+    scheduled = false;
+    if (!mobile.matches) {
+      site.style.removeProperty('--mobile-hero-height');
+      return;
+    }
+    if (window.scrollY > 1 || (viewport && viewport.scale !== 1)) return;
+
+    const heroBox = hero.getBoundingClientRect();
+    const socialBottom = social.getBoundingClientRect().bottom;
+    const belowHero = socialBottom - heroBox.bottom;
+    const visibleHeight = Math.min(window.innerHeight, viewport ? viewport.height : window.innerHeight);
+    const requiredForIntro = intro.getBoundingClientRect().bottom - heroBox.top
+      + Math.max(0, heroBox.bottom - services.getBoundingClientRect().top) + 8;
+    const availableForHero = visibleHeight - heroBox.top - belowHero - 8;
+    const fitted = Math.round(Math.max(requiredForIntro, availableForHero));
+    const size = fitted + 'px';
+    if (site.style.getPropertyValue('--mobile-hero-height') !== size) {
+      site.style.setProperty('--mobile-hero-height', size);
+    }
+  }
+
+  function scheduleLayout() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(fitMobileCover);
+  }
+
+  fitMobileCover();
+  window.addEventListener('resize', scheduleLayout, { passive: true });
+  window.addEventListener('pageshow', scheduleLayout);
+  if (viewport) viewport.addEventListener('resize', scheduleLayout, { passive: true });
+  if ('ResizeObserver' in window) {
+    const reflow = new ResizeObserver(scheduleLayout);
+    [intro, services, businesses, reach, social].forEach(section => reflow.observe(section));
+  }
+})();
+</script>
 <script>
   (()=>{'use strict';
     const cards=document.querySelectorAll('#services .service');
