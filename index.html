@@ -535,10 +535,9 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   }
   @media (max-width: 600px) {
     .site > .hero {
-      height: clamp(180px, 94.15cqw, 390px);
-      height: clamp(174px, var(--mobile-hero-height, calc(100svh - 56cqw - 134px)), 94.15cqw);
+      height: clamp(174px, 84cqw, 460px);
+      height: clamp(max(174px, 70cqw), var(--mobile-hero-height, calc(100svh - 56cqw - 134px)), 84cqw);
       aspect-ratio: auto;
-      background-position: center 61%;
     }
     .hero .intro { top: clamp(8px, 2.7cqw, 16px); }
     .hero .community-menu { display: none; }
@@ -552,8 +551,12 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     .reach { margin-block: 9px 5px; }
   }
 
+  .site > .hero { background-position: center -16cqw; }
+  .site > .hero::after { height: 7%; }
+  .site > .services { margin-top: -3.4%; }
   @media (min-width: 601px) {
     .site > .hero { aspect-ratio: 940 / 752; }
+    .hero .intro { top: 6.4cqw; }
   }
   #services .service h2 { color: var(--oliva, #405d39); }
   .businesses {
@@ -595,6 +598,12 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     font-size: clamp(12px, 1.8cqw, 17px);
     line-height: 1.3;
   }
+  .advertise-price { white-space: nowrap; }
+  .advertise-price strong {
+    color: var(--verde-texto, #304c30);
+    font-size: 1.4em;
+    font-weight: 850;
+  }
   .advertise-cta {
     display: inline-flex;
     align-items: center;
@@ -610,16 +619,20 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   }
   .advertise-cta:hover { background: #30492c; }
   .reach {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: baseline;
-    column-gap: .25em;
-    font-size: clamp(17px, 3.45cqw, 34px);
+    display: grid;
+    justify-items: center;
+    gap: 1px;
+    font-size: clamp(24px, 5cqw, 49px);
+    line-height: 1;
   }
-  .reach strong { font-size: 1.32em; }
+  .reach span {
+    color: #354831;
+    font-size: clamp(12px, 1.8cqw, 18px);
+    line-height: 1.3;
+    letter-spacing: normal;
+  }
   @media (max-width: 600px) {
-    .advertise { flex-direction: column; }
+    .has-single-ad .advertise { flex-direction: column; }
     .has-single-ad {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -657,17 +670,20 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 </div>
 </section>
 <section aria-labelledby="businesses-title" class="businesses">
-  <h2 id="businesses-title">Tu negocio puede aparecer aquí</h2>
+  <h2 id="businesses-title">Muestra tu negocio aquí</h2>
   <div class="business-grid" hidden>
     <!-- Cada anuncio se publica como un article con class="business" y data-advertiser,
          una imagen real en img[src][alt] y el nombre del negocio en figcaption. -->
   </div>
   <div class="advertise">
-    <p id="advertise-copy">Promociona tu negocio ante nuestra comunidad.</p>
+    <p id="advertise-copy" hidden>El próximo anuncio puede ser el tuyo.</p>
+    <p class="advertise-price">Por solo <strong>S/ 20</strong> al mes</p>
     <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Quiero anunciarme</a>
   </div>
 </section>
-<p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong> <span>seguidores en redes</span></p>
+<p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong>
+  <span>Nuestra comunidad</span>
+</p>
 <nav aria-label="Redes sociales y contadores" class="social">
 <a aria-label="Abrir TikTok de el Bello Cubano" data-social="TikTok" href="https://www.tiktok.com/@elbellocubano7?lang=es" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="tt-followers">—</span></a>
 <div aria-label="Facebook y contador" class="instagram-social facebook-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M26.8 41V26.1H32l.8-5.8h-6v-3.7c0-1.8.6-3.1 3.2-3.1H33V8.3c-.6-.1-2.5-.3-4.8-.3-4.8 0-8.1 2.9-8.1 8.2v4.1h-4.8V26h4.8v15z" fill="currentColor"></path></svg><span class="count" data-state="unavailable" id="fb-followers" title="Contador pendiente">—</span><span class="count instagram-counter facebook-counter" hidden="" title="Contador alternativo de Facebook en Livecounts"><iframe title="Seguidores de Facebook de El Bello Cubano · Livecounts (respaldo)" height="80" width="300" loading="lazy" referrerpolicy="no-referrer" src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;theme=light&amp;size=s&amp;avatar=0&amp;name=0&amp;look=light&amp;tc=111111&amp;cc=111111&amp;pb=transparent&amp;cb=ffffff&amp;bc=transparent&amp;hide=avatar%2Cname%2Ccheck%2Clabel%2Cgoal%2Clogo"></iframe></span><a aria-label="Abrir Facebook de el Bello Cubano" class="instagram-profile-link" data-social="Facebook" href="https://www.facebook.com/elbellocubano" rel="noopener noreferrer" target="_blank"></a></div>
@@ -698,10 +714,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     }
     grid.hidden = active === 0;
     section.classList.toggle('has-single-ad', active === 1);
-    title.textContent = active ? 'Negocios del mes' : 'Tu negocio puede aparecer aquí';
-    invitation.textContent = active
-      ? 'El próximo anuncio puede ser el tuyo.'
-      : 'Promociona tu negocio ante nuestra comunidad.';
+    title.textContent = active ? 'Negocios del mes' : 'Muestra tu negocio aquí';
+    invitation.hidden = active === 0;
   }
 
   for (const card of ads) {
