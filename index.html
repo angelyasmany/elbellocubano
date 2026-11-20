@@ -612,9 +612,9 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 28px;
+    min-height: 34px;
     max-width: 100%;
-    padding: .2em .65em;
+    padding: .3em .9em;
     white-space: nowrap;
     border-radius: 999px;
     background: var(--oliva, #405d39);
@@ -625,6 +625,16 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     text-decoration: none;
   }
   .advertise-cta:hover { background: #30492c; }
+  .business-phone-link { height: 100%; }
+  .business-phone-link:focus-visible { outline-offset: -3px; }
+  .business-phone {
+    display: block;
+    padding: 0 .2em .5em;
+    color: var(--oliva, #405d39);
+    font-size: clamp(10px, 1.45cqw, 14px);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
   .reach {
     display: grid;
     justify-items: center;
@@ -640,6 +650,7 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   }
   @media (max-width: 600px) {
     .business-offer { border-radius: 8px; }
+    .advertise-cta { min-height: 25px; padding: .15em .65em; }
     .reach { margin-top: 11px; }
   }
 </style>
@@ -678,8 +689,9 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
           <figcaption>Tu tienda aquí</figcaption>
         </figure>
       </article>
-      <!-- Para publicar un anuncio en esta tarjeta, añade un article.business[data-advertiser]
-           con una foto horizontal y un figcaption con el nombre del negocio. -->
+      <!-- Para publicar un anuncio, añade aquí un article.business con data-advertiser y
+           data-phone con el número internacional (por ejemplo, +51 seguido de 9 dígitos).
+           Dentro, pon un figure con la foto horizontal y un figcaption con el nombre. -->
     </div>
     <div class="business-slot">
       <article class="business" data-example>
@@ -720,6 +732,20 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   const image = advertiser.querySelector('img[src]');
   advertiser.hidden = true;
   if (!image) continue;
+
+  const displayPhone = (advertiser.dataset.phone || '').trim();
+  const phone = displayPhone.replace(/[\s().-]/g, '');
+  const figure = image.closest('figure');
+  if (/^\+[1-9]\d{6,14}$/.test(phone) && figure && !figure.closest('a')) {
+    const link = document.createElement('a');
+    link.className = 'business-card-link business-phone-link';
+    link.href = 'tel:' + phone;
+    const phoneLabel = document.createElement('span');
+    phoneLabel.className = 'business-phone';
+    phoneLabel.textContent = displayPhone;
+    figure.replaceWith(link);
+    link.append(figure, phoneLabel);
+  }
 
   function showAdvertiser() {
     const ready = image.complete && image.naturalWidth > 0;
