@@ -544,8 +544,8 @@ body{
   }
   @media (max-width: 600px) {
     .site > .hero {
-      height: clamp(174px, 73.7cqw, 460px);
-      height: clamp(max(174px, 59.7cqw), var(--mobile-hero-height, calc(100svh - 66.3cqw - 134px)), 73.7cqw);
+      height: clamp(174px, 76.9cqw, 460px);
+      height: clamp(max(174px, 62.9cqw), var(--mobile-hero-height, calc(100svh - 63.1cqw - 134px)), 76.9cqw);
       aspect-ratio: auto;
     }
     .hero .intro { top: clamp(8px, 2.7cqw, 16px); }
@@ -597,7 +597,9 @@ body{
     padding: clamp(4px, 1.3cqw, 14px);
     background: #f4f7f0;
     border: 1px dashed #a7ba9c;
+    text-decoration: none;
   }
+  .business-offer:focus-visible { outline-offset: 2px; }
   .business-offer h3 {
     margin: 0;
     color: var(--oliva, #405d39);
@@ -633,7 +635,7 @@ body{
     line-height: 1.1;
     text-decoration: none;
   }
-  .advertise-cta:hover { background: #30492c; }
+  .business-offer:is(:hover, :focus-visible) .advertise-cta { background: #30492c; }
   @media (min-width: 601px) {
     .advertise-price { font-size: clamp(15px, 2.02cqw, 20px); }
     .advertise-cta { position: relative; top: clamp(7px, 1.35cqw, 14px); }
@@ -718,11 +720,11 @@ body{
         </figure>
       </article>
     </div>
-    <article class="business business-offer">
+    <a class="business business-offer" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">
       <h3>Promociona tu negocio</h3>
       <p class="advertise-price">Por <strong>S/ 20</strong> al mes</p>
-      <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Anunciarme</a>
-    </article>
+      <span class="advertise-cta">Anunciarme</span>
+    </a>
   </div>
 </section>
 <p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong>
@@ -804,7 +806,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
     const requiredForIntro = intro.getBoundingClientRect().bottom - heroBox.top
       + Math.max(0, heroBox.bottom - services.getBoundingClientRect().top) + 8;
     const availableForHero = visibleHeight - heroBox.top - belowHero - 8;
-    const mobileLift = heroBox.width * .103;
+    const mobileLift = heroBox.width * .071;
     const fitted = Math.round(Math.max(requiredForIntro, availableForHero - mobileLift));
     const size = fitted + 'px';
     if (site.style.getPropertyValue('--mobile-hero-height') !== size) {
