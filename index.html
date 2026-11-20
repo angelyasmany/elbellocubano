@@ -535,8 +535,8 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   }
   @media (max-width: 600px) {
     .site > .hero {
-      height: clamp(174px, 84cqw, 460px);
-      height: clamp(max(174px, 70cqw), var(--mobile-hero-height, calc(100svh - 56cqw - 134px)), 84cqw);
+      height: clamp(174px, 73.7cqw, 460px);
+      height: clamp(max(174px, 59.7cqw), var(--mobile-hero-height, calc(100svh - 66.3cqw - 134px)), 73.7cqw);
       aspect-ratio: auto;
     }
     .hero .intro { top: clamp(8px, 2.7cqw, 16px); }
@@ -795,7 +795,8 @@ for (const slot of document.querySelectorAll('.business-slot')) {
     const requiredForIntro = intro.getBoundingClientRect().bottom - heroBox.top
       + Math.max(0, heroBox.bottom - services.getBoundingClientRect().top) + 8;
     const availableForHero = visibleHeight - heroBox.top - belowHero - 8;
-    const fitted = Math.round(Math.max(requiredForIntro, availableForHero));
+    const mobileLift = heroBox.width * .103;
+    const fitted = Math.round(Math.max(requiredForIntro, availableForHero - mobileLift));
     const size = fitted + 'px';
     if (site.style.getPropertyValue('--mobile-hero-height') !== size) {
       site.style.setProperty('--mobile-hero-height', size);
