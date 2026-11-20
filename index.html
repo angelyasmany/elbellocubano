@@ -592,9 +592,9 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   .business-offer h3 {
     margin: 0;
     color: var(--oliva, #405d39);
-    font-size: clamp(12px, 2.1cqw, 21px);
+    font-size: clamp(7px, 2.35cqw, 21px);
     line-height: 1.1;
-    text-wrap: balance;
+    white-space: nowrap;
   }
   .advertise-price {
     margin: 0;
@@ -625,13 +625,6 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     text-decoration: none;
   }
   .advertise-cta:hover { background: #30492c; }
-  .business-photo-service {
-    margin: .55em auto 0;
-    color: #354831;
-    font-size: clamp(11px, 1.55cqw, 15px);
-    line-height: 1.25;
-    text-wrap: pretty;
-  }
   .reach {
     display: grid;
     justify-items: center;
@@ -647,7 +640,6 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   }
   @media (max-width: 600px) {
     .business-offer { border-radius: 8px; }
-    .business-photo-service { max-width: 34em; }
     .reach { margin-top: 11px; }
   }
 </style>
@@ -698,12 +690,11 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
       </article>
     </div>
     <article class="business business-offer">
-      <h3>Muestra tu negocio aquí</h3>
+      <h3>Promociona tu negocio</h3>
       <p class="advertise-price">Por <strong>S/ 20</strong> al mes</p>
       <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Anunciarme</a>
     </article>
   </div>
-  <p class="business-photo-service">Nuestro equipo puede ir a fotografiar tu negocio.</p>
 </section>
 <p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong>
   <span>Seguidores en redes</span>
