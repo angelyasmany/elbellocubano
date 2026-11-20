@@ -543,8 +543,12 @@ body{
     .hero .intro { top: clamp(8px, 2.7cqw, 16px); }
     .hero .community-menu { display: none; }
   }
+  #services .service .service-photo { aspect-ratio: .94; }
+  @media (max-width: 600px) {
+    #services .service .service-photo { aspect-ratio: 1.05; }
+  }
   @media (max-width: 600px) and (max-height: 620px) {
-    .services .service .service-photo { aspect-ratio: 1.4; }
+    #services .service .service-photo { aspect-ratio: 1.26; }
     .services .service .service-body { gap: 3px; }
     .businesses { margin-top: 6px; }
     .businesses h2 { margin-bottom: 6px; }
