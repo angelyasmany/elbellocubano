@@ -1,0 +1,188 @@
+:root {
+  --oliva: #405d39;
+  --verde-pastel: #e0ecd9;
+  --verde-borde: #58764e;
+  --verde-texto: #304c30;
+}
+
+.intro {
+  top: 14%;
+  width: 59%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fffaf0;
+  text-shadow: 0 1px 3px #1f261a, 0 2px 7px #26241fde;
+}
+
+.intro h1 {
+  font: bold italic 6.6cqw/1.1 Georgia, serif;
+  letter-spacing: -.055em;
+}
+
+.intro p {
+  color: #fff;
+  font-size: 3.38cqw;
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+.intro p .blessing {
+  display: block;
+  color: inherit;
+  font-weight: 750;
+}
+
+.hero-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  min-height: 40px;
+  margin-top: 1.4cqw;
+  padding: .45em .95em;
+  border-radius: 2em;
+  background: var(--oliva);
+  color: #fff;
+  font-size: clamp(14px, 2.4cqw, 26px);
+  font-weight: 750;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.hero-contact svg {
+  width: 1.2em;
+  height: 1.2em;
+  fill: currentColor;
+}
+
+.community-menu { left: 3%; right: auto; }
+.community-menu summary { color: var(--oliva); }
+.community-panel { left: 100%; right: auto; padding: 3px 0 3px 4px; }
+
+.community-whatsapp,
+.business .space-link {
+  background: var(--verde-pastel);
+  border: 1px solid var(--verde-borde);
+  color: var(--verde-texto);
+  box-shadow: none;
+}
+
+.community-whatsapp:is(:hover, :focus-visible),
+.business .space-link:is(:hover, :focus-visible) {
+  background: var(--oliva);
+  color: #fff;
+  box-shadow: none;
+}
+
+.services-track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.35cqw, 14px);
+  overflow: visible;
+  touch-action: auto;
+}
+
+.services .service {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow .18s;
+  transform: none;
+}
+
+.services .service .service-photo {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1;
+}
+
+.services .service .service-body {
+  flex: 1;
+  height: auto;
+  gap: clamp(7px, 1cqw, 12px);
+  padding: .9cqw clamp(5px, 1cqw, 11px) clamp(6px, 1cqw, 11px);
+}
+
+.services .service h2 {
+  min-height: 0;
+  font-size: clamp(14px, 2.42cqw, 25px);
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+
+.services .service .action:not(.soon) {
+  min-height: clamp(40px, 5.4cqw, 51px);
+  margin-top: auto;
+  padding: 4px 6px;
+  background: var(--verde-pastel) !important;
+  border-color: var(--verde-borde);
+  color: var(--verde-texto) !important;
+  font-size: clamp(13px, 1.85cqw, 18px);
+  box-shadow: none;
+}
+
+.services .service .action:not(.soon):is(:hover, :focus-visible, :active) {
+  background: var(--oliva) !important;
+  color: #fff !important;
+}
+
+.services .service .action svg,
+.business .space-link::after {
+  display: none !important;
+}
+
+.services .service .action::after {
+  inset: 0;
+  width: auto;
+  background: linear-gradient(105deg, transparent 28%, #ffffffa6 50%, transparent 72%);
+  transform: translateX(-105%);
+  animation: service-glint 4s ease-in-out infinite;
+}
+
+@keyframes service-glint {
+  0%, 50% { transform: translateX(-105%); }
+  100% { transform: translateX(105%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services .service .action::after { display: none; }
+}
+
+.businesses { margin-top: clamp(14px, 2.8cqw, 26px); }
+.businesses h2 { margin-bottom: clamp(9px, 1.8cqw, 17px); }
+
+.reach {
+  margin: clamp(18px, 3.6cqw, 34px) auto clamp(10px, 1.8cqw, 17px);
+  font: 700 clamp(19px, 4.3cqw, 41px)/1.12 Arial, Helvetica, sans-serif;
+  letter-spacing: -.035em;
+}
+
+.reach strong { color: var(--oliva); }
+.social { opacity: 1; width: 90%; }
+.social a, .social > .instagram-social { color: #191919; border-color: #deded8; }
+.social > * > svg { filter: grayscale(1) brightness(.18); }
+.copyright { margin-top: clamp(12px, 2.6cqw, 25px); }
+
+@media (max-width: 600px) {
+  .intro { width: 66%; }
+  .intro p { font-size: clamp(11px, 3.38cqw, 20px); }
+  .services { margin-inline: 2%; }
+  .services-track { gap: clamp(3px, 1cqw, 6px); padding: 5px 0 8px; }
+  .services .service { border-radius: 8px; }
+  .services .service .service-photo { aspect-ratio: 1.16; border-radius: 6px 6px 0 0; }
+  .services .service h2 { font-size: clamp(11px, 2.9cqw, 17px); }
+  .services .service .service-body { gap: 5px; padding: 3px 2px 4px; }
+  .services .service .action:not(.soon) {
+    min-height: 36px;
+    padding: 3px 1px;
+    font-size: clamp(11px, 2.75cqw, 16px);
+  }
+  .service-body::before { top: -7px; height: 11px; }
+  .businesses { margin-top: 10px; }
+  .reach { margin-block: 13px 7px; }
+  .business-grid { gap: 6px; }
+  .business img, .business-placeholder { height: auto; min-height: 0; aspect-ratio: 1.35; }
+  .business .space-link { margin: 4px 1px; padding: 4px; font-size: 10px; }
+}
+@media (max-width: 360px) {
+  .intro { top: 15%; }
+}
