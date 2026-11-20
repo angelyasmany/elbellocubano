@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/social-counts", "destination": "/api/facebook" }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "elbellocubano.vercel.app"
+        }
+      ],
+      "destination": "https://elbellocubano.com/:path*",
+      "permanent": true
+    }
+  ]
+}
