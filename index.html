@@ -551,6 +551,85 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
     .business img, .business-placeholder { aspect-ratio: 1.65; }
     .reach { margin-block: 9px 5px; }
   }
+
+  @media (min-width: 601px) {
+    .site > .hero { aspect-ratio: 940 / 752; }
+  }
+  #services .service h2 { color: var(--oliva, #405d39); }
+  .businesses {
+    padding: clamp(12px, 2.2cqw, 23px);
+    border: 1px solid #d7e2d2;
+    border-radius: clamp(10px, 2.1cqw, 20px);
+    background: #f4f7f0;
+    text-align: center;
+  }
+  .businesses h2 {
+    color: var(--oliva, #405d39);
+    font-size: clamp(18px, 3.05cqw, 30px);
+    margin-bottom: clamp(5px, 1cqw, 10px);
+    line-height: 1.12;
+  }
+  .business-grid {
+    --advertiser-gap: clamp(6px, 1.2cqw, 12px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--advertiser-gap);
+    margin: clamp(9px, 1.6cqw, 16px) auto;
+  }
+  .business-grid .business { flex: 0 0 calc((100% - 2 * var(--advertiser-gap)) / 3); }
+  .has-single-ad .business-grid .business { flex-basis: min(100%, clamp(150px, 39cqw, 280px)); }
+  .business-grid[hidden], .business[hidden] { display: none; }
+  .business img { object-position: center; }
+  .business figcaption { color: var(--oliva, #405d39); }
+  .advertise {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(6px, 1.35cqw, 14px);
+  }
+  .advertise p {
+    margin: 0;
+    color: #354831;
+    font-size: clamp(12px, 1.8cqw, 17px);
+    line-height: 1.3;
+  }
+  .advertise-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: .45em 1em;
+    border-radius: 999px;
+    background: var(--oliva, #405d39);
+    color: #fff;
+    font-size: clamp(12px, 1.65cqw, 16px);
+    font-weight: 750;
+    text-decoration: none;
+  }
+  .advertise-cta:hover { background: #30492c; }
+  .reach {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    column-gap: .25em;
+    font-size: clamp(17px, 3.45cqw, 34px);
+  }
+  .reach strong { font-size: 1.32em; }
+  @media (max-width: 600px) {
+    .advertise { flex-direction: column; }
+    .has-single-ad {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      gap: 8px;
+    }
+    .has-single-ad h2 { grid-column: 1 / -1; margin: 0; }
+    .has-single-ad .business-grid { margin: 0; }
+    .reach { margin-top: 11px; }
+  }
 </style>
 </head>
 <body>
@@ -577,12 +656,18 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
 <article aria-label="Abrir servicio de envío de paquetes internacionales" class="service" data-kind="paquetes" role="link" tabindex="0"><img loading="eager" decoding="async" alt="Una caja de cartón y un avión" class="service-photo" srcset="assets/envio-paquetes-360w.webp 360w, assets/envio-paquetes-720w.webp 720w" sizes="(max-width: 940px) 24vw, 215px" src="assets/envio-paquetes.webp"/><div class="service-body"><h2>Envío de<br/>paquetes</h2><a class="action" data-package-whatsapp="Hola, vengo de parte del Bello Cubano y quiero información para hacer envíos internacionales con la agencia Peruven." href="https://wa.me/51970342941?text=Hola%2C%20vengo%20de%20parte%20del%20Bello%20Cubano%20y%20quiero%20informaci%C3%B3n%20para%20hacer%20env%C3%ADos%20internacionales%20con%20la%20agencia%20Peruven." rel="noopener noreferrer" target="_blank"><svg class="ebc-wa-icon" aria-hidden="true" viewBox="0 0 32 32"><path fill="currentColor" d="M16 2.5A13.4 13.4 0 0 0 4.5 22.8L2.6 29l6.5-1.8A13.5 13.5 0 1 0 16 2.5Zm0 24.3a10.8 10.8 0 0 1-5.5-1.5l-.4-.2-3.8 1.1 1.1-3.7-.3-.4A10.8 10.8 0 1 1 16 26.8Zm6.1-8.1c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.1-.4.1-.7 0-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.2-.6l.5-.6c.1-.2.2-.4.1-.6l-.9-2.2c-.2-.5-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.6s1.2 2.9 1.3 3.1c.2.2 2.4 3.7 5.8 5.1.8.4 1.4.5 1.9.6.8.1 1.5.1 2.1-.1.6-.2 1.8-.8 2.1-1.6.3-.7.3-1.4.2-1.6-.1-.2-.3-.3-.6-.5Z"/></svg><span class="ebc-action-label">Consultar</span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 3 9 9-9 9"></path></svg></a></div></article>
 </div>
 </section>
-<section aria-labelledby="businesses-title" class="businesses"><h2 id="businesses-title">Negocios del mes</h2><div class="business-grid">
-<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para tienda" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi tienda y tener mi espacio en Negocios del mes." href="https://wa.me/51964912979?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20tienda%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img decoding="async" alt="Ejemplo de una boutique de ropa" loading="lazy" srcset="assets/tienda-360w.webp 360w, assets/tienda-720w.webp 720w" sizes="(max-width: 940px) 31vw, 293px" src="assets/tienda.webp"/><figcaption>Tu tienda aquí</figcaption></figure></a></article>
-<article class="business"><a aria-label="Consultar por WhatsApp sobre espacio para restaurante" class="business-card-link" data-business-whatsapp="Hola Bello, me interesa promocionar mi restaurante y tener mi espacio en Negocios del mes." href="https://wa.me/51964912979?text=Hola%20Bello%2C%20me%20interesa%20promocionar%20mi%20restaurante%20y%20tener%20mi%20espacio%20en%20Negocios%20del%20mes."><figure><img decoding="async" alt="Ejemplo de un restaurante" loading="lazy" srcset="assets/restaurante-360w.webp 360w, assets/restaurante-720w.webp 720w" sizes="(max-width: 940px) 31vw, 293px" src="assets/restaurante.webp"/><figcaption>Tu restaurante aquí</figcaption></figure></a></article>
-<article class="business"><div aria-hidden="true" class="business-placeholder"><svg viewbox="0 0 40 40"><path d="M7.5 20c0-1.4 1.1-2.5 2.5-2.5h5.1L26.8 12c.8-.4 1.7.2 1.7 1.1v13.8c0 .9-.9 1.5-1.7 1.1l-11.7-5.5H10c-1.4 0-2.5-1.1-2.5-2.5z"></path><path d="M15.2 22.7l2 6c.2.6.7 1 1.3 1h4.1c.8 0 1.3-.8 1-1.5l-1.9-5.5"></path><path d="M31 15.2c2.1.9 3.5 2.7 3.5 4.8s-1.4 3.9-3.5 4.8"></path><path d="M34.3 11.8c3.3 1.4 5.2 4.5 5.2 8.2s-1.9 6.8-5.2 8.2"></path></svg><span>Espacio disponible</span></div><a aria-label="Solicitar este espacio a el Bello Cubano por WhatsApp" class="space-link" data-business-whatsapp="Hola, el Bello Cubano. Quiero reservar el espacio disponible en Negocios del mes para promocionar mi negocio. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20el%20Bello%20Cubano.%20Quiero%20reservar%20el%20espacio%20disponible%20en%20Negocios%20del%20mes%20para%20promocionar%20mi%20negocio.%20%C2%BFMe%20compartes%20los%20detalles%3F" rel="noopener noreferrer" target="_blank">Quiero este espacio</a></article>
-</div></section>
-<p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse.">Te verán <strong id="reach-total">—</strong> personas</p>
+<section aria-labelledby="businesses-title" class="businesses">
+  <h2 id="businesses-title">Tu negocio puede aparecer aquí</h2>
+  <div class="business-grid" hidden>
+    <!-- Cada anuncio se publica como un article con class="business" y data-advertiser,
+         una imagen real en img[src][alt] y el nombre del negocio en figcaption. -->
+  </div>
+  <div class="advertise">
+    <p id="advertise-copy">Promociona tu negocio ante nuestra comunidad.</p>
+    <a class="advertise-cta" data-business-whatsapp="Hola, Bello Cubano. Me gustaría anunciar mi negocio en tu página. ¿Me compartes los detalles?" href="https://wa.me/51964912979?text=Hola%2C%20Bello%20Cubano.%20Me%20gustar%C3%ADa%20anunciar%20mi%20negocio%20en%20tu%20p%C3%A1gina.%20%C2%BFMe%20compartes%20los%20detalles%3F" target="_blank" rel="noopener noreferrer">Quiero anunciarme</a>
+  </div>
+</section>
+<p class="reach" data-state="waiting" id="reach" title="Suma de los contadores que la API puede comprobar. Puede ser parcial; las audiencias pueden repetirse."><strong id="reach-total">—</strong> <span>seguidores en redes</span></p>
 <nav aria-label="Redes sociales y contadores" class="social">
 <a aria-label="Abrir TikTok de el Bello Cubano" data-social="TikTok" href="https://www.tiktok.com/@elbellocubano7?lang=es" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="tt-followers">—</span></a>
 <div aria-label="Facebook y contador" class="instagram-social facebook-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M26.8 41V26.1H32l.8-5.8h-6v-3.7c0-1.8.6-3.1 3.2-3.1H33V8.3c-.6-.1-2.5-.3-4.8-.3-4.8 0-8.1 2.9-8.1 8.2v4.1h-4.8V26h4.8v15z" fill="currentColor"></path></svg><span class="count" data-state="unavailable" id="fb-followers" title="Contador pendiente">—</span><span class="count instagram-counter facebook-counter" hidden="" title="Contador alternativo de Facebook en Livecounts"><iframe title="Seguidores de Facebook de El Bello Cubano · Livecounts (respaldo)" height="80" width="300" loading="lazy" referrerpolicy="no-referrer" src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;theme=light&amp;size=s&amp;avatar=0&amp;name=0&amp;look=light&amp;tc=111111&amp;cc=111111&amp;pb=transparent&amp;cb=ffffff&amp;bc=transparent&amp;hide=avatar%2Cname%2Ccheck%2Clabel%2Cgoal%2Clogo"></iframe></span><a aria-label="Abrir Facebook de el Bello Cubano" class="instagram-profile-link" data-social="Facebook" href="https://www.facebook.com/elbellocubano" rel="noopener noreferrer" target="_blank"></a></div>
@@ -594,6 +679,41 @@ body{background:linear-gradient(145deg,#c4defa 0%,#f3d9b8 50%,#fff6eb 100%);marg
   <span class="copyright-keywords">Cubanos en Perú · elBelloCubano · Cubanos · Peruanos</span>
 </footer>
 </main>
+
+<script>
+(() => {
+  const section = document.querySelector('.businesses');
+  const grid = section.querySelector('.business-grid');
+  const title = section.querySelector('#businesses-title');
+  const invitation = section.querySelector('#advertise-copy');
+  const ads = [...grid.querySelectorAll('[data-advertiser]')];
+
+  function updateAdvertisers() {
+    let active = 0;
+    for (const card of ads) {
+      const image = card.querySelector('img[src]');
+      const visible = Boolean(image && image.complete && image.naturalWidth > 0);
+      card.hidden = !visible;
+      if (visible) active += 1;
+    }
+    grid.hidden = active === 0;
+    section.classList.toggle('has-single-ad', active === 1);
+    title.textContent = active ? 'Negocios del mes' : 'Tu negocio puede aparecer aquí';
+    invitation.textContent = active
+      ? 'El próximo anuncio puede ser el tuyo.'
+      : 'Promociona tu negocio ante nuestra comunidad.';
+  }
+
+  for (const card of ads) {
+    const image = card.querySelector('img[src]');
+    if (!image) continue;
+    image.addEventListener('load', updateAdvertisers);
+    image.addEventListener('error', updateAdvertisers);
+    image.loading = 'eager';
+  }
+  updateAdvertisers();
+})();
+</script>
 <script>
 (() => {
   const site = document.querySelector('.site');
