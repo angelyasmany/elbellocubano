@@ -1129,6 +1129,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
 (()=>{'use strict';
  const fmt=new Intl.NumberFormat('es-PE');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const INITIAL_COUNT_MS=1400;
  const ROLL_MS=3000;
  const TOTAL_PAUSE_MS=3000;
  const VALID_FOR=30*24*60*60*1000;
@@ -1165,9 +1166,30 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  }
  const totalNode=document.getElementById('reach-total');
  const reach=document.getElementById('reach');
- let totalMotion=null,totalShown=null,totalTimer=0;
+ let totalMotion=null,totalShown=null,totalTimer=0,loading=true;
  const valid=v=>Number.isSafeInteger(v)&&v>=0;
  const canRoll=()=>!reduced.matches&&!document.hidden&&typeof Element.prototype.animate==='function';
+
+ function progress(node,from,to){
+  if(reduced.matches||document.hidden||from===to){
+   node.textContent=fmt.format(to);
+   return null;
+  }
+
+  const start=performance.now();
+  let frame=0;
+  const motion={current:from,cancel(){cancelAnimationFrame(frame);}};
+  node.textContent=fmt.format(from);
+  function step(now){
+   const time=Math.max(0,Math.min(1,(now-start)/INITIAL_COUNT_MS));
+   const eased=1-Math.pow(1-time,3);
+   motion.current=Math.round(from+(to-from)*eased);
+   node.textContent=fmt.format(motion.current);
+   if(time<1)frame=requestAnimationFrame(step);
+  }
+  frame=requestAnimationFrame(step);
+  return motion;
+ }
 
  function animate(node,from,to){
   const nextText=fmt.format(to);
@@ -1232,9 +1254,12 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  function display(s){
   if(!valid(s.value)||!s.visible)return;
   if(s.shown===s.value)return;
-  s.motion?.cancel();const from=s.shown;s.shown=s.value;
-  s.motion=animate(s.node,from,s.value);
-  return Boolean(s.motion);
+  const initial=s.shown===null||!s.finishedFirstRequest;
+  const from=s.motion?.current??s.shown??0;
+  s.motion?.cancel();
+  s.shown=s.value;
+  s.motion=initial?progress(s.node,from,s.value):animate(s.node,from,s.value);
+  return !initial&&Boolean(s.motion);
  }
  function restore(s){
   try{
@@ -1271,8 +1296,11 @@ for (const slot of document.querySelectorAll('.business-slot')) {
    return;
   }
   if(totalTimer||totalShown===sum)return;
+  const from=totalMotion?.current??totalShown??0;
   totalMotion?.cancel();
-  totalMotion=animate(totalNode,rollTotal?totalShown:null,sum);
+  totalMotion=loading||totalShown===null
+   ?progress(totalNode,from,sum)
+   :animate(totalNode,rollTotal?from:null,sum);
   totalShown=sum;
  }
  async function update(s,force=false){
@@ -1332,7 +1360,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  const first=sources.map(s=>update(s));
  const show=()=>document.documentElement.classList.add('counters-ready');
  const timeout=setTimeout(show,1800);
- Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
+ Promise.allSettled(first).then(()=>{loading=false;clearTimeout(timeout);show();});
  setInterval(()=>sources.forEach(s=>update(s)),REFRESH_MS);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sources.forEach(s=>update(s));});
  window.addEventListener('online',()=>sources.forEach(s=>update(s)));
