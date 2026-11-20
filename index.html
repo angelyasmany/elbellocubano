@@ -884,7 +884,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   </header>
   <article aria-label="Transfint Cuba" class="mc-agency mc-transfint">
 <a aria-label="Abrir la calculadora de Transfint Cuba, elegir país y moneda de pago" class="mc-brand" href="https://transfint.com/#calculadora" rel="noopener noreferrer" target="_blank"><img alt="Transfint Cuba" class="mc-logo" height="63" loading="lazy" src="assets/transfint-logo-limpio.webp" width="270"/></a>
-<iframe id="transfint-calc" class="transfint-calc" src="https://transfint.com/calculadora-mini.html" title="Calculadora de Transfint Cuba" scrolling="no"></iframe>
+<iframe id="transfint-calc" class="transfint-calc" data-src="https://transfint.com/calculadora-mini.html" title="Calculadora de Transfint Cuba" scrolling="no"></iframe>
 <input type="hidden" id="ebc-monto" value="1"><span id="ebc-unit-a" hidden>S/</span>
 <div class="mc-prompt">
 
@@ -903,7 +903,18 @@ for (const slot of document.querySelectorAll('.business-slot')) {
    tarjeta:'Hola, vengo de la página del Bello Cubano y deseo enviar dinero a una tarjeta en Cuba. Tipo de tarjeta: ',
    recarga:'Hola, vengo de la página del Bello Cubano y deseo hacer una recarga de ETECSA al Número de teléfono: '
  };
- function show(){previouslyFocused=document.activeElement;overlay.hidden=false;panel.scrollTop=0;document.body.style.overflow='hidden';panel.focus()}
+ function show(){
+  previouslyFocused=document.activeElement;
+  overlay.hidden=false;
+  const calculator=panel.querySelector('#transfint-calc[data-src]');
+  if(calculator){
+   calculator.src=calculator.dataset.src;
+   calculator.removeAttribute('data-src');
+  }
+  panel.scrollTop=0;
+  document.body.style.overflow='hidden';
+  panel.focus();
+ }
  function close(){overlay.hidden=true;document.body.style.overflow='';if(previouslyFocused&&previouslyFocused.focus)previouslyFocused.focus({preventScroll:true})}
  overlay.querySelector('.money-choice-close').addEventListener('click',close);
  overlay.addEventListener('click',function(e){if(e.target===overlay)close()});
@@ -1127,6 +1138,10 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  const fmt=new Intl.NumberFormat('es-PE');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
  const INITIAL_COUNT_MS=1400;
+ const FACEBOOK_COUNT_MS=3200;
+ const FACEBOOK_WAIT_MS=6500;
+ const facebookBrowser=/\b(?:FBAN|FBAV|FB_IAB|FB4A|FBIOS)\b/i.test(navigator.userAgent);
+ let facebookFinish=0;
  const VALID_FOR=30*24*60*60*1000;
  const POLL_TICK_MS=5000;
  const networks=[
@@ -1145,6 +1160,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  const valid=v=>Number.isSafeInteger(v)&&v>=0;
 
  function showCount(s,count){
+  if(s.shown===count)return;
   s.shown=count;
   s.node.textContent=fmt.format(count);
   total();
@@ -1160,25 +1176,50 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+suffix+old:''));
   s.node.dataset.state=s.state;
  }
- function display(s){
-  label(s);
-  if(!valid(s.value)||s.target===s.value)return;
+ function animateCount(s,duration,linear=false,start=performance.now()){
   cancelAnimationFrame(s.frame);
+  s.frame=0;
   const from=s.shown??0;
   const to=s.target=s.value;
-  if(reduced.matches||document.hidden||from===to){
+  if(reduced.matches||document.hidden||from===to||duration<=0){
    showCount(s,to);
    return;
   }
-  const start=performance.now();
   showCount(s,from);
   function step(now){
-   const fraction=Math.min(1,Math.max(0,(now-start)/INITIAL_COUNT_MS));
-   const eased=1-Math.pow(1-fraction,3);
-   showCount(s,Math.round(from+(to-from)*eased));
-   if(fraction<1)s.frame=requestAnimationFrame(step);
+   const fraction=Math.min(1,Math.max(0,(now-start)/duration));
+   const progress=linear?fraction:1-Math.pow(1-fraction,3);
+   const count=from+(to-from)*progress;
+   // Durante el arranque compartido, cada cifra alcanza su destino en el mismo fotograma.
+   showCount(s,linear&&fraction<1?(to>from?Math.floor(count):Math.ceil(count)):Math.round(count));
+   s.frame=fraction<1?requestAnimationFrame(step):0;
   }
   s.frame=requestAnimationFrame(step);
+ }
+ function display(s){
+  label(s);
+  if(!valid(s.value)||s.target===s.value)return;
+  if(!facebookBrowser||reduced.matches||document.hidden){
+   animateCount(s,INITIAL_COUNT_MS);
+   return;
+  }
+
+  const now=performance.now();
+  const firstReading=s.target===null;
+  if(firstReading&&s.name==='Instagram'){
+   const finishTogether=facebookFinish>now;
+   facebookFinish=now+FACEBOOK_COUNT_MS;
+   if(finishTogether){
+    for(const other of sources){
+     if(other!==s&&other.frame)animateCount(other,FACEBOOK_COUNT_MS,true,now);
+    }
+   }
+  }else if(firstReading&&!facebookFinish){
+   facebookFinish=now+FACEBOOK_WAIT_MS;
+  }
+  const opening=facebookFinish>now;
+  const duration=opening?facebookFinish-now:(firstReading?FACEBOOK_COUNT_MS:INITIAL_COUNT_MS);
+  animateCount(s,duration,opening||firstReading,now);
  }
  function restore(s){
   try{
@@ -1193,14 +1234,17 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  }
  function total(){
   if(!totalNode)return;
-  const ready=sources.length===networks.length&&sources.every(s=>valid(s.shown));
-  const sum=ready?sources.reduce((n,s)=>n+s.shown,0):null;
-  const complete=valid(sum);
-  const text=complete?fmt.format(sum):'—';
+  const shown=sources.filter(s=>valid(s.shown));
+  const complete=shown.length===networks.length;
+  const canShow=complete||(facebookBrowser&&shown.length>0);
+  const sum=canShow?shown.reduce((n,s)=>n+s.shown,0):null;
+  const text=valid(sum)?fmt.format(sum):'—';
   if(totalNode.textContent!==text)totalNode.textContent=text;
-  if(reach){
-   reach.dataset.state=complete?'ready':'waiting';
-   reach.title=complete?'Suma de TikTok, Facebook, Instagram y YouTube.':'Total pendiente de las cuatro redes.';
+  const state=complete?'ready':canShow?'partial':'waiting';
+  if(reach&&reach.dataset.state!==state){
+   reach.dataset.state=state;
+   reach.title=complete?'Suma de TikTok, Facebook, Instagram y YouTube.':
+    canShow?'Suma de las redes disponibles.':'Total pendiente de las cuatro redes.';
   }
  }
  async function fetchCount(s,url){
@@ -1273,8 +1317,12 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  total();
  const first=sources.map(s=>update(s));
  const show=()=>document.documentElement.classList.add('counters-ready');
- const timeout=setTimeout(show,1800);
- Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
+ if(facebookBrowser){
+  show();
+ }else{
+  const timeout=setTimeout(show,1800);
+  Promise.allSettled(first).then(()=>{clearTimeout(timeout);show();});
+ }
  const refresh=()=>sources.forEach(s=>update(s));
  setInterval(refresh,POLL_TICK_MS);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
