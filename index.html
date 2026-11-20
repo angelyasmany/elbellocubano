@@ -1152,7 +1152,10 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  function label(s){
   const suffix=s.name==='YouTube'?'suscriptores':'seguidores';
   const age=s.state==='stale'&&s.checked?new Date(s.checked).toLocaleDateString('es-PE'):'';
-  const old=s.state==='stale'?' (última cifra comprobada'+(age?' el '+age:'')+'; puede haber cambiado)':'';
+  let old='';
+  if(s.state==='stale'){
+   old=age?' · Última cifra comprobada el '+age:' · Cifra de respaldo sin fecha de actualización';
+  }
   s.node.title=valid(s.value)?fmt.format(s.value)+' '+suffix+' · '+s.name+old:'Sin lectura verificable por ahora';
   if(s.link)s.link.setAttribute('aria-label','Abrir '+s.name+(valid(s.value)?': '+fmt.format(s.value)+' '+suffix+old:''));
   s.node.dataset.state=s.state;
@@ -1236,8 +1239,15 @@ for (const slot of document.querySelectorAll('.business-slot')) {
    // No renovar el plazo de la cifra antigua con una fecha de consulta reciente.
    const checked=incomingStale?(Number.isFinite(when)&&when<=now+60000?when:null):now;
    if(incomingStale&&checked===null){
-    // Sin fecha no sustituimos una lectura previa ni mostramos una cifra antigua
-    // de procedencia desconocida como si estuviera recién verificada.
+    // Admitir el respaldo exacto de Instagram sin darle una fecha artificial.
+    const instagramBackup=s.name==='Instagram'&&data.platform==='instagram'&&
+     data.estimated===false&&data.updated_at===null&&value>0&&
+     typeof data.fuente==='string'&&data.fuente.trim()!=='';
+    if(instagramBackup&&(!valid(s.value)||!s.checked||now-s.checked>VALID_FOR)){
+     s.value=value;
+     s.checked=0;
+     s.updated=null;
+    }
     if(!valid(s.value))throw Error('El proveedor no indicó fecha de la cifra antigua');
     s.state='stale';return;
    }
