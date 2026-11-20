@@ -679,6 +679,33 @@ body .site {
   text-align: center;
 }
 </style>
+<style>
+#services .service .service-body { border-radius: inherit; }
+#services .service .action:not(.soon) {
+  border: 1px solid #58764e;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  background: #e0ecd9 !important;
+  color: #304c30 !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  #services .service:hover .action:not(.soon) { background:#405d39 !important; color:white !important; }
+}
+#services .service:is(:active,[data-pressed],:focus-visible) .action:not(.soon),
+#services .service .action:not(.soon):focus-visible { background:#405d39 !important; color:white !important; }
+#services .service .action:not(.soon)::after {
+  display:block !important;
+  background:linear-gradient(105deg, transparent 28%, rgba(255,255,255,.45) 50%, transparent 72%);
+  animation: service-glint 4s ease-in-out infinite;
+}
+@keyframes service-glint {
+  0%,50% { transform:translateX(-105%); }
+  100% { transform:translateX(105%); }
+}
+@media (prefers-reduced-motion:reduce) {
+  #services .service .action:not(.soon)::after { display:none !important; }
+}
+</style>
 </head>
 <body>
 
