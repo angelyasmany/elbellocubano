@@ -706,11 +706,25 @@ body .site {
   #services .service .action:not(.soon)::after { display:none !important; }
 }
 </style>
+<style>
+.store-cart {position:absolute;z-index:6;right:2%;top:0;color:#192c34}
+.store-cart summary {width:44px;height:44px;display:grid;place-items:center;cursor:pointer;list-style:none;border-radius:50%}
+.store-cart summary::-webkit-details-marker {display:none}
+.store-cart summary:focus-visible {outline:2px solid currentColor;outline-offset:-3px}
+.store-cart p {position:absolute;top:100%;right:0;margin:0;padding:.55rem .8rem;border-radius:.5rem;background:#faf3e7;color:#304530;font:600 .85rem/1.3 system-ui;white-space:nowrap;box-shadow:0 2px 8px #192c3426}
+@media(max-width:600px){.store-cart summary {width:36px;height:32px}.store-cart svg {width:20px;height:20px}}
+</style>
 </head>
 <body>
 
 <main class="site">
 <section aria-label="Atardecer en Huacachina con el Bello Cubano" class="hero">
+<details class="store-cart">
+  <summary aria-label="Carrito de compras" title="Carrito de compras">
+    <svg viewBox="0 0 32 32" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h4l4 16h15l4-12H7"/><circle cx="12" cy="26" r="1.7"/><circle cx="24" cy="26" r="1.7"/></svg>
+  </summary>
+  <p>Tienda próximamente</p>
+</details>
 <div class="intro"><h1>¡Asere, qué bolá!</h1><p>Estos servicios del Bello Cubano en Perú te harán la vida más fácil. <b class="bendicion">¡Dios te bendiga!</b></p><a class="hero-contact" href="https://wa.me/51964912979?text=hola%20cubano%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20me%20interesa%20uno%20de%20tus%20servicios." rel="noopener noreferrer" target="_blank" aria-label="Escríbeme a el Bello Cubano por WhatsApp"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M16 2.5A13.4 13.4 0 0 0 4.5 22.8L2.6 29l6.5-1.8A13.5 13.5 0 1 0 16 2.5Zm0 24.3a10.8 10.8 0 0 1-5.5-1.5l-.4-.2-3.8 1.1 1.1-3.7-.3-.4A10.8 10.8 0 1 1 16 26.8Zm6.1-8.1c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.1-.4.1-.7 0-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.5.2-.6l.5-.6c.1-.2.2-.4.1-.6l-.9-2.2c-.2-.5-.4-.4-.7-.4h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.6s1.2 2.9 1.3 3.1c.2.2 2.4 3.7 5.8 5.1.8.4 1.4.5 1.9.6.8.1 1.5.1 2.1-.1.6-.2 1.8-.8 2.1-1.6.3-.7.3-1.4.2-1.6-.1-.2-.3-.3-.6-.5Z"/></svg><span>Escríbeme</span></a></div>
 </section>
 <section aria-label="Servicios de el Bello Cubano" class="services" id="services">
