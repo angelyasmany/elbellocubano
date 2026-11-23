@@ -793,6 +793,21 @@ body{
   text-wrap: balance;
 }
 </style>
+<style>
+  #services { margin-inline: 0; }
+  #services > .services-track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    padding-inline: 0;
+    overflow: visible;
+  }
+  #services > .services-track > .service {
+    width: auto;
+    max-width: none;
+    min-width: 0;
+  }
+</style>
 </head>
 <body>
 
