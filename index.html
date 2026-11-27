@@ -1325,9 +1325,19 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  let facebookFinish=0;
  const VALID_FOR=30*24*60*60*1000;
  const POLL_TICK_MS=5000;
- const FACEBOOK_REFERENCE=19588; // Livecounts, 27 nov 2026
- const INSTAGRAM_REFERENCE=5004; // Livecounts, 27 nov 2026
- let facebookAnimatedValue=0;
+ let FACEBOOK_REFERENCE=19588; // Respaldo inicial verificado en Livecounts
+ let INSTAGRAM_REFERENCE=5004; // Respaldo inicial verificado en Livecounts
+ let facebookAnimatedValue=0,facebookAnimationDone=false,facebookUpdateFrame=0;
+ let externalRead=false,externalPending=false,lastExternalAttempt=0;
+ const EXTERNAL_REFRESH_MS=120_000;
+ const EXTERNAL_STORAGE_KEY='ebc-livecounts-external-v1';
+ try{
+  const saved=JSON.parse(localStorage.getItem(EXTERNAL_STORAGE_KEY)||'null');
+  if(saved&&Number.isFinite(saved.at)&&Date.now()-saved.at<30*24*60*60*1000){
+   if(Number.isSafeInteger(saved.facebook)&&saved.facebook>0)FACEBOOK_REFERENCE=saved.facebook;
+   if(Number.isSafeInteger(saved.instagram)&&saved.instagram>0)INSTAGRAM_REFERENCE=saved.instagram;
+  }
+ }catch{/* Puede estar deshabilitado el almacenamiento local. */}
  const networks=[
   {name:'TikTok',refreshMs:5000,id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
   {name:'YouTube',refreshMs:15000,id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ'}
@@ -1427,21 +1437,21 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   if(!totalNode)return;
   const shown=sources.filter(s=>valid(s.shown));
   const complete=shown.length===networks.length;
-  // Los embeds ajenos no exponen sus cifras: se suman las últimas cifras vistas.
+  // Livecounts se consulta además desde nuestro endpoint para actualizar la suma.
   const sum=complete?shown.reduce((n,s)=>n+s.shown,0)+facebookAnimatedValue+INSTAGRAM_REFERENCE:null;
   const text=valid(sum)?fmt.format(sum):'—';
   if(totalNode.textContent!==text)totalNode.textContent=text;
   if(reach){
-   reach.dataset.state=complete?'ready':'waiting';
+   reach.dataset.state=complete?(externalRead?'ready':'cached'):'waiting';
    reach.title=complete?
-    'TikTok y YouTube actualizados; Facebook e Instagram usan las últimas cifras verificadas de Livecounts (27/11/2026).':
+    (externalRead?'Total de las cuatro redes, consultado periódicamente desde sus fuentes.':'Total con las últimas cifras guardadas de Livecounts mientras se obtiene una nueva lectura.'):
     'Esperando las cifras de TikTok y YouTube para completar el total.';
   }
  }
  function animateFacebookReference(){
   const wrapper=document.querySelector('.facebook-social .external-social-counter');
   const frame=wrapper&&wrapper.querySelector('iframe');
-  if(!wrapper||!frame||reduced.matches||document.hidden){facebookAnimatedValue=FACEBOOK_REFERENCE;total();return;}
+  if(!wrapper||!frame||reduced.matches||document.hidden){facebookAnimatedValue=FACEBOOK_REFERENCE;facebookAnimationDone=true;total();return;}
   const overlay=document.createElement('span');
   overlay.setAttribute('aria-hidden','true');
   overlay.style.cssText='position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:#f8fbff;color:#111;font:800 1em/1 system-ui,sans-serif;font-variant-numeric:tabular-nums;pointer-events:none';
@@ -1454,9 +1464,47 @@ for (const slot of document.querySelectorAll('.business-slot')) {
    const value=Math.round(FACEBOOK_REFERENCE*(1-Math.pow(1-t,3)));
    if(value!==facebookAnimatedValue){facebookAnimatedValue=value;overlay.textContent=fmt.format(value);total();}
    if(t<1)requestAnimationFrame(step);
-   else{facebookAnimatedValue=FACEBOOK_REFERENCE;total();frame.style.opacity='1';overlay.remove();}
+   else{facebookAnimatedValue=FACEBOOK_REFERENCE;facebookAnimationDone=true;total();frame.style.opacity='1';overlay.remove();}
   }
   requestAnimationFrame(step);
+ }
+ function applyFacebookReading(next){
+  if(next===FACEBOOK_REFERENCE)return;
+  FACEBOOK_REFERENCE=next;
+  if(!facebookAnimationDone)return; // La animacion de apertura toma la cifra mas reciente.
+  if(facebookUpdateFrame)cancelAnimationFrame(facebookUpdateFrame);
+  const from=facebookAnimatedValue,start=performance.now(),duration=750;
+  function step(now){
+   const t=Math.min(1,(now-start)/duration);
+   facebookAnimatedValue=Math.round(from+(FACEBOOK_REFERENCE-from)*(1-Math.pow(1-t,3)));
+   total();
+   facebookUpdateFrame=t<1?requestAnimationFrame(step):0;
+  }
+  if(reduced.matches||document.hidden){facebookAnimatedValue=next;total();}
+  else facebookUpdateFrame=requestAnimationFrame(step);
+ }
+ async function refreshExternal(){
+  if(externalPending||document.hidden||Date.now()-lastExternalAttempt<90_000)return;
+  externalPending=true;lastExternalAttempt=Date.now();
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),8500);
+  try{
+   const response=await fetch('/api/livecounts',{signal:controller.signal,headers:{Accept:'application/json'}});
+   if(!response.ok)throw Error('Sin lectura disponible');
+   const data=await response.json();
+   const fb=Number(data.facebook),ig=Number(data.instagram);
+   let gotValue=false;
+   if(Number.isSafeInteger(fb)&&fb>0){applyFacebookReading(fb);gotValue=true;}
+   if(Number.isSafeInteger(ig)&&ig>0){INSTAGRAM_REFERENCE=ig;gotValue=true;}
+   if(gotValue){
+    externalRead=true;
+    try{localStorage.setItem(EXTERNAL_STORAGE_KEY,JSON.stringify({
+     facebook:FACEBOOK_REFERENCE,instagram:INSTAGRAM_REFERENCE,at:Date.now()
+    }));}catch{}
+    total();
+   }
+  }catch{/* Conserva las ultimas cifras si Livecounts esta desconectado. */}
+  finally{clearTimeout(timeout);externalPending=false;}
  }
  async function fetchCount(s,url){
   const controller=new AbortController();
@@ -1527,6 +1575,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  }
  total();
  animateFacebookReference();
+ refreshExternal();
  const first=Promise.allSettled(sources.map(s=>update(s)));
  first.then(()=>{
   openingReadsFinished=true;
@@ -1539,7 +1588,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   const timeout=setTimeout(show,1800);
   first.then(()=>{clearTimeout(timeout);show();});
  }
- const refresh=()=>sources.forEach(s=>update(s));
+ const refresh=()=>{sources.forEach(s=>update(s));refreshExternal();};
  setInterval(refresh,POLL_TICK_MS);
  document.addEventListener('visibilitychange',()=>{
   if(document.hidden)return;
