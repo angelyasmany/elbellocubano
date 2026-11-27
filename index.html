@@ -132,8 +132,9 @@
     .instagram-profile-link{position:absolute!important;inset:0!important;display:block!important;z-index:2;padding:0!important;border:0!important;transform:none!important;background:transparent!important}
     .social>.instagram-social{color:#2058a6;display:flex;flex-direction:column;align-items:center;gap:.7cqw;min-width:0;padding:.4cqw .5cqw;border-right:1px solid #8aa4cb;transition:transform .18s}
     .social>.instagram-social:hover{transform:translateY(-4px)}
-/* Instagram: el número animado reemplaza al iframe solo cuando la API devuelve una cifra válida. */
-.instagram-social #ig-followers{line-height:1.3;min-height:1.3em;font-weight:800;font-variant-numeric:tabular-nums;color:#111;text-align:center}
+/* Contadores externos de Livecounts: se ven sin consultar las API de Meta. */
+.social .external-social-counter{position:relative;display:block;width:4.75em;height:1.3em;min-height:1.3em;overflow:hidden;color:#111}
+.social .external-social-counter iframe{position:absolute;left:50%;top:50%;display:block;width:300px!important;height:80px!important;max-width:none!important;border:0;background:transparent;transform:translate(-50%,-50%) scale(.4);transform-origin:center;pointer-events:none}
 
 
 /* Solución exclusiva para el navegador integrado de TikTok. */
@@ -863,13 +864,13 @@ body{
     </a>
   </div>
 </section>
-<p class="reach" data-state="waiting" id="reach" title="Total pendiente de las cuatro redes."><strong id="reach-total">—</strong>
-  <span id="reach-label">Seguidores en redes</span>
+<p class="reach" data-state="waiting" id="reach" title="Suma parcial pendiente de TikTok y YouTube."><strong id="reach-total">—</strong>
+  <span id="reach-label">Suma parcial de seguidores</span>
 </p>
 <nav aria-label="Redes sociales y contadores" class="social">
 <a aria-label="Abrir TikTok de el Bello Cubano" data-social="TikTok" href="https://www.tiktok.com/@elbellocubano7?lang=es" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="tt-followers">—</span></a>
-<div aria-label="Facebook y contador" class="instagram-social facebook-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M26.8 41V26.1H32l.8-5.8h-6v-3.7c0-1.8.6-3.1 3.2-3.1H33V8.3c-.6-.1-2.5-.3-4.8-.3-4.8 0-8.1 2.9-8.1 8.2v4.1h-4.8V26h4.8v15z" fill="currentColor"></path></svg><span aria-live="polite" class="count" data-state="unavailable" id="fb-followers" title="Contador pendiente">—</span><a aria-label="Abrir Facebook de el Bello Cubano" class="instagram-profile-link" data-social="Facebook" href="https://www.facebook.com/elbellocubano" rel="noopener noreferrer" target="_blank"></a></div>
-<div aria-label="Instagram y contador de seguidores" class="instagram-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><rect fill="none" height="30" rx="9" stroke="currentColor" stroke-width="3.4" width="30" x="9" y="9"></rect><circle cx="24" cy="24" fill="none" r="7" stroke="currentColor" stroke-width="3.4"></circle><circle cx="33.2" cy="14.8" fill="currentColor" r="2.2"></circle></svg><span class="count" data-state="unavailable" id="ig-followers" title="Seguidores de Instagram">—</span><a aria-label="Abrir Instagram de el Bello Cubano" class="instagram-profile-link" data-social="Instagram" href="https://www.instagram.com/elbellocubano/" rel="noopener noreferrer" target="_blank"></a></div>
+<div aria-label="Facebook y contador" class="instagram-social facebook-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M26.8 41V26.1H32l.8-5.8h-6v-3.7c0-1.8.6-3.1 3.2-3.1H33V8.3c-.6-.1-2.5-.3-4.8-.3-4.8 0-8.1 2.9-8.1 8.2v4.1h-4.8V26h4.8v15z" fill="currentColor"></path></svg><span class="count external-social-counter" title="Contador externo de Livecounts"><iframe src="https://livecounts.nl/facebook-realtime/embed/?u=elbellocubano&amp;theme=light&amp;size=s&amp;avatar=0&amp;name=0&amp;look=light&amp;tc=111111&amp;cc=111111&amp;pb=transparent&amp;cb=f8fbff&amp;bc=transparent&amp;ring=0&amp;hide=avatar%2Cname%2Ccheck%2Clabel%2Cgoal%2Clogo&amp;cw=800&amp;lh=1&amp;tf=system&amp;cf=system&amp;ts=comma" title="Seguidores de Facebook de el Bello Cubano, contador externo de Livecounts" width="300" height="80" loading="eager" tabindex="-1" referrerpolicy="strict-origin-when-cross-origin"></iframe></span><a aria-label="Abrir Facebook de el Bello Cubano" class="instagram-profile-link" data-social="Facebook" href="https://www.facebook.com/elbellocubano" rel="noopener noreferrer" target="_blank"></a></div>
+<div aria-label="Instagram y contador de seguidores" class="instagram-social" role="group"><svg aria-hidden="true" viewbox="0 0 48 48"><rect fill="none" height="30" rx="9" stroke="currentColor" stroke-width="3.4" width="30" x="9" y="9"></rect><circle cx="24" cy="24" fill="none" r="7" stroke="currentColor" stroke-width="3.4"></circle><circle cx="33.2" cy="14.8" fill="currentColor" r="2.2"></circle></svg><span class="count external-social-counter" title="Contador externo de Livecounts"><iframe src="https://livecounts.nl/instagram-realtime/embed/?u=elbellocubano&amp;theme=light&amp;size=s&amp;avatar=0&amp;name=0&amp;look=light&amp;tc=111111&amp;cc=111111&amp;pb=transparent&amp;cb=f8fbff&amp;bc=transparent&amp;ring=0&amp;hide=avatar%2Cname%2Ccheck%2Clabel%2Cgoal%2Clogo&amp;cw=800&amp;lh=1&amp;tf=system&amp;cf=system&amp;ts=comma" title="Seguidores de Instagram de el Bello Cubano, contador externo de Livecounts" width="300" height="80" loading="eager" tabindex="-1" referrerpolicy="strict-origin-when-cross-origin"></iframe></span><a aria-label="Abrir Instagram de el Bello Cubano" class="instagram-profile-link" data-social="Instagram" href="https://www.instagram.com/elbellocubano/" rel="noopener noreferrer" target="_blank"></a></div>
 <a aria-label="Abrir YouTube de el Bello Cubano" data-social="YouTube" href="https://www.youtube.com/@elbellocubano" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><rect fill="none" height="22" rx="7" stroke="currentColor" stroke-width="3.2" width="36" x="6" y="13"></rect><path d="m21 18.5 10 5.5-10 5.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="yt-subscribers">—</span></a>
 </nav>
 <footer class="copyright">
@@ -1326,8 +1327,6 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  const POLL_TICK_MS=5000;
  const networks=[
   {name:'TikTok',refreshMs:5000,id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
-  {name:'Facebook',refreshMs:10000,id:'fb-followers',url:'/datos/seguidores',fallbackUrl:'/api/facebook',field:'count',account:'elbellocubano'},
-  {name:'Instagram',refreshMs:15000,id:'ig-followers',url:'/api/instagram',field:'count',account:'elbellocubano'},
   {name:'YouTube',refreshMs:15000,id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ'}
  ];
  const sources=networks.map(item=>({...item,
@@ -1424,16 +1423,15 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  function total(){
   if(!totalNode)return;
   const shown=sources.filter(s=>valid(s.shown));
-  const complete=shown.length===networks.length;
-  const canShow=complete||(facebookBrowser&&shown.length>0);
+  // Los embeds externos no se pueden sumar desde este dominio.
+  const canShow=shown.length>0;
   const sum=canShow?shown.reduce((n,s)=>n+s.shown,0):null;
   const text=valid(sum)?fmt.format(sum):'—';
   if(totalNode.textContent!==text)totalNode.textContent=text;
-  const state=complete?'ready':canShow?'partial':'waiting';
+  const state=canShow?'partial':'waiting';
   if(reach&&reach.dataset.state!==state){
    reach.dataset.state=state;
-   reach.title=complete?'Suma de TikTok, Facebook, Instagram y YouTube.':
-    canShow?'Suma de las redes disponibles.':'Total pendiente de las cuatro redes.';
+   reach.title=canShow?'Suma parcial de TikTok y YouTube. Facebook e Instagram se muestran aparte mediante Livecounts.':'Suma parcial pendiente de TikTok y YouTube.';
   }
  }
  async function fetchCount(s,url){
