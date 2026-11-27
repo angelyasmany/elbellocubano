@@ -864,8 +864,8 @@ body{
     </a>
   </div>
 </section>
-<p class="reach" data-state="waiting" id="reach" title="Suma parcial pendiente de TikTok y YouTube."><strong id="reach-total">—</strong>
-  <span id="reach-label">Suma parcial de seguidores</span>
+<p class="reach" data-state="waiting" id="reach" title="Total de seguidores de las cuatro redes."><strong id="reach-total">—</strong>
+  <span id="reach-label">Seguidores en redes</span>
 </p>
 <nav aria-label="Redes sociales y contadores" class="social">
 <a aria-label="Abrir TikTok de el Bello Cubano" data-social="TikTok" href="https://www.tiktok.com/@elbellocubano7?lang=es" rel="noopener noreferrer" target="_blank"><svg aria-hidden="true" viewbox="0 0 48 48"><path d="M29.3 7.5c1 4.5 4 7.3 8.7 7.9v5c-3.2-.1-6.1-1.2-8.7-3.1v11c0 6.4-4.7 11-11 11-5.8 0-10.3-4.1-10.3-9.6 0-5.7 4.7-10 10.8-10 1.1 0 2 .1 2.8.4v5.5a5.9 5.9 0 0 0-2.7-.7c-2.7 0-4.7 1.8-4.7 4.4 0 2.5 1.9 4.3 4.5 4.3 2.8 0 4.5-1.8 4.5-5V7.5z" fill="currentColor"></path></svg><span aria-live="polite" class="count" id="tt-followers">—</span></a>
@@ -1325,6 +1325,9 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  let facebookFinish=0;
  const VALID_FOR=30*24*60*60*1000;
  const POLL_TICK_MS=5000;
+ const FACEBOOK_REFERENCE=19588; // Livecounts, 27 nov 2026
+ const INSTAGRAM_REFERENCE=5004; // Livecounts, 27 nov 2026
+ let facebookAnimatedValue=0;
  const networks=[
   {name:'TikTok',refreshMs:5000,id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
   {name:'YouTube',refreshMs:15000,id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ'}
@@ -1423,16 +1426,37 @@ for (const slot of document.querySelectorAll('.business-slot')) {
  function total(){
   if(!totalNode)return;
   const shown=sources.filter(s=>valid(s.shown));
-  // Los embeds externos no se pueden sumar desde este dominio.
-  const canShow=shown.length>0;
-  const sum=canShow?shown.reduce((n,s)=>n+s.shown,0):null;
+  const complete=shown.length===networks.length;
+  // Los embeds ajenos no exponen sus cifras: se suman las últimas cifras vistas.
+  const sum=complete?shown.reduce((n,s)=>n+s.shown,0)+facebookAnimatedValue+INSTAGRAM_REFERENCE:null;
   const text=valid(sum)?fmt.format(sum):'—';
   if(totalNode.textContent!==text)totalNode.textContent=text;
-  const state=canShow?'partial':'waiting';
-  if(reach&&reach.dataset.state!==state){
-   reach.dataset.state=state;
-   reach.title=canShow?'Suma parcial de TikTok y YouTube. Facebook e Instagram se muestran aparte mediante Livecounts.':'Suma parcial pendiente de TikTok y YouTube.';
+  if(reach){
+   reach.dataset.state=complete?'ready':'waiting';
+   reach.title=complete?
+    'TikTok y YouTube actualizados; Facebook e Instagram usan las últimas cifras verificadas de Livecounts (27/11/2026).':
+    'Esperando las cifras de TikTok y YouTube para completar el total.';
   }
+ }
+ function animateFacebookReference(){
+  const wrapper=document.querySelector('.facebook-social .external-social-counter');
+  const frame=wrapper&&wrapper.querySelector('iframe');
+  if(!wrapper||!frame||reduced.matches||document.hidden){facebookAnimatedValue=FACEBOOK_REFERENCE;total();return;}
+  const overlay=document.createElement('span');
+  overlay.setAttribute('aria-hidden','true');
+  overlay.style.cssText='position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:#f8fbff;color:#111;font:800 1em/1 system-ui,sans-serif;font-variant-numeric:tabular-nums;pointer-events:none';
+  overlay.textContent='0';
+  wrapper.appendChild(overlay);
+  frame.style.opacity='0';
+  const start=performance.now(),duration=3200;
+  function step(now){
+   const t=Math.min(1,(now-start)/duration);
+   const value=Math.round(FACEBOOK_REFERENCE*(1-Math.pow(1-t,3)));
+   if(value!==facebookAnimatedValue){facebookAnimatedValue=value;overlay.textContent=fmt.format(value);total();}
+   if(t<1)requestAnimationFrame(step);
+   else{facebookAnimatedValue=FACEBOOK_REFERENCE;total();frame.style.opacity='1';overlay.remove();}
+  }
+  requestAnimationFrame(step);
  }
  async function fetchCount(s,url){
   const controller=new AbortController();
@@ -1502,6 +1526,7 @@ for (const slot of document.querySelectorAll('.business-slot')) {
   display(s);
  }
  total();
+ animateFacebookReference();
  const first=Promise.allSettled(sources.map(s=>update(s)));
  first.then(()=>{
   openingReadsFinished=true;
