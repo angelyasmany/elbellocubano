@@ -1,5 +1,5 @@
-/* el Bello Cubano — contadores animados con iframe visual solo de respaldo.
-   No se confunden seguidores acumulados con espectadores únicos. */
+/* el Bello Cubano — TikTok y YouTube usan API.
+   Facebook e Instagram se muestran con Livecounts externo. */
 (()=>{'use strict';
  const fmt=new Intl.NumberFormat('es-PE');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -8,8 +8,6 @@
  const MIN_REFRESH_MS=90000; // no repetir al cambiar de pestaña o recuperar Internet
  const networks=[
   {name:'TikTok',id:'tt-followers',url:'/api/tiktok',field:'tiktok',account:'elbellocubano7'},
-  {name:'Facebook',id:'fb-followers',url:'/api/facebook',field:'count',account:'elbellocubano'},
-  {name:'Instagram',id:'ig-followers',url:'/api/instagram',field:'count',account:'elbellocubano'},
   {name:'YouTube',id:'yt-subscribers',url:'/api/youtube',field:'count',account:'UCVvsVVbc0W8KIL1kRkIqWxQ'}
  ];
  const sources=networks.map(item=>({...item,
@@ -17,24 +15,6 @@
   link:document.querySelector('[data-social="'+item.name+'"]'),
   value:null,shown:null,visible:false,motion:null,busy:false,checked:0,updated:null,state:'unavailable',finishedFirstRequest:false,lastAttempt:0
  })).filter(s=>s.node);
- // Widget oficial del proveedor como respaldo VISUAL de Facebook.
- // No intentamos leer el iframe (es de otro dominio) ni lo sumamos al total.
- const facebookVisual=document.querySelector('.facebook-counter');
- const instagramVisual=document.querySelector('.instagram-counter:not(.facebook-counter)');
- function fallbackVisual(s){
-  if(s.name==='Facebook'&&facebookVisual){
-   const show=!valid(s.value)&&s.finishedFirstRequest;
-   facebookVisual.hidden=!show;
-   s.node.hidden=show;
-  }
-  if(s.name==='Instagram'&&instagramVisual){
-   // Únicamente el número verificable de /api/instagram se anima desde 0.
-   // Si no hay número, conservamos el widget del proveedor sin leer su iframe.
-   const numeric=valid(s.value);
-   instagramVisual.hidden=numeric;
-   s.node.hidden=!numeric;
-  }
- }
  const totalNode=document.getElementById('reach-total');
  const reach=document.getElementById('reach');
  let totalMotion=null,totalShown=null;
@@ -126,7 +106,7 @@
    if(valid(s.value)){s.state='stale';display(s);}
    else{s.state='unavailable';s.node.textContent='—';}
    label(s);
-  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;fallbackVisual(s);total();}
+  }finally{clearTimeout(timeout);s.busy=false;s.finishedFirstRequest=true;total();}
  }
  const watched=new Map();
  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
@@ -136,10 +116,8 @@
   }
  },{threshold:0.05}):null;
  for(const s of sources){
-  restore(s);label(s);fallbackVisual(s);
-  // El nodo numérico de Instagram empieza oculto. Observar su contenedor visible
-  // evita que IntersectionObserver deje el número permanentemente en «—».
-  const target=s.name==='Instagram'?(s.node.closest('.instagram-social')||s.node):s.node;
+  restore(s);label(s);
+  const target=s.node;
   if(observer){watched.set(target,s);observer.observe(target);}else s.visible=true;
  }
  total();
